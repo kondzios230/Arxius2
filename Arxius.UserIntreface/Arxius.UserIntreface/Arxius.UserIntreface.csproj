@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AuthDoNotSync - Copy.cs" />
     <Compile Include="ViewModels\Courses\StudentsListViewModel.cs" />
     <Compile Include="ViewModels\Employees\EmployeeListViewModel.cs" />
     <Compile Include="ViewModels\Courses\CourseDetailsViewModel.cs" />
@@ -53,7 +54,6 @@
     <Compile Include="Views\Utils\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AuthDoNotSync.cs" />
     <Compile Include="ViewModels\Utils\LoginViewModel.cs" />
     <Compile Include="Views\Courses\CourseDetailsPage.xaml.cs">
       <DependentUpon>CourseDetailsPage.xaml</DependentUpon>
