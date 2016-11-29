@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Arxius.UserIntreface"
+             x:Class="Arxius.UserIntreface.UserProfilePage">
+
+
+  <ContentPage.Content>
+    <StackLayout
+                 HorizontalOptions="CenterAndExpand"
+                 Orientation="Vertical"
+                 Spacing="15">
+
+      <Label Text ="Punkty ECTS" FontSize="Large"/>
+      <Label Text ="{Binding Ects}"/>
+      <Button Text="Pokaż ECTSy" Command="{Binding ShowProfile}" />
+      <Label Text ="Data zdjęcia limitu" FontSize="Large"/>
+      <Label Text ="{Binding LimitRemovalTime}"/>
+      <Label Text ="Data końca zapisów" FontSize="Large"/>
+      <Label Text ="{Binding EndTime}"/>
+      <Label Text ="Przedmioty na które głosowałeś" FontSize="Large"/>
+      <ListView  x:Name="GroupedView"  ItemsSource="{Binding RegistrationTimes}" GroupDisplayBinding="{Binding Time}" IsGroupingEnabled="true" >
+        <ListView.ItemTemplate >
+          <DataTemplate>
+            <TextCell Text="{Binding Name}" TextColor="#000000" />
+          </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.GroupHeaderTemplate>
+          <DataTemplate>
+            <TextCell Text="{Binding Time}"
+            TextColor="#001dff" />
+          </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+
+
+      </ListView>
+
+    </StackLayout>
+  </ContentPage.Content>
+
+</ContentPage>

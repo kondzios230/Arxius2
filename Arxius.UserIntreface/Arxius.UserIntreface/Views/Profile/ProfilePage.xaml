@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Arxius.UserIntreface"
+             x:Class="Arxius.UserIntreface.ProfilePage">
+
+
+  <ContentPage.Content>
+    <StackLayout
+                 HorizontalOptions="CenterAndExpand"
+                 Orientation="Vertical"
+                 Spacing="15">
+
+     
+      <ListView x:Name="Ects"  ItemsSource="{Binding EctsPoints}">
+        <ListView.ItemTemplate >
+          <DataTemplate>
+            <TextCell Text="{Binding .}" TextColor="#000000"/>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </StackLayout>
+  </ContentPage.Content>
+
+</ContentPage>

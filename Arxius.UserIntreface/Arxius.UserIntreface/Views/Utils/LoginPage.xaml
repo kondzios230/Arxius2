@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Arxius.UserIntreface"
+             x:Class="Arxius.UserIntreface.LoginPage">
+
+  <ContentPage.Content>
+    <StackLayout VerticalOptions="CenterAndExpand"
+                 HorizontalOptions="CenterAndExpand"
+                 Orientation="Vertical"
+                 Spacing="15">
+
+      <Entry Text="{Binding Login}"
+               VerticalOptions="Center"
+               HorizontalOptions="CenterAndExpand"
+               Placeholder="Podaj login"/>
+      <Entry Text="{Binding Password}"
+               VerticalOptions="Center"
+               HorizontalOptions="CenterAndExpand"
+               Placeholder="Podaj hasło"
+              IsPassword="True"/>
+      <Button Text="Login" Command="{Binding ExecuteLogin}" />
+   
+    </StackLayout>
+  </ContentPage.Content>
+
+</ContentPage>

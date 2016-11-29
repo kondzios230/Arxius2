@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Arxius.UserIntreface"
+             x:Class="Arxius.UserIntreface.MainPage">
+
+
+  <ContentPage.Content>
+    <StackLayout VerticalOptions="FillAndExpand"
+                 HorizontalOptions="FillAndExpand"
+                 Orientation="Vertical"
+                 Spacing="15">
+
+      <Button Text="Twój plan" Command="{Binding ShowPlan}" />
+      <Button Text="profil" Command="{Binding ShowUserProfile}" />
+      <Button Text="Newsy" Command="{Binding ShowNews}" />
+      <Button Text="Pracownicy" Command="{Binding ShowEmployeeList}" />
+      <Button Text="Przedmioty" Command="{Binding ShowCoursesList}" />
+    </StackLayout>
+  </ContentPage.Content>
+
+</ContentPage>

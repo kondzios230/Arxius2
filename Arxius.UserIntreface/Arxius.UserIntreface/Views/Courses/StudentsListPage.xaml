@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Arxius.UserIntreface"
+             x:Class="Arxius.UserIntreface.StudentsListPage">
+
+  <ContentPage.Content>
+    <StackLayout
+                 HorizontalOptions="CenterAndExpand"
+                 Orientation="Vertical"
+                 Spacing="15">
+
+      <Label Text="{Binding ClassField.Teacher.Name}" HorizontalOptions="CenterAndExpand"/>
+      <Label Text="{Binding Enrolled}" HorizontalOptions="CenterAndExpand"/>
+      <Label Text="{Binding Total}" HorizontalOptions="CenterAndExpand"/>
+      <ListView x:Name="Students"  ItemsSource="{Binding StudentsList}" RowHeight="150">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+              <ViewCell.View>
+                <Grid x:Name="controlGrid" RowSpacing="1" ColumnSpacing="1">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Label Text="{Binding Name}" Grid.Row="0" Grid.Column="0"/>
+                  <Label Text="{Binding Surname}" Grid.Row="0" Grid.Column="1" />
+                  <Label Text="{Binding StudiesKind}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"/>
+                  <Label Text="{Binding Index}" Grid.Row="2" Grid.Column="0"/>
+                  <Label Text="{Binding Semester}" Grid.Row="2" Grid.Column="1"/>
+                </Grid>
+              </ViewCell.View>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </StackLayout>
+  </ContentPage.Content>
+
+</ContentPage>
