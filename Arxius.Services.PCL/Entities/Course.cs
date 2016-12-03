@@ -32,14 +32,8 @@ namespace Arxius.Services.PCL.Entities
         {
             Classes = new List<_Class>();
             HoursSchema = new Dictionary<string, int>();
-
-            EnrollOrUnroll = new Command(ExecuteEnrollOrUnroll);
         }
-        public ICommand EnrollOrUnroll { private set; get; }
-        async void ExecuteEnrollOrUnroll()
-        {
-
-        }
+     
     }
 
 

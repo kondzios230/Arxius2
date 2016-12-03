@@ -14,12 +14,12 @@ namespace Arxius.Services.PCL
     {
         public async Task<Course> GetCourseDetails(Course course)
         {
-            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri,course.Url));
+            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
             CoursesParsers.GetCourseDetails(page, course);
             return course;
         }
         public async Task<List<Course>> GetAllUserCoursesWithDetails()
-        {            
+        {
             var courses = await GetAllUserCourses();
             foreach (var course in courses)
             {
@@ -44,7 +44,7 @@ namespace Arxius.Services.PCL
 
         public async Task<List<Course>> GetUserPlanForCurrentSemester()
         {
-            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri,"/records/schedule/"));
+            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/records/schedule/"));
             return CoursesParsers.GetUserPlanForCurrentSemester(page);
         }
         public async Task<List<Course>> GetAllUserCourses()
@@ -63,16 +63,17 @@ namespace Arxius.Services.PCL
             CoursesParsers.GetCourseWideDetails(page, course);
             return course;
         }
-        public async Task<Tuple<int,int, List<Student>>> GetStudentsList(_Class _class)
+        public async Task<Tuple<int, int, List<Student>>> GetStudentsList(_Class _class)
         {
             var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, _class.ListUrl));
-            return  CoursesParsers.GetStudentsList(page); 
+            return CoursesParsers.GetStudentsList(page);
         }
-        public void EnrollOrUnroll(EnrollmentClass _class)
+        public async Task<bool> EnrollOrUnroll(EnrollmentClass _class)
         {
-            if (Properties.Resources.baseUri.Contains("zapisy")) return; //safety first
-            HTMLUtils.PostString(string.Format(Properties.Resources.baseUri,"/records/set-enrolled"), string.Format("csrfmiddlewaretoken={0}&group={1}&enroll={2}",HTMLUtils.csrfToken,_class.enrollmentId,!_class.IsSignedIn));
+            if (Properties.Resources.baseUri.Contains("zapisy")) return false; //safety first
+            var response =  await HTMLUtils.PostString(string.Format(Properties.Resources.baseUri, "/records/set-enrolled"), string.Format("csrfmiddlewaretoken={0}&group={1}&enroll={2}", HTMLUtils.csrfToken, _class.enrollmentId, !_class.IsSignedIn));
+            return true;
+
         }
     }
 }
- 

@@ -94,7 +94,7 @@ namespace Arxius.Services.PCL.Parsers
                         course.Classes.Add(_class);
                     }
                 }
-                var nonEnrollmentCourseMatch = Regex.Matches(tutorialGroupString, @"><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term""><span>(.*?)\((.*?)\)<\/span><\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is(.*?)value=""(.*?)""\/><a href=""(.*?)>(.*?)<\/a><\/td><\/tr>", RegexOptions.Multiline);
+                var nonEnrollmentCourseMatch = Regex.Matches(tutorialGroupString, @"><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term""><span(.*?)<\/span><\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is(.*?)value=""(.*?)""\/><a href=""(.*?)"">(.*?)<\/a><\/td><\/tr>", RegexOptions.Multiline);
                 if (nonEnrollmentCourseMatch.Count != 0)
                 {
                     foreach (Match courseMatch in nonEnrollmentCourseMatch)
@@ -108,7 +108,8 @@ namespace Arxius.Services.PCL.Parsers
                         _class.SignedIn = courseMatch.Groups[5].ToString().Trim(' ');
                         _class.Queued = courseMatch.Groups[6].ToString().Trim(' ');
                         _class.IsSignedIn = courseMatch.Groups[10].ToString() == "true".Trim(' ');
-                        _class.ListUrl = courseMatch.Groups[11].ToString().Trim(' ');
+                        _class.ListUrl = courseMatch.Groups[11].ToString().Trim(' ').Trim('\\');
+                        _class.buttonListText = courseMatch.Groups[12].ToString().Trim(' ');
                         course.Classes.Add(_class);
                     }
                 }
@@ -214,8 +215,8 @@ namespace Arxius.Services.PCL.Parsers
 
             if (headerMatch!=null)
             {
-                item1 = Convert.ToInt32(headerMatch.Groups[1].ToString().Trim(' '));
-                item2 =  Convert.ToInt32(headerMatch.Groups[2].ToString().Trim(' '));
+                item1 = Convert.ToInt32(headerMatch.Groups[3].ToString().Trim(' '));
+                item2 =  Convert.ToInt32(headerMatch.Groups[4].ToString().Trim(' '));
             }
             foreach(Match student in studentsMatch)
             {

@@ -101,7 +101,7 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand EnrollOrUnroll { private set; get; }
         async void ExecuteEnrollOrUnroll(EnrollmentClass c)
         {
-           cService.EnrollOrUnroll(c);
+          var x = await cService.EnrollOrUnroll(c);
         }
 
         public ICommand ShowList { private set; get; }

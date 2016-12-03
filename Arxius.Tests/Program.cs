@@ -36,7 +36,8 @@ namespace Arxius.Tests
                 var x = await cService.GetAllCourses();
                 var z = x.Find(c => c.Name == "Analiza numeryczna (M)");
                  var zx = await cService.GetCourseWideDetails(z);
-                cService.GetStudentsList(zx.Classes[0]); 
+                var aa = await cService.GetStudentsList(zx.Classes[0]);
+                Console.Write(aa.Item1);
                //cService.Foo();
             }
             Console.Read();
