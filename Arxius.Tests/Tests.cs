@@ -31,7 +31,7 @@ namespace Arxius.Tests
         public async Task<bool> IsNewsfeedDownloadSuccesfull()
         {
             var uService = new UtilsService();
-            var x = await uService.GetFeedPage();
+            var x = await uService.GetFeedPage(2);
             return (!x.Any(n=>n.Content==null));
         }
         public async Task<bool> IsEmployeeListDownloaded()

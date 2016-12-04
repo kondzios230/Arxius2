@@ -15,7 +15,6 @@ namespace Arxius.Tests
         static async void MainAsync()
         {
             bool testing = false;
-            bool testOffline = true;
             var cService = new CoursesService();
             var uService = new UtilsService();
             #region Tests
@@ -34,10 +33,7 @@ namespace Arxius.Tests
             else
             {
                 await AuthDoNotSync.Login();
-                var x = await cService.GetAllCourses();
-                var z = x.Find(c => c.Name == "Ekonomia międzynarodowa");
-                 var zx = await cService.GetCourseWideDetails(z);
-                await cService.EnrollOrUnroll(zx.Classes[0]);
+                uService.GetImportantDates();
             }
             Console.Read();
         }

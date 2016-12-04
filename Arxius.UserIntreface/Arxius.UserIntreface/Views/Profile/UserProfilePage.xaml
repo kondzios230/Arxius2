@@ -28,7 +28,7 @@
         <ListView.GroupHeaderTemplate>
           <DataTemplate>
             <TextCell Text="{Binding Time}"
-            TextColor="#001dff" />
+            TextColor="#000000" />
           </DataTemplate>
         </ListView.GroupHeaderTemplate>
 

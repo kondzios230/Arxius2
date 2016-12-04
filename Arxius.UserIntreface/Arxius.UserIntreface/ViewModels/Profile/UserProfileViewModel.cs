@@ -17,7 +17,6 @@ namespace Arxius.UserIntreface.ViewModels
             _navigation = navi;
             GetUserProfileAsync();
             ShowProfile = new Command(ExecuteShowProfile);
-            // ShowCourse = new Command(ExecuteShowPlan);
         }
         private async void GetUserProfileAsync()
         {

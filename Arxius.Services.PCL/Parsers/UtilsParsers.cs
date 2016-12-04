@@ -68,6 +68,16 @@ namespace Arxius.Services.PCL.Parsers
             return employees;
         }
 
+        public static void GetImportantDates(string page)
+        {
+            var m1 = Regex.Matches(page, @"<h4>(S|s)(.*?)<\/h4><p><strong>(.*?)<\/strong>(.*?)<(.*?)\/p>", RegexOptions.Multiline);
+            var m1a = Regex.Matches(page, @"<h4>(.*?)<\/h4><p><strong>(.*?)<\/strong>(.*?)<(.*?)\/p>", RegexOptions.Multiline);
+            var m2 = Regex.Matches(page, @"<strong>Dni rektorskie: <\/strong>(.*?)<br>", RegexOptions.Multiline);
+            var m3a= Regex.Matches(page, @"<strong>Przerwa świąteczna:</strong>(.*?)<br>", RegexOptions.Multiline);
+            var m4 = Regex.Matches(page, @"<strong>Sesja egzaminacyjna:</strong>(.*?)<br>", RegexOptions.Multiline);
+            var m5 = Regex.Matches(page, @"<strong>Sesja poprawkowa:</strong>(.*?)</p>", RegexOptions.Multiline);
+        }
+
 
 
     }

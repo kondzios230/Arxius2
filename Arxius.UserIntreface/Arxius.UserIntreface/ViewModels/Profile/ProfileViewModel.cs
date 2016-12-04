@@ -14,8 +14,7 @@ namespace Arxius.UserIntreface.ViewModels
         {
             _navigation = navi;
             GetProfileAsync();
-            EctsPoints = new List<string>() { "To może trochę potrwać" };
-           // ShowCourse = new Command(ExecuteShowPlan);
+            EctsPoints = new List<string>() { "To może trochę potrwać...." };
         }
         private async void GetProfileAsync()
         {
