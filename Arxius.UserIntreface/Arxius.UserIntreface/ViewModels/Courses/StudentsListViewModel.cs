@@ -1,10 +1,8 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
-using System;
+using Arxius.Services.PCL.Interfaces_and_mocks;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
@@ -13,7 +11,7 @@ namespace Arxius.UserIntreface.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private INavigation _navigation;
-        private CoursesService cService;
+        private ICourseService cService;
         public StudentsListViewModel(INavigation navi, _Class _class)
         {
             _navigation = navi;

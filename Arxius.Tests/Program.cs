@@ -1,6 +1,6 @@
 ﻿using System;
 using Arxius.Services.PCL;
-
+using Xamarin.Forms;
 namespace Arxius.Tests
 {
     class Program
@@ -15,6 +15,7 @@ namespace Arxius.Tests
         static async void MainAsync()
         {
             bool testing = false;
+            bool testOffline = true;
             var cService = new CoursesService();
             var uService = new UtilsService();
             #region Tests
@@ -36,11 +37,7 @@ namespace Arxius.Tests
                 var x = await cService.GetAllCourses();
                 var z = x.Find(c => c.Name == "Ekonomia międzynarodowa");
                  var zx = await cService.GetCourseWideDetails(z);
-                //var aa = await cService.GetStudentsList(zx.Classes[0]);
                 await cService.EnrollOrUnroll(zx.Classes[0]);
-                await cService.EnrollOrUnroll(zx.Classes[0]);
-                //  Console.Write(aa.Item1);
-                //cService.Foo();
             }
             Console.Read();
         }

@@ -45,6 +45,7 @@
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\UserPage.cs" />
+    <Compile Include="Interfaces and mocks\CoursesServiceMock.cs" />
     <Compile Include="Interfaces and mocks\IUtilsService.cs" />
     <Compile Include="Interfaces and mocks\ICourseService.cs" />
     <Compile Include="Parsers\CoursesParsers.cs" />
@@ -60,6 +61,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces and mocks\UtilsServiceMock.cs" />
     <Compile Include="UtilsService.cs" />
   </ItemGroup>
   <ItemGroup>
