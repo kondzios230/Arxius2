@@ -1,32 +1,16 @@
-﻿using Arxius.DataAccess;
-using Arxius.DataAccess.PCL;
+﻿using Arxius.DataAccess.PCL;
 using Arxius.Services.PCL.Entities;
+using Arxius.Services.PCL.Interfaces_and_mocks;
 using Arxius.Services.PCL.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Arxius.Services.PCL
 {
-    public class CoursesService
-    {
-        public async Task<Course> GetCourseDetails(Course course)
-        {
-            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
-            CoursesParsers.GetCourseDetails(page, course);
-            return course;
-        }
-        public async Task<List<Course>> GetAllUserCoursesWithDetails()
-        {
-            var courses = await GetAllUserCourses();
-            foreach (var course in courses)
-            {
-                await GetCourseDetails(course);
-            }
-            return courses;
-        }
+    public class CoursesService : ICourseService
+    {   
         public async Task<Dictionary<string, int>> SumAllECTSPoints()
         {
             var ret = new Dictionary<string, int>();
@@ -41,7 +25,6 @@ namespace Arxius.Services.PCL
             }
             return ret;
         }
-
         public async Task<List<Course>> GetUserPlanForCurrentSemester()
         {
             var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/records/schedule/"));
@@ -74,6 +57,22 @@ namespace Arxius.Services.PCL
             var response =  await HTMLUtils.PostString(string.Format(Properties.Resources.baseUri, "/records/set-enrolled"), string.Format("csrfmiddlewaretoken={0}&group={1}&enroll={2}", HTMLUtils.csrfToken, _class.enrollmentId, (!_class.IsSignedIn).ToString().ToLower()));
             var sigingResult = CoursesParsers.IsSignedIn(response, _class);
             return Tuple.Create(sigingResult.Item1 != _class.IsSignedIn, sigingResult.Item2, sigingResult.Item3); //if differs, then some error must have occured
+        }
+
+        private async Task<List<Course>> GetAllUserCoursesWithDetails()
+        {
+            var courses = await GetAllUserCourses();
+            foreach (var course in courses)
+            {
+                await GetCourseDetails(course);
+            }
+            return courses;
+        }
+        private async Task<Course> GetCourseDetails(Course course)
+        {
+            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
+            CoursesParsers.GetCourseDetails(page, course);
+            return course;
         }
     }
 }

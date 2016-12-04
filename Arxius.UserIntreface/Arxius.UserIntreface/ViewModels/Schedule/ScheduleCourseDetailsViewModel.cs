@@ -1,10 +1,7 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels

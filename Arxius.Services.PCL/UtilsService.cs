@@ -1,16 +1,13 @@
-﻿using Arxius.DataAccess;
-using Arxius.DataAccess.PCL;
+﻿using Arxius.DataAccess.PCL;
 using Arxius.Services.PCL.Entities;
+using Arxius.Services.PCL.Interfaces_and_mocks;
 using Arxius.Services.PCL.Parsers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Arxius.Services.PCL
 {
-    public  class UtilsService
+    public  class UtilsService :IUtilsService
     {
         public async Task<List<News>> GetFeedPage(int pageNumber=1)
         {

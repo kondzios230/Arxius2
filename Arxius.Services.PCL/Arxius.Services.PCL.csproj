@@ -45,6 +45,8 @@
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\UserPage.cs" />
+    <Compile Include="Interfaces and mocks\IUtilsService.cs" />
+    <Compile Include="Interfaces and mocks\ICourseService.cs" />
     <Compile Include="Parsers\CoursesParsers.cs" />
     <Compile Include="Parsers\UtilsParsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
