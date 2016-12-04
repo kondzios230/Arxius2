@@ -11,16 +11,26 @@ namespace Arxius.UserIntreface
 {
     public partial class CourseDetailsPage : ContentPage
     {
-        public CourseDetailsPage(INavigation navi,Course course)
+        public CourseDetailsPage(INavigation navi, Course course)
         {
             InitializeComponent();
             var vm = new CourseDetailsViewModel(navi, course);
             BindingContext = vm;
-            Classes.ItemSelected += (sender, e) => {
+            Classes.ItemSelected += (sender, e) =>
+            {
                 ((ListView)sender).SelectedItem = null;
             };
+            MessagingCenter.Subscribe<CourseDetailsViewModel, Tuple<bool, string, List<string>>>(this, Properties.Resources.MsgEnrollment,
+                async (sender, enrollmentTuple) =>
+                {
+                    string message = "";
+                    foreach (var m in enrollmentTuple.Item3)
+                        message += m + "\n";
+                    await this.DisplayAlert(char.ToUpper(enrollmentTuple.Item2[0]) + enrollmentTuple.Item2.Substring(1), message, "OK");
+
+                });
         }
-    
+
 
     }
 }

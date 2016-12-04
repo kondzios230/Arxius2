@@ -34,11 +34,13 @@ namespace Arxius.Tests
             {
                 await AuthDoNotSync.Login();
                 var x = await cService.GetAllCourses();
-                var z = x.Find(c => c.Name == "Analiza numeryczna (M)");
+                var z = x.Find(c => c.Name == "Ekonomia międzynarodowa");
                  var zx = await cService.GetCourseWideDetails(z);
-                var aa = await cService.GetStudentsList(zx.Classes[0]);
-                Console.Write(aa.Item1);
-               //cService.Foo();
+                //var aa = await cService.GetStudentsList(zx.Classes[0]);
+                await cService.EnrollOrUnroll(zx.Classes[0]);
+                await cService.EnrollOrUnroll(zx.Classes[0]);
+                //  Console.Write(aa.Item1);
+                //cService.Foo();
             }
             Console.Read();
         }

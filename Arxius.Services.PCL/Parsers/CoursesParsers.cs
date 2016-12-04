@@ -45,9 +45,10 @@ namespace Arxius.Services.PCL.Parsers
         }
         public static void GetCourseWideDetails(string page, Course course)
         {
+            course.Classes.Clear();
             var start = page.IndexOf(@"enr-course-view");
             var end = page.IndexOf(@"<div class=""span5 columns"">");
-            var courseDetailsSubstring = page.Substring(start, end); 
+            var courseDetailsSubstring = page.Substring(start, end);
             var ectsMatch = Regex.Matches(courseDetailsSubstring, @"<th>Punkty ECTS<\/th><td>(.*?)<\/td>", RegexOptions.Multiline);
             var secondPartOfTable = Regex.Matches(courseDetailsSubstring, @"<\/td><\/tr><tr><th>", RegexOptions.Multiline);
             if (secondPartOfTable.Count != 0 && ectsMatch.Count != 0)
@@ -74,20 +75,20 @@ namespace Arxius.Services.PCL.Parsers
                 {
                     foreach (Match courseMatch in enrollmentCourseMatch)
                     {
-                        var _class = new EnrollmentClass();
+                        var _class = new _Class();
                         _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
                         var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                         foreach (Match lessonMatch in lessonMatches)
                             _class.Lessons.Add(parseToLesson(lessonMatch));
 
-                        _class.Total = courseMatch.Groups[4].ToString().Trim(' ');
-                        _class.SignedIn = courseMatch.Groups[5].ToString().Trim(' ');
-                        _class.Queued = courseMatch.Groups[6].ToString().Trim(' ');
+                        _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
+                        _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
+                        _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
                         _class.IsSignedIn = courseMatch.Groups[10].ToString().Trim(' ') == "true";
                         _class.enrollmentUri = courseMatch.Groups[11].ToString().Trim(' ');
                         _class.csrfToken = courseMatch.Groups[12].ToString().Trim(' ');
                         _class.enrollmentId = courseMatch.Groups[13].ToString().Trim(' ');
-                        _class.buttonEnrollText = courseMatch.Groups[16].ToString().Trim(' ');
+                        _class.ButtonEnrollText = courseMatch.Groups[16].ToString().Trim(' ');
                         _class.ListUrl = courseMatch.Groups[17].ToString().Trim(' ');
                         _class.buttonListText = courseMatch.Groups[18].ToString().Trim(' ');
                         _class.Priority = courseMatch.Groups[19].ToString().Trim(' ');
@@ -99,14 +100,14 @@ namespace Arxius.Services.PCL.Parsers
                 {
                     foreach (Match courseMatch in nonEnrollmentCourseMatch)
                     {
-                        var _class = new EnrollmentClass();
+                        var _class = new _Class();
                         _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
                         var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                         foreach (Match lessonMatch in lessonMatches)
                             _class.Lessons.Add(parseToLesson(lessonMatch));
-                        _class.Total = courseMatch.Groups[4].ToString().Trim(' ');
-                        _class.SignedIn = courseMatch.Groups[5].ToString().Trim(' ');
-                        _class.Queued = courseMatch.Groups[6].ToString().Trim(' ');
+                        _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
+                        _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
+                        _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
                         _class.IsSignedIn = courseMatch.Groups[10].ToString() == "true".Trim(' ');
                         _class.ListUrl = courseMatch.Groups[11].ToString().Trim(' ').Trim('\\');
                         _class.buttonListText = courseMatch.Groups[12].ToString().Trim(' ');
@@ -119,14 +120,14 @@ namespace Arxius.Services.PCL.Parsers
                 {
                     foreach (Match courseMatch in enrolledCourseMatch)
                     {
-                        var _class = new EnrollmentClass();
+                        var _class = new _Class();
                         _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
                         var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                         foreach (Match lessonMatch in lessonMatches)
                             _class.Lessons.Add(parseToLesson(lessonMatch));
-                        _class.Total = courseMatch.Groups[4].ToString().Trim(' ');
-                        _class.SignedIn = courseMatch.Groups[5].ToString().Trim(' ');
-                        _class.Queued = courseMatch.Groups[6].ToString().Trim(' ');
+                        _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
+                        _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
+                        _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
                         _class.IsSignedIn = courseMatch.Groups[10].ToString().Trim(' ') == "true";
                         _class.ListUrl = courseMatch.Groups[13].ToString().Trim(' ');
                         course.Classes.Add(_class);
@@ -213,23 +214,35 @@ namespace Arxius.Services.PCL.Parsers
             var headerMatch = Regex.Match(page, @"<hr><h3>(.*?)<\/h3><p>(.*?):(.*?)\/(.*?)<\/p><table", RegexOptions.Multiline);
             var studentsMatch = Regex.Matches(page, @"<tr><td><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><\/tr>", RegexOptions.Multiline);
 
-            if (headerMatch!=null)
+            if (headerMatch != null)
             {
                 item1 = Convert.ToInt32(headerMatch.Groups[3].ToString().Trim(' '));
-                item2 =  Convert.ToInt32(headerMatch.Groups[4].ToString().Trim(' '));
+                item2 = Convert.ToInt32(headerMatch.Groups[4].ToString().Trim(' '));
             }
-            foreach(Match student in studentsMatch)
+            foreach (Match student in studentsMatch)
             {
                 var s = new Student();
                 s.Name = student.Groups[2].ToString().Trim(' ');
                 s.Url = student.Groups[3].ToString().Trim(' ');
                 s.Surname = student.Groups[4].ToString().Trim(' ');
-                s.Index= student.Groups[5].ToString().Trim(' ');
-                s.StudiesKind= student.Groups[6].ToString().Trim(' ');
-                s.Semester= student.Groups[7].ToString().Trim(' ');
+                s.Index = student.Groups[5].ToString().Trim(' ');
+                s.StudiesKind = student.Groups[6].ToString().Trim(' ');
+                s.Semester = student.Groups[7].ToString().Trim(' ');
                 item3.Add(s);
             }
             return new Tuple<int, int, List<Student>>(item1, item2, item3);
+        }
+        public static Tuple<bool, string, List<string>> IsSignedIn(string response, _Class _class)
+        {
+            response = response.Replace("\n", string.Empty);
+            var match = Regex.Match(response, string.Format(@"<div class=""alert-message info""(.*?)<div id=""enr-coursesList-top-bar""(.*?)<input type=""hidden"" name=""is-signed-in""(.*?)value=""(.*?)""\/>(.*?)<input type=""hidden"" name=""group"" value=""{0}""\/>(.*?)<button type=""(.*?)Button"">(.*?)<\/button>", _class.enrollmentId), RegexOptions.Multiline);
+            if (match == null) throw new Exception();
+            var messages = Regex.Matches(match.Groups[1].ToString(), @">(.*?)</div>", RegexOptions.Multiline);
+            var listOfMessages = new List<string>();
+            foreach (Match messageMatch in messages)
+                listOfMessages.Add(messageMatch.Groups[1].ToString().Trim(' '));
+   
+            return Tuple.Create(match.Groups[4].ToString() == "true", match.Groups[8].ToString().Trim(' '),listOfMessages);
         }
         #region Private Methods
         private static List<_Class> parseToClasses(string dMatch)

@@ -68,12 +68,12 @@ namespace Arxius.Services.PCL
             var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, _class.ListUrl));
             return CoursesParsers.GetStudentsList(page);
         }
-        public async Task<bool> EnrollOrUnroll(EnrollmentClass _class)
+        public async Task<Tuple<bool,string, List<string>>> EnrollOrUnroll(_Class _class)
         {
-            if (Properties.Resources.baseUri.Contains("zapisy")) return false; //safety first
-            var response =  await HTMLUtils.PostString(string.Format(Properties.Resources.baseUri, "/records/set-enrolled"), string.Format("csrfmiddlewaretoken={0}&group={1}&enroll={2}", HTMLUtils.csrfToken, _class.enrollmentId, !_class.IsSignedIn));
-            return true;
-
+            if (Properties.Resources.baseUri.Contains("zapisy"))throw new Exception(); //safety first
+            var response =  await HTMLUtils.PostString(string.Format(Properties.Resources.baseUri, "/records/set-enrolled"), string.Format("csrfmiddlewaretoken={0}&group={1}&enroll={2}", HTMLUtils.csrfToken, _class.enrollmentId, (!_class.IsSignedIn).ToString().ToLower()));
+            var sigingResult = CoursesParsers.IsSignedIn(response, _class);
+            return Tuple.Create(sigingResult.Item1 != _class.IsSignedIn, sigingResult.Item2, sigingResult.Item3); //if differs, then some error must have occured
         }
     }
 }

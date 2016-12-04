@@ -10,24 +10,24 @@ using Xamarin.Forms;
 namespace Arxius.UserIntreface.ViewModels
 {
     class CourseDetailsViewModel : INotifyPropertyChanged
-    {      
+    {
         public event PropertyChangedEventHandler PropertyChanged;
         private INavigation _navigation;
         private CoursesService cService;
-        public CourseDetailsViewModel(INavigation navi,Course course)
+        public CourseDetailsViewModel(INavigation navi, Course course)
         {
             _navigation = navi;
             cService = new CoursesService();
             GetCourseDetailsAsync(course);
 
-            EnrollOrUnroll = new Command<EnrollmentClass>(ExecuteEnrollOrUnroll);
+            EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll);
             ShowList = new Command<_Class>(ExecuteShowList);
         }
         private async void GetCourseDetailsAsync(Course course)
         {
-            
-           await cService.GetCourseWideDetails(course);
-            
+
+            await cService.GetCourseWideDetails(course);
+
             _Course = course;
         }
         #region BindableProperties
@@ -42,8 +42,8 @@ namespace Arxius.UserIntreface.ViewModels
 
                     if (PropertyChanged != null)
                     {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Course")); 
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseName")); 
+                        PropertyChanged(this, new PropertyChangedEventArgs("Course"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseName"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseClasses"));
                     }
                 }
@@ -76,7 +76,7 @@ namespace Arxius.UserIntreface.ViewModels
             get
             {
                 if (_Course == null) return "";
-                return "ECTS: "+_Course.Ects.ToString();
+                return "ECTS: " + _Course.Ects.ToString();
             }
         }
         public List<_Class> CourseClasses
@@ -92,22 +92,31 @@ namespace Arxius.UserIntreface.ViewModels
             }
             get
             {
-                if (_Course == null) return new List<_Class> ();
+                if (_Course == null) return new List<_Class>();
                 return _Course.Classes;
             }
         }
 
         #endregion
         public ICommand EnrollOrUnroll { private set; get; }
-        async void ExecuteEnrollOrUnroll(EnrollmentClass c)
+        async void ExecuteEnrollOrUnroll(_Class c)
         {
-          var x = await cService.EnrollOrUnroll(c);
+            var enrollmentTuple = await cService.EnrollOrUnroll(c);
+            var newTuple = Tuple.Create(enrollmentTuple.Item1, c.ButtonEnrollText, enrollmentTuple.Item3);
+            if(enrollmentTuple.Item1)
+            {
+                c.ButtonEnrollText = enrollmentTuple.Item2;
+                c.IsSignedIn = !c.IsSignedIn;
+                PropertyChanged(this, new PropertyChangedEventArgs("CourseClasses"));
+            }
+            MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, newTuple);
         }
 
         public ICommand ShowList { private set; get; }
         async void ExecuteShowList(_Class c)
         {
             await _navigation.PushAsync(new StudentsListPage(_navigation, c));
+
         }
 
 

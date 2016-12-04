@@ -38,7 +38,6 @@
     <Compile Include="CoursesService.cs" />
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Entities\Lesson.cs" />
-    <Compile Include="Entities\EnrollmentClass.cs" />
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\RegistrationTimesCollection.cs" />
     <Compile Include="Entities\Class.cs" />
