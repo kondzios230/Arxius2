@@ -23,10 +23,11 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand ShowPlan { private set; get; }
         async void ExecuteShowPlan()
         {
-            await _navigation.PushAsync(new SchedulePage(_navigation));
+            //await _navigation.PushAsync(new SchedulePage(_navigation));    
+            await _navigation.PushAsync(new WeekSchedulePage(_navigation));
         }
 
-        
+
         public ICommand ShowUserProfile { private set; get; }
         async void ExecuteShowUserProfile()
         {

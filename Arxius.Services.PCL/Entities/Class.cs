@@ -55,5 +55,6 @@ namespace Arxius.Services.PCL.Entities
         public string FriendlyClassType { get { return ClassTypeEnums.ToFriendlyString(ClassType); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
+       
     }
 }

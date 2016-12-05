@@ -51,10 +51,14 @@
     <Compile Include="ViewModels\Courses\CourseListViewModel.cs" />
     <Compile Include="ViewModels\Profile\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\Profile\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\Schedule\WeekScheduleViewModel.cs" />
     <Compile Include="ViewModels\Schedule\ScheduleViewModel.cs" />
     <Compile Include="ViewModels\Utils\MainViewModel.cs" />
     <Compile Include="Views\Courses\StudentsListPage.xaml.cs">
       <DependentUpon>StudentsListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Schedule\WeekSchedulePage.xaml.cs">
+      <DependentUpon>WeekSchedulePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Utils\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -206,6 +210,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Courses\StudentsListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Schedule\WeekSchedulePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

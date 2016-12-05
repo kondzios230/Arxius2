@@ -14,7 +14,7 @@ namespace Arxius.Tests
 
         static async void MainAsync()
         {
-            bool testing = false;
+            bool testing = true;
             var cService = new CoursesService();
             var uService = new UtilsService();
             #region Tests

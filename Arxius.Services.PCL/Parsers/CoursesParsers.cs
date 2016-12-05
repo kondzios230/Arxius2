@@ -77,7 +77,11 @@ namespace Arxius.Services.PCL.Parsers
                         _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
                         var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                         foreach (Match lessonMatch in lessonMatches)
-                            _class.Lessons.Add(parseToLesson(lessonMatch));
+                        {
+                            var l = parseToLesson(lessonMatch);
+                            l.CourseName = course.Name;
+                            _class.Lessons.Add(l);
+                        }
 
                         _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
                         _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
@@ -102,7 +106,11 @@ namespace Arxius.Services.PCL.Parsers
                         _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
                         var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                         foreach (Match lessonMatch in lessonMatches)
-                            _class.Lessons.Add(parseToLesson(lessonMatch));
+                        {
+                            var l = parseToLesson(lessonMatch);
+                            l.CourseName = course.Name;
+                            _class.Lessons.Add(l);
+                        }
                         _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
                         _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
                         _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
@@ -122,7 +130,11 @@ namespace Arxius.Services.PCL.Parsers
                         _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
                         var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                         foreach (Match lessonMatch in lessonMatches)
-                            _class.Lessons.Add(parseToLesson(lessonMatch));
+                        {
+                            var l = parseToLesson(lessonMatch);
+                            l.CourseName = course.Name;
+                            _class.Lessons.Add(l);
+                        }
                         _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
                         _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
                         _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
