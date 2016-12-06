@@ -42,7 +42,7 @@
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\RegistrationTimesCollection.cs" />
     <Compile Include="Entities\Class.cs" />
-    <Compile Include="Entities\ClassTypeEnum.cs" />
+    <Compile Include="Entities\Enums.cs" />
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\UserPage.cs" />

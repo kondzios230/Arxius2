@@ -62,7 +62,7 @@ namespace Arxius.Services.PCL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://192.168.0.16:8002{0}.
+        ///   Looks up a localized string similar to https://zapisy.ii.uni.wroc.pl{0}.
         /// </summary>
         internal static string baseUri {
             get {
@@ -71,11 +71,11 @@ namespace Arxius.Services.PCL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://zapisy.ii.uni.wroc.pl{0}.
+        ///   Looks up a localized string similar to http://192.168.0.16:8002{0}.
         /// </summary>
-        internal static string baseUri1 {
+        internal static string baseUri2 {
             get {
-                return ResourceManager.GetString("baseUri1", resourceCulture);
+                return ResourceManager.GetString("baseUri2", resourceCulture);
             }
         }
         

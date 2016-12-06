@@ -11,10 +11,12 @@ namespace Arxius.Services.PCL.Parsers
         {
             var matches = Regex.Matches(page.Replace("\n", ""), @"<div class=\""od-news-header\""><h3>(.*?)<\/h3><(.*?)>(.*?)<(.*?)<p>(.*?)<\/p>(.*?)""od-news-footer\"">(.*?)<\/div>", RegexOptions.Multiline);
             var list = new List<News>();
+            var dipa = matches.Count;
             foreach (var match in matches)
             {
                 var _match = match as Match;
-                var cnt = Regex.Replace(_match.Groups[5].ToString(), @"<.*?>|&nbsp;", "");
+                //var cnt = Regex.Replace(_match.Groups[5].ToString(), @"<.*?>|&nbsp;", "");
+                var cnt = _match.Groups[5].ToString();
                 list.Add(new News() { Title = _match.Groups[1].ToString(), Date = _match.Groups[3].ToString(), Content = cnt.Replace("&oacute;", "ó"), Author = _match.Groups[7].ToString().Trim(' ') });
             }
             return list;

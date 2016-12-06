@@ -79,7 +79,8 @@ namespace Arxius.Services.PCL.Parsers
                         foreach (Match lessonMatch in lessonMatches)
                         {
                             var l = parseToLesson(lessonMatch);
-                            l.CourseName = course.Name;
+                            l.Course = course;
+                            l.Type = _class.ClassType;
                             _class.Lessons.Add(l);
                         }
 
@@ -108,7 +109,8 @@ namespace Arxius.Services.PCL.Parsers
                         foreach (Match lessonMatch in lessonMatches)
                         {
                             var l = parseToLesson(lessonMatch);
-                            l.CourseName = course.Name;
+                            l.Course = course;
+                            l.Type = _class.ClassType;
                             _class.Lessons.Add(l);
                         }
                         _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
@@ -132,7 +134,8 @@ namespace Arxius.Services.PCL.Parsers
                         foreach (Match lessonMatch in lessonMatches)
                         {
                             var l = parseToLesson(lessonMatch);
-                            l.CourseName = course.Name;
+                            l.Course = course;
+                            l.Type = _class.ClassType;
                             _class.Lessons.Add(l);
                         }
                         _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
@@ -158,7 +161,7 @@ namespace Arxius.Services.PCL.Parsers
                 course.Url = match.Groups[1].ToString().Replace("\n", string.Empty).Trim(' ');
                 course.Name = match.Groups[2].ToString().Replace("\n", string.Empty).Trim(' ');
                 course.Ects = Convert.ToInt32(match.Groups[3].ToString().Replace("\n", string.Empty).Trim(' '));
-                course.Classes = parseToClasses(match.Groups[4].ToString());
+                course.Classes = parseToClasses(match.Groups[4].ToString(), course);
                 courseList.Add(course);
             }
             return courseList;
@@ -255,7 +258,7 @@ namespace Arxius.Services.PCL.Parsers
             return Tuple.Create(match.Groups[4].ToString() == "true", match.Groups[8].ToString().Trim(' '),listOfMessages);
         }
         #region Private Methods
-        private static List<_Class> parseToClasses(string dMatch)
+        private static List<_Class> parseToClasses(string dMatch,Course course)
         {
             var forbiddenChars = new char[] { ' ', '\n', '>', '\\', '"' };
             var list = new List<_Class>();
@@ -276,6 +279,9 @@ namespace Arxius.Services.PCL.Parsers
                     case 'c':
                     case 'ć':
                         type = ClassTypeEnum.Excercise;
+                        break;
+                    case 'r':
+                        type = ClassTypeEnum.Repetitory;
                         break;
                 }
                 _class.ClassType = type;
@@ -311,6 +317,8 @@ namespace Arxius.Services.PCL.Parsers
                     }
                     lesson.StartTime = Convert.ToDateTime(split[split.Count() - 1]);
                     lesson.EndTime = Convert.ToDateTime(lessonMatch.Groups[3].ToString());
+                    lesson.Type = _class.ClassType;
+                    lesson.Course = course;
                     _class.Lessons.Add(lesson);
                 }
                 list.Add(_class);

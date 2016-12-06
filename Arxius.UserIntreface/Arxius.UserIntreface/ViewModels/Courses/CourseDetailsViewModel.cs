@@ -19,8 +19,8 @@ namespace Arxius.UserIntreface.ViewModels
             _navigation = navi;
             cService = new CoursesService();
             GetCourseDetailsAsync(course);
-
-            EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll);
+            CanEnroll = false;
+            EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll, (s) => CanEnroll);
             ShowList = new Command<_Class>(ExecuteShowList);
         }
         private async void GetCourseDetailsAsync(Course course)
@@ -45,6 +45,13 @@ namespace Arxius.UserIntreface.ViewModels
                         PropertyChanged(this, new PropertyChangedEventArgs("Course"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseName"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseClasses"));
+                        
+                        if(_courseBF!=null &&_courseBF.Classes.Count!=0)
+                        {
+                            CanEnroll = (_courseBF.Classes[0].ButtonEnrollText != null && _courseBF.Classes[0].ButtonEnrollText.Length != 0);
+                        }
+                       
+
                     }
                 }
             }
@@ -69,6 +76,26 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 if (_Course == null) return "";
                 return _Course.Name;
+            }
+        }
+        private bool canEnroll;
+
+        public bool CanEnroll
+        {
+            get { return canEnroll; }
+            set
+            {
+                if (canEnroll != value)
+                {
+                    canEnroll = value;
+                    if (EnrollOrUnroll != null)
+                        ((Command)EnrollOrUnroll).ChangeCanExecute();
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("CanEnroll"));
+
+                    }
+                }
             }
         }
         public string CourseEcts
