@@ -124,7 +124,7 @@ namespace Arxius.Services.PCL.Parsers
                     }
                 }
 
-                var enrolledCourseMatch = Regex.Matches(tutorialGroupString, @"><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term""><span>(.*?)\((.*?)\)<\/span><\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is-(.*?)value=""(.*?)""\/><form><div><button (.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td><\/tr><\/tbody><\/table><p><strong>", RegexOptions.Multiline);
+                var enrolledCourseMatch = Regex.Matches(tutorialGroupString, @"><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term""><span>(.*?)<\/span><\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is-(.*?)value=""(.*?)""\/><form><div><button (.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td><\/tr><\/tbody><\/table><p><strong>", RegexOptions.Multiline);
                 if (enrolledCourseMatch.Count != 0)
                 {
                     foreach (Match courseMatch in enrolledCourseMatch)
@@ -144,6 +144,8 @@ namespace Arxius.Services.PCL.Parsers
                         _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
                         _class.IsSignedIn = courseMatch.Groups[10].ToString().Trim(' ') == "true";
                         _class.ListUrl = courseMatch.Groups[13].ToString().Trim(' ');
+                        _class.ButtonEnrollText = courseMatch.Groups[12].ToString().Trim(' ');
+                        _class.buttonListText= courseMatch.Groups[14].ToString().Trim(' ');
                         course.Classes.Add(_class);
                     }
                 }

@@ -4,8 +4,10 @@ using Arxius.Services.PCL.Interfaces_and_mocks;
 using Arxius.Services.PCL.Parsers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Arxius.Services.PCL
 {
@@ -54,12 +56,17 @@ namespace Arxius.Services.PCL
         }
         public async Task<Course> GetCourseWideDetails(Course course, bool clean = false)
         {
-            return await Cache.Get(new { c = course, a = "GetCourseWideDetails" }, async () =>
-            {
+            //var ret = await Cache.Get(new { c = course, a = "GetCourseWideDetails" }, async () =>
+            //{
                 var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
-                CoursesParsers.GetCourseWideDetails(page, course);
-                return course;
-            }, clean);
+                CoursesParsers.GetCourseWideDetails(page, course);            
+                
+                var ret =  course;
+            //}, clean);
+            var fileService = DependencyService.Get<ISaveAndLoad>();
+            if (fileService.FileExists(string.Format(Properties.Resources.FileName, course.CourseID)))
+                ret.Notes = await fileService.LoadTextAsync(string.Format(Properties.Resources.FileName, course.CourseID));
+            return ret;
         }
         public async Task<Tuple<int, int, List<Student>>> GetStudentsList(_Class _class, bool clean = false)
         {

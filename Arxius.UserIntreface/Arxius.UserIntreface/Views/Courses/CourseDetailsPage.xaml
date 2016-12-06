@@ -34,7 +34,7 @@
                   <Button Text = "{Binding ButtonEnrollText}" Grid.Row="3" Grid.Column="0"
                           Command="{Binding BindingContext.EnrollOrUnroll, Source={x:Reference Classes}"
                           CommandParameter="{Binding}"/>
-                  <Button Text = "{Binding buttonListText}" Grid.Row="3" Grid.Column="1"  
+                  <Button Text = "{Binding buttonListText}" Grid.Row="3" Grid.Column="1"
                           Command="{Binding BindingContext.ShowList, Source={x:Reference Classes}"
                           CommandParameter="{Binding}"/>
                 </Grid>
@@ -43,6 +43,8 @@
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
+      <Entry Text="{Binding CourseNotes}" Placeholder="Notatki do przedmiotu"/>
+      <Button Text="Zapisz notatki" Command="{Binding SaveCourseNotes}" />
     </StackLayout>
   </ContentPage.Content>
 

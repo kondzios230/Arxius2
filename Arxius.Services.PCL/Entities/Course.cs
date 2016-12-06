@@ -21,6 +21,7 @@ namespace Arxius.Services.PCL.Entities
         public bool IsExam { get; set; }
         public bool SugestedFor1stYear { get; set; }
 
+        public string Notes { get; set; }
         public Course()
         {
             Classes = new List<_Class>();

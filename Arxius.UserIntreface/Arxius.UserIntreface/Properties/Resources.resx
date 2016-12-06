@@ -120,4 +120,7 @@
   <data name="MsgEnrollment" xml:space="preserve">
     <value>MsgEnrollment</value>
   </data>
+  <data name="MsgSave" xml:space="preserve">
+    <value>MsgSave</value>
+  </data>
 </root>

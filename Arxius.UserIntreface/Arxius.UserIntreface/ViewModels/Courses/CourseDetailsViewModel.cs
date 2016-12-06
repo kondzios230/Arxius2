@@ -21,14 +21,15 @@ namespace Arxius.UserIntreface.ViewModels
             GetCourseDetailsAsync(course);
             CanEnroll = false;
             EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll, (s) => CanEnroll);
+            SaveCourseNotes = new Command(ExecuteSaveCourseNotes, () => CourseNotes.Length > 0);
             ShowList = new Command<_Class>(ExecuteShowList);
         }
         private async void GetCourseDetailsAsync(Course course)
         {
 
-            await cService.GetCourseWideDetails(course);
+            _Course = await cService.GetCourseWideDetails(course);
 
-            _Course = course;
+            
         }
         #region BindableProperties
         private Course _courseBF;
@@ -45,12 +46,13 @@ namespace Arxius.UserIntreface.ViewModels
                         PropertyChanged(this, new PropertyChangedEventArgs("Course"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseName"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseClasses"));
-                        
-                        if(_courseBF!=null &&_courseBF.Classes.Count!=0)
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseNotes"));
+
+                        if (_courseBF != null && _courseBF.Classes.Count != 0)
                         {
                             CanEnroll = (_courseBF.Classes[0].ButtonEnrollText != null && _courseBF.Classes[0].ButtonEnrollText.Length != 0);
                         }
-                       
+
 
                     }
                 }
@@ -76,6 +78,28 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 if (_Course == null) return "";
                 return _Course.Name;
+            }
+        }
+
+        public string CourseNotes
+        {
+            set
+            {
+                if (_Course != null)
+                {
+                    _Course.Notes = value;
+                    if (SaveCourseNotes != null)
+                        ((Command)SaveCourseNotes).ChangeCanExecute();
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseNotes"));
+                    }
+                }
+            }
+            get
+            {
+                if (_Course == null) return "";
+                return _Course.Notes;
             }
         }
         private bool canEnroll;
@@ -130,7 +154,7 @@ namespace Arxius.UserIntreface.ViewModels
         {
             var enrollmentTuple = await cService.EnrollOrUnroll(c);
             var newTuple = Tuple.Create(enrollmentTuple.Item1, c.ButtonEnrollText, enrollmentTuple.Item3);
-            if(enrollmentTuple.Item1)
+            if (enrollmentTuple.Item1)
             {
                 c.ButtonEnrollText = enrollmentTuple.Item2;
                 c.IsSignedIn = !c.IsSignedIn;
@@ -143,6 +167,22 @@ namespace Arxius.UserIntreface.ViewModels
         async void ExecuteShowList(_Class c)
         {
             await _navigation.PushAsync(new StudentsListPage(_navigation, c));
+
+        }
+        public ICommand SaveCourseNotes { private set; get; }
+        async void ExecuteSaveCourseNotes()
+        {
+            var fileService = DependencyService.Get<ISaveAndLoad>();
+            try
+            {
+                await fileService.SaveTextAsync(string.Format("Notes{0}.txt", _Course.CourseID), CourseNotes);
+            }
+            catch
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgSave, false);
+                return;
+            }
+            MessagingCenter.Send(this, Properties.Resources.MsgSave, true);
 
         }
 

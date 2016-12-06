@@ -29,6 +29,24 @@ namespace Arxius.UserIntreface
                     await this.DisplayAlert(char.ToUpper(enrollmentTuple.Item2[0]) + enrollmentTuple.Item2.Substring(1), message, "OK");
 
                 });
+            MessagingCenter.Subscribe<CourseDetailsViewModel, bool>(this, Properties.Resources.MsgSave,
+                async (sender, flag) =>
+                {
+                    var title = "";
+                    var message = "";
+                    if (flag)
+                    {
+                        title = "Sukces";
+                        message = "Zapis udany"; 
+                    }
+                    else
+                    {
+                        title = "Błąd";
+                        message = "Wystąpił błąd, nie udało się zapisać notatek";
+                    }
+                    await this.DisplayAlert(title, message, "OK");
+
+                });
         }
 
 

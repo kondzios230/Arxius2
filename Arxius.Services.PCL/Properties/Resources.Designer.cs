@@ -89,6 +89,15 @@ namespace Arxius.Services.PCL.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notes{0}.txt.
+        /// </summary>
+        internal static string FileName {
+            get {
+                return ResourceManager.GetString("FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to name=&quot;wasEnrolled&quot; value=&quot;True&quot;.
         /// </summary>
         internal static string WasEnrolled {

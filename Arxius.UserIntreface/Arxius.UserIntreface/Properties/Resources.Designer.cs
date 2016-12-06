@@ -69,5 +69,14 @@ namespace Arxius.UserIntreface.Properties {
                 return ResourceManager.GetString("MsgEnrollment", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MsgSave.
+        /// </summary>
+        internal static string MsgSave {
+            get {
+                return ResourceManager.GetString("MsgSave", resourceCulture);
+            }
+        }
     }
 }

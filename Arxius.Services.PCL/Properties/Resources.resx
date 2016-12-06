@@ -131,4 +131,7 @@
     <value>https://zapisy.ii.uni.wroc.pl{0}</value>
     <comment>192.168.0.16</comment>
   </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Notes{0}.txt</value>
+  </data>
 </root>
