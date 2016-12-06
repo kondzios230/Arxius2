@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Arxius.Services.PCL.Parsers
 {
@@ -151,7 +152,7 @@ namespace Arxius.Services.PCL.Parsers
             }
 
         }
-        public static List<Course> GetUserPlanForCurrentSemester(string page)
+        public static  List<Course> GetUserPlanForCurrentSemester(string page)
         {
             var courseList = new List<Course>();
             var headersOfCoursesCollection = Regex.Matches(page, @"<td class=""name""><a href=""(.*?)"">(.*?)<\/a><\/td><td rowspan=""2"" class=""ects"">(.*?)<\/td><\/tr><tr class=""courseDetails""><td><ul>(.*?)<\/ul", RegexOptions.Singleline);

@@ -63,6 +63,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Interfaces and mocks\UtilsServiceMock.cs" />
+    <Compile Include="Cache.cs" />
     <Compile Include="UtilsService.cs" />
   </ItemGroup>
   <ItemGroup>
