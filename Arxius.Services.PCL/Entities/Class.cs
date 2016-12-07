@@ -18,7 +18,10 @@ namespace Arxius.Services.PCL.Entities
         public string csrfToken { get; set; }
         public string enrollmentUri { get; set; }
         public string enrollmentId { get; set; }
+        public bool IsEnrollment { get; set; }
+
         private string _buttonEnrollText { get; set; }
+       
         public string ButtonEnrollText
         {
             set
@@ -31,8 +34,7 @@ namespace Arxius.Services.PCL.Entities
                 }
             }
             get
-            {
-                
+            {                
                 return _buttonEnrollText;
             }
         }
@@ -50,6 +52,16 @@ namespace Arxius.Services.PCL.Entities
                 foreach (var l in Lessons)
                     s += l.Print + '\n';
                 return s;
+            }
+        }
+
+        public Xamarin.Forms.Color GridColor
+        {
+            get
+            {
+                if (IsEnrollment)
+                    return Xamarin.Forms.Color.FromHex("#6cc9f7");
+                return Xamarin.Forms.Color.White;
             }
         }
         public string FriendlyClassType { get { return ClassTypeEnums.ToFriendlyString(ClassType); } }

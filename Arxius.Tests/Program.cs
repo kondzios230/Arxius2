@@ -16,7 +16,7 @@ namespace Arxius.Tests
 
         static async void MainAsync()
         {
-            bool testing = true;
+            bool testing = false;
             var cService = new CoursesService();
             var uService = new UtilsService();
             #region Tests
@@ -56,7 +56,9 @@ namespace Arxius.Tests
             else
             {
                 await AuthDoNotSync.Login();
-                uService.GetImportantDates();
+                var x= await cService.GetAllCourses();
+                var yy= x.Find(c => c.Name == "Kurs języka Ruby");
+                var y = await cService.GetCourseWideDetails(yy);
             }
             Console.Read();
         }

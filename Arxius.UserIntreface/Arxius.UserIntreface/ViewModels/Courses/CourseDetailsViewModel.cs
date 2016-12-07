@@ -4,6 +4,7 @@ using Arxius.Services.PCL.Interfaces_and_mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -45,12 +46,15 @@ namespace Arxius.UserIntreface.ViewModels
                     {
                         PropertyChanged(this, new PropertyChangedEventArgs("Course"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseName"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseEcts"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseClasses"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseNotes"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("CanEnroll"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseHourSchema"));
 
                         if (_courseBF != null && _courseBF.Classes.Count != 0)
                         {
-                            CanEnroll = (_courseBF.Classes[0].ButtonEnrollText != null && _courseBF.Classes[0].ButtonEnrollText.Length != 0);
+                            CanEnroll = _courseBF.Classes.All(c => c.IsEnrollment);
                         }
 
 
@@ -128,6 +132,19 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 if (_Course == null) return "";
                 return "ECTS: " + _Course.Ects.ToString();
+            }
+        }
+        public string CourseHourSchema
+        {
+            get
+            {
+                if (_Course == null) return "";
+                var ret = "";
+                foreach(var item in _Course.HoursSchema)
+                {
+                    ret += string.Format("{0}-{1}\n", item.Key, item.Value);
+                }
+                return ret;
             }
         }
         public List<_Class> CourseClasses

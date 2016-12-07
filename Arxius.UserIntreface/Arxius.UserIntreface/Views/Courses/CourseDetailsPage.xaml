@@ -8,29 +8,32 @@
     <StackLayout
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
-                 Spacing="15">
+                 Spacing="15"
+                 >
 
-      <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand"/>
+      <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand" FontSize="20"/>
       <Label Text="{Binding CourseEcts}" HorizontalOptions="CenterAndExpand"/>
-      <ListView x:Name="Classes"  ItemsSource="{Binding CourseClasses}" RowHeight="150">
+      <Label Text="{Binding CourseHourSchema}" HorizontalOptions="CenterAndExpand"/>
+      <ListView x:Name="Classes"  ItemsSource="{Binding CourseClasses}" RowHeight="110">
         <ListView.ItemTemplate>
           <DataTemplate>
-            <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-              <ViewCell.View>
-                <Grid x:Name="controlGrid" RowSpacing="1" ColumnSpacing="1">
+            <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" >
+              <ViewCell.View >
+                <Grid x:Name="controlGrid" BackgroundColor="{Binding GridColor}" 
+                 Padding="5,0,0,0">
                   <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="40" />
                   </Grid.RowDefinitions>
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                   </Grid.ColumnDefinitions>
-                  <Label Text="{Binding FriendlyClassType}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-                  <Label Text="{Binding Teacher.Name}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
-                  <Label Text="{Binding FriendlyLessons}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                  <Label Text="{Binding FriendlyClassType}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize ="15" HorizontalTextAlignment="Center"/>
+                  <Label Text="{Binding Teacher.Name}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize ="13"/>
+                  <Label Text="{Binding FriendlyLessons}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" FontSize ="11"/>
                   <Button Text = "{Binding ButtonEnrollText}" Grid.Row="3" Grid.Column="0"
                           Command="{Binding BindingContext.EnrollOrUnroll, Source={x:Reference Classes}"
                           CommandParameter="{Binding}"/>
