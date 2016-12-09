@@ -30,7 +30,7 @@ namespace Arxius.UserIntreface.ViewModels
 
             _Course = await cService.GetCourseWideDetails(course);
 
-            
+
         }
         #region BindableProperties
         private Course _courseBF;
@@ -51,6 +51,10 @@ namespace Arxius.UserIntreface.ViewModels
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseNotes"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CanEnroll"));
                         PropertyChanged(this, new PropertyChangedEventArgs("CourseHourSchema"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseKind"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseGroup"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseIsExam"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("CourseIsForFirstYear"));
 
                         if (_courseBF != null && _courseBF.Classes.Count != 0)
                         {
@@ -102,7 +106,7 @@ namespace Arxius.UserIntreface.ViewModels
             }
             get
             {
-                if (_Course == null) return "";
+                if (_Course == null || _Course.Notes == null) return "";
                 return _Course.Notes;
             }
         }
@@ -134,17 +138,53 @@ namespace Arxius.UserIntreface.ViewModels
                 return "ECTS: " + _Course.Ects.ToString();
             }
         }
-        public string CourseHourSchema
+        public FormattedString CourseHourSchema
         {
             get
             {
                 if (_Course == null) return "";
-                var ret = "";
-                foreach(var item in _Course.HoursSchema)
+
+                var span = new FormattedString();
+                foreach (var item in _Course.HoursSchema)
                 {
-                    ret += string.Format("{0}-{1}\n", item.Key, item.Value);
+                    span.Spans.Add(new Span { Text = item.Key, FontSize = 17 });
+                    span.Spans.Add(new Span { Text = " - ", FontSize = 17 });
+                    span.Spans.Add(new Span { Text = item.Value + "\t", FontSize = 15 });
                 }
-                return ret;
+                return span;
+            }
+        }
+        public string CourseKind
+        {
+            get
+            {
+                if (_Course == null) return "";
+                return _Course.Kind;
+            }
+        }
+        public string CourseGroup
+        {
+            get
+            {
+                if (_Course == null) return "";
+                return _Course.GroupOfEffects;
+            }
+        }
+        public string CourseIsExam
+        {
+            get
+            {
+                if (_Course == null) return "";
+                return string.Format("Egzamin: {0}", _Course.IsExam ? "Tak" : "Nie");
+            }
+
+        }
+        public string CourseIsForFirstYear
+        {
+            get
+            {
+                if (_Course == null) return "";
+                return string.Format("Przyjazny dla I roku: {0}", _Course.SugestedFor1stYear ? "Tak" : "Nie");
             }
         }
         public List<_Class> CourseClasses

@@ -57,7 +57,7 @@ namespace Arxius.Tests
             {
                 await AuthDoNotSync.Login();
                 var x= await cService.GetAllCourses();
-                var yy= x.Find(c => c.Name == "Kurs języka Ruby");
+                var yy= x.Find(c => c.Name == "Ekonomia międzynarodowa");
                 var y = await cService.GetCourseWideDetails(yy);
             }
             Console.Read();

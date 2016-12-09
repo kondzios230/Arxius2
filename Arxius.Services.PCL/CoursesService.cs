@@ -61,23 +61,16 @@ namespace Arxius.Services.PCL
                 var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
                 CoursesParsers.GetCourseWideDetails(page, course);
 
-                return  course;
+                return course;
             }, clean);
             var fileService = DependencyService.Get<ISaveAndLoad>();
             if (fileService != null && fileService.FileExists(string.Format(Properties.Resources.FileName, course.CourseID)))
                 ret.Notes = await fileService.LoadTextAsync(string.Format(Properties.Resources.FileName, course.CourseID));
             return ret;
-            ////var ret = await Cache.Get(new { c = course, a = "GetCourseWideDetails" }, async () =>
-            ////{
-            //var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
-            //CoursesParsers.GetCourseWideDetails(page, course);
 
-            //var ret = course;
-            //////}, clean);
-            ////var fileService = DependencyService.Get<ISaveAndLoad>();
-            ////if (fileService!=null && fileService.FileExists(string.Format(Properties.Resources.FileName, course.CourseID)))
-            ////    ret.Notes = await fileService.LoadTextAsync(string.Format(Properties.Resources.FileName, course.CourseID));
-            //return ret;
+            //var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
+            //CoursesParsers.GetCourseWideDetails(page, course);            
+            //return course;
         }
         public async Task<Tuple<int, int, List<Student>>> GetStudentsList(_Class _class, bool clean = false)
         {
@@ -112,7 +105,7 @@ namespace Arxius.Services.PCL
             return await Cache.Get(new { c = course, a = "GetCourseDetails" }, async () =>
             {
                 var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
-                CoursesParsers.GetCourseDetails(page, course);
+                CoursesParsers.GetCourseECTSandGroup(page, course);
                 return course;
             }, clean);
         }

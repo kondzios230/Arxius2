@@ -8,12 +8,15 @@
     <StackLayout
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
-                 Spacing="15"
+                 Spacing="5"
                  >
 
       <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand" FontSize="20"/>
       <Label Text="{Binding CourseEcts}" HorizontalOptions="CenterAndExpand"/>
-      <Label Text="{Binding CourseHourSchema}" HorizontalOptions="CenterAndExpand"/>
+      <Label FormattedText="{Binding CourseHourSchema}" HorizontalOptions="CenterAndExpand"/>
+      <Label Text="{Binding CourseKind}" HorizontalOptions="CenterAndExpand"/>
+      <Label Text="{Binding CourseIsExam}" HorizontalOptions="CenterAndExpand"/>
+      <Label Text="{Binding CourseGroup}" HorizontalOptions="CenterAndExpand"/>
       <ListView x:Name="Classes"  ItemsSource="{Binding CourseClasses}" RowHeight="110">
         <ListView.ItemTemplate>
           <DataTemplate>
