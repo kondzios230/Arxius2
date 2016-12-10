@@ -250,7 +250,7 @@ namespace Arxius.Services.PCL.Parsers
                 _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
                 _class.IsSignedIn = true;
                 _class.ListUrl = courseMatch.Groups[12].ToString().Trim(' ');
-                _class.IsEnrollment = !courseMatch.Groups[12].ToString().Contains("disabled");
+                _class.IsEnrollment = !courseMatch.Groups[10].ToString().Contains("disabled");
                 _class.ButtonEnrollText = courseMatch.Groups[11].ToString().Trim(' ');
                 _class.buttonListText = courseMatch.Groups[13].ToString().Trim(' ');
                 course.Classes.Add(_class);
@@ -360,38 +360,56 @@ namespace Arxius.Services.PCL.Parsers
         private static void parseDetailsTable(Course course, string tableDetails)
         {
             var detailsTable = tableDetails;
-            var kindMatch = Regex.Match(detailsTable, @"th>Rodzaj</th><td>(.*?)</td>");
-            if (kindMatch != null)
-                course.Kind = kindMatch.Groups[1].ToString().Trim(' ');
-            var ectsMatch = Regex.Match(detailsTable, @"<th>Punkty ECTS</th><td>(.*?)</td>");
-            if (ectsMatch != null)
-                course.Ects = Convert.ToInt32(ectsMatch.Groups[1].ToString().Trim(' '));
-
-
-            var firstYearMatch = Regex.Match(detailsTable, @"<th>Przedmiot przyjazny dla I roku</th><td>(.*?)</td>");
-            if (firstYearMatch != null)
-                course.SugestedFor1stYear = firstYearMatch.Groups[1].ToString().Trim(' ') == "Tak";
-            var groupOfEffects = Regex.Match(detailsTable, @"<th>Grupa efektów kształcenia</th><td><ul style=""list-style: none;""><li><span class=""label success"">(.*?)</span></li></ul></td>");
-            if (groupOfEffects != null)
-                course.GroupOfEffects = groupOfEffects.Groups[1].ToString().Trim(' ');
-            var hoursMatch = Regex.Match(detailsTable, @"<th>Liczba godzin</th><td>(.*?)</td>");
-            if (hoursMatch != null)
+            var allMatches = Regex.Matches(detailsTable, @"<th>(.*?)</th><td>(.*?)</td>");
+            foreach (Match detailMatch in allMatches)
             {
-                var dict = new Dictionary<string, int>();
-                var table = Regex.Matches(hoursMatch.ToString().Replace(" ", string.Empty), @"(\d{1,3})\((\w*)\)", RegexOptions.Multiline);
-                if (table.Count != 0)
+                switch (detailMatch.Groups[1].ToString())
                 {
-                    foreach (var match in table)
-                    {
-                        var matchx = match as Match;
-                        dict.Add(matchx.Groups[2].ToString(), Convert.ToInt32(matchx.Groups[1].ToString()));
-                    }
-                    course.HoursSchema = dict;
+                    case "Rodzaj":
+                        {
+                            course.Kind = detailMatch.Groups[2].ToString().Trim(' ');
+                            break;
+                        }
+                    case "Punkty ECTS":
+                        {
+                            course.Ects = Convert.ToInt32(detailMatch.Groups[2].ToString().Trim(' '));
+                            break;
+                        }
+                    case "Przedmiot przyjazny dla I roku":
+                        {
+                            course.SugestedFor1stYear = detailMatch.Groups[2].ToString().Trim(' ') == "Tak";
+                            break;
+                        }
+                    case "Egzamin":
+                        {
+                            course.IsExam = detailMatch.Groups[2].ToString().Trim(' ') == "Tak";
+                            break;
+                        }
+                    case "Grupa efektów kształcenia":
+                        {
+                            var match = Regex.Match(detailMatch.Groups[2].ToString(), @"<ul style=""list-style: none;""><li><span class=""label success"">(.*?)</span></li></ul>");
+                            if (match != null)
+                                course.GroupOfEffects = match.Groups[1].ToString().Trim(' ');
+                            break;
+                        }
+                    case "Liczba godzin":
+                        {
+                            var dict = new Dictionary<string, int>();
+                            var table = Regex.Matches(detailMatch.Groups[2].ToString().Replace(" ", string.Empty), @"(\d{1,3})\((\w*)\)", RegexOptions.Multiline);
+                            if (table.Count != 0)
+                            {
+                                foreach (var match in table)
+                                {
+                                    var matchx = match as Match;
+                                    dict.Add(matchx.Groups[2].ToString(), Convert.ToInt32(matchx.Groups[1].ToString()));
+                                }
+                                course.HoursSchema = dict;
+                            }
+                            break;
+                        }
                 }
+
             }
-            var examMatch = Regex.Match(detailsTable, @"<th>Egzamin</th><td>(.*?)</td>");
-            if (examMatch != null)
-                course.IsExam = examMatch.Groups[1].ToString().Trim(' ') == "Tak";
         }
         #endregion
 

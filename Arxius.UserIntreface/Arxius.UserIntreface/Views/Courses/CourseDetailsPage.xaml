@@ -49,7 +49,7 @@
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
-      <Entry Text="{Binding CourseNotes}" Placeholder="Notatki do przedmiotu"/>
+      <Editor Text="{Binding CourseNotes}" />
       <Button Text="Zapisz notatki" Command="{Binding SaveCourseNotes}" />
     </StackLayout>
   </ContentPage.Content>

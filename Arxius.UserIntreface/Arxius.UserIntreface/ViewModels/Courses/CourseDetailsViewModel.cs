@@ -106,7 +106,7 @@ namespace Arxius.UserIntreface.ViewModels
             }
             get
             {
-                if (_Course == null || _Course.Notes == null) return "";
+                if (_Course == null || _Course.Notes == null) return "Notatki do przedmiotu";
                 return _Course.Notes;
             }
         }
@@ -232,7 +232,7 @@ namespace Arxius.UserIntreface.ViewModels
             var fileService = DependencyService.Get<ISaveAndLoad>();
             try
             {
-                await fileService.SaveTextAsync(string.Format("Notes{0}.txt", _Course.CourseID), CourseNotes);
+                await fileService.SaveTextAsync(string.Format("Notes{0}.txt", _Course.Name), CourseNotes);
             }
             catch
             {

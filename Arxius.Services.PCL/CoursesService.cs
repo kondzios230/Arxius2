@@ -64,8 +64,8 @@ namespace Arxius.Services.PCL
                 return course;
             }, clean);
             var fileService = DependencyService.Get<ISaveAndLoad>();
-            if (fileService != null && fileService.FileExists(string.Format(Properties.Resources.FileName, course.CourseID)))
-                ret.Notes = await fileService.LoadTextAsync(string.Format(Properties.Resources.FileName, course.CourseID));
+            if (fileService != null && fileService.FileExists(string.Format(Properties.Resources.FileName, course.Name)))
+                ret.Notes = await fileService.LoadTextAsync(string.Format(Properties.Resources.FileName, course.Name));
             return ret;
 
             //var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));

@@ -59,7 +59,7 @@ namespace Arxius.Services.PCL.Entities
         {
             get
             {
-                if (IsEnrollment)
+                if (IsSignedIn)
                     return Xamarin.Forms.Color.FromHex("#6cc9f7");
                 return Xamarin.Forms.Color.White;
             }

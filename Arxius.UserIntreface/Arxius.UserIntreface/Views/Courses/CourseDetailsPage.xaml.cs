@@ -13,6 +13,7 @@ namespace Arxius.UserIntreface
     {
         public CourseDetailsPage(INavigation navi, Course course)
         {
+            Title = "My title doesnt work :|";
             InitializeComponent();
             var vm = new CourseDetailsViewModel(navi, course);
             BindingContext = vm;
@@ -37,7 +38,7 @@ namespace Arxius.UserIntreface
                     if (flag)
                     {
                         title = "Sukces";
-                        message = "Zapis udany"; 
+                        message = "Zapis notatek udany"; 
                     }
                     else
                     {

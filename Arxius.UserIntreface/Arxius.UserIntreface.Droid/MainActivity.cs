@@ -17,6 +17,8 @@ namespace Arxius.UserIntreface.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
+            base.SetTheme(global::Android.Resource.Style.ThemeMaterialLight);
+            var x = Theme;
             base.OnCreate(bundle);
              
             global::Xamarin.Forms.Forms.Init(this, bundle);
