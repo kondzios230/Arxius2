@@ -80,7 +80,13 @@ namespace Arxius.UserIntreface.ViewModels
             MapLessons(lessons, rows, startHour, grid);
             var scroll = new ScrollView() { Content = grid, Orientation = ScrollOrientation.Both };
             var stack = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand ,VerticalOptions = LayoutOptions.FillAndExpand};
-            stack.Children.Add(new Label() { Text = BreadCrumb,FontAttributes =FontAttributes.Italic,FontSize=15,Margin=10,HorizontalOptions=LayoutOptions.CenterAndExpand });
+            var headerGrid = new Grid() { HorizontalOptions = LayoutOptions.EndAndExpand };
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); 
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50, GridUnitType.Absolute) });
+            headerGrid.RowDefinitions.Add(new RowDefinition{ Height= new GridLength(50, GridUnitType.Absolute) });
+            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = 15, Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand ,VerticalOptions = LayoutOptions.CenterAndExpand}, 0, 0);
+            headerGrid.Children.Add(new Button() { Text = "O", Command = new Command(() => ExecuteForceRefresh()) }, 1, 0);
+            stack.Children.Add(headerGrid);
             stack.Children.Add(scroll);
             page.Content = stack;
             page.grid = grid;
@@ -151,6 +157,13 @@ namespace Arxius.UserIntreface.ViewModels
             l.BackgroundColor = clickedCellColor;
             await Navigation.PushAsync(new CourseDetailsPage(Navigation, course));
             l.BackgroundColor = prevColor;
+        }
+
+        async void ExecuteForceRefresh()
+        {
+            var s = new CoursesService();
+            Schedule = await s.GetUserPlanForCurrentSemester(true);
+            AnalyzeSchedule(Schedule);
         }
     }
 }
