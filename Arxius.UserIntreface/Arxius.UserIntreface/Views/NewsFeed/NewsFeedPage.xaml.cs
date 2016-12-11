@@ -13,6 +13,7 @@ namespace Arxius.UserIntreface
         public NewsFeedPage(INavigation _navi)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new NewsFeedViewModel(_navi);
             NewsList.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;

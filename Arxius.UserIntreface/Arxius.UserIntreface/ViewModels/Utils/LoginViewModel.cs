@@ -87,7 +87,8 @@ namespace Arxius.UserIntreface.ViewModels
             var us = new UtilsService();
             if (await us.Login(Login, Password))
             {
-                await _navigation.PushModalAsync(new NavigationPage(new MainPage()));
+               // await _navigation.PushModalAsync(new NavigationPage(new MainPage()));
+                Application.Current.MainPage = new NavigationPage(new MainPage());
             }
         }
     }

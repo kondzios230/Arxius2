@@ -14,6 +14,7 @@ namespace Arxius.UserIntreface
         public NewsDetailsPage(INavigation _navi,News _news)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new NewsDetailsViewModel(_navi,_news);
           
         }

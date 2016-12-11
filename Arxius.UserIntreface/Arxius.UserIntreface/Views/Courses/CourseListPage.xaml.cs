@@ -13,6 +13,7 @@ namespace Arxius.UserIntreface
         public CourseListPage(INavigation _navi)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new CourseListViewModel(_navi);
             Courses.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;

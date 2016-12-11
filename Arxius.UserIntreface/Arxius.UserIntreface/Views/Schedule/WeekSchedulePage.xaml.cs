@@ -15,6 +15,7 @@ namespace Arxius.UserIntreface
         public WeekSchedulePage(INavigation _navi)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new WeekScheduleViewModel(_navi,this);
         }       
         

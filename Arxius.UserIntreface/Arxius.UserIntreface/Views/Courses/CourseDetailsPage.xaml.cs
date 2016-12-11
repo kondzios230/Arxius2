@@ -13,8 +13,9 @@ namespace Arxius.UserIntreface
     {
         public CourseDetailsPage(INavigation navi, Course course)
         {
-            Title = "My title doesnt work :|";
+           
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             var vm = new CourseDetailsViewModel(navi, course);
             BindingContext = vm;
             Classes.ItemSelected += (sender, e) =>

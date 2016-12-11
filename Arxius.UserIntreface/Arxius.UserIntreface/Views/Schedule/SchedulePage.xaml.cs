@@ -13,6 +13,7 @@ namespace Arxius.UserIntreface
         public SchedulePage(INavigation _navi)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new ScheduleViewModel(_navi);
             Courses.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;

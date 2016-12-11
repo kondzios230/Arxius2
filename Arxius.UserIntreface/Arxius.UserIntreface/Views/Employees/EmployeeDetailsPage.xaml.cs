@@ -14,6 +14,7 @@ namespace Arxius.UserIntreface
         public EmployeeDetailsPage(INavigation _navi,Employee _news)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new EmployeeDetailsViewModel(_navi,_news);
           
         }

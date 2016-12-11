@@ -13,6 +13,7 @@ namespace Arxius.UserIntreface
         public UserProfilePage(INavigation _navi)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new UserProfileViewModel(_navi);
             GroupedView.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;

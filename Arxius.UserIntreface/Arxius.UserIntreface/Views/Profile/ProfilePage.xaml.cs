@@ -13,6 +13,7 @@ namespace Arxius.UserIntreface
         public ProfilePage(INavigation _navi)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new ProfileViewModel(_navi);
            
            

@@ -13,6 +13,7 @@ namespace Arxius.UserIntreface
         public MainPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new MainViewModel(Navigation);
         }
         

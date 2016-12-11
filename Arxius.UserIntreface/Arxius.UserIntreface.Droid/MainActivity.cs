@@ -14,13 +14,13 @@ namespace Arxius.UserIntreface.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
+            Window.RequestFeature(WindowFeatures.NoTitle);
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-            base.SetTheme(global::Android.Resource.Style.ThemeMaterialLight);
-            var x = Theme;
+            base.SetTheme(global::Android.Resource.Style.ThemeMaterialLight); 
             base.OnCreate(bundle);
-             
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         } 
