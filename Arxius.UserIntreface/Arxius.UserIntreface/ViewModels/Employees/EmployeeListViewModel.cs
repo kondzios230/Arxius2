@@ -7,14 +7,12 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class EmployeeListViewModel : INotifyPropertyChanged
+    class EmployeeListViewModel : AbstractViewModel
     {
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
-        public EmployeeListViewModel(INavigation navi)
+        public EmployeeListViewModel(INavigation navi,Page page)
         {
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
             GetEmployeeListAsync();
             ShowEmployee = new Command(ExecuteShowEmployee);
         }
@@ -36,12 +34,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_employeeList != value)
                 {
                     _employeeList = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("EmployeeList"));
-
-                    }
+                    OnPropertyChanged("EmployeeList");
                 }
             }
         }
@@ -60,7 +53,6 @@ namespace Arxius.UserIntreface.ViewModels
                     return;
 
                 ShowEmployee.Execute(SelectedEmployee);
-
                 SelectedEmployee = null;
             }
         }
@@ -69,7 +61,7 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand ShowEmployee { private set; get; }
         async void ExecuteShowEmployee()
         {
-            await _navigation.PushAsync(new EmployeeDetailsPage(_navigation, SelectedEmployee  ));
+            await Navigation.PushAsync(new EmployeeDetailsPage(Navigation, SelectedEmployee  ));
         }
     }
 }

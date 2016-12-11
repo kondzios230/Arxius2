@@ -7,14 +7,12 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class UserProfileViewModel : INotifyPropertyChanged
+    class UserProfileViewModel : AbstractViewModel
     {
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
-        public UserProfileViewModel(INavigation navi)
+        public UserProfileViewModel(INavigation navi,Page page)
         {
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
             GetUserProfileAsync();
             ShowProfile = new Command(ExecuteShowProfile);
         }
@@ -36,15 +34,11 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_userPage != value)
                 {
                     _userPage = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("UserPage"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("Ects"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("LimitRemovalTime"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("EndTime"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("RegistrationTimes"));
-                    }
+                    OnPropertyChanged("UserPage");
+                    OnPropertyChanged("Ects");
+                    OnPropertyChanged("LimitRemovalTime");
+                    OnPropertyChanged("EndTime");
+                    OnPropertyChanged("RegistrationTimes");
                 }
             }
         }
@@ -53,11 +47,7 @@ namespace Arxius.UserIntreface.ViewModels
             set
             {
                 UserPage.Ects = value;
-
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("Ects"));
-                }
+                OnPropertyChanged("Ects");
             }
             get
             {
@@ -70,12 +60,8 @@ namespace Arxius.UserIntreface.ViewModels
             set
             {
                 UserPage.LimitRemovalTime = value;
-
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("LimitRemovalTime"));
-                }
-            }
+                OnPropertyChanged("LimitRemovalTime");
+             }
             get
             {
                 if (UserPage == null) return "";
@@ -87,11 +73,7 @@ namespace Arxius.UserIntreface.ViewModels
             set
             {
                 UserPage.EndTime = value;
-
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("EndTime"));
-                }
+                OnPropertyChanged("EndTime");
             }
             get
             {
@@ -104,11 +86,7 @@ namespace Arxius.UserIntreface.ViewModels
             set
             {
                 UserPage.RegistrationTimes = value;
-
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("RegistrationTimes"));
-                }
+                OnPropertyChanged("RegistrationTimes");
             }
             get
             {
@@ -121,7 +99,7 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand ShowProfile { private set; get; }
         async void ExecuteShowProfile()
         {
-            await _navigation.PushAsync(new ProfilePage(_navigation));
+            await Navigation.PushAsync(new EctsPage(Navigation));
         }
     }
 }

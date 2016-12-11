@@ -11,11 +11,8 @@ using static Arxius.Services.PCL.Entities.Lesson;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class WeekScheduleViewModel : INotifyPropertyChanged
+    class WeekScheduleViewModel : AbstractViewModel
     {
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
         private WeekSchedulePage page;
         private Color cellColor = Color.FromHex("#72d0ff");
         private Color headersColor = Color.White;
@@ -24,8 +21,9 @@ namespace Arxius.UserIntreface.ViewModels
         private Color clickedCellColor = Color.FromHex("#00aaff");
         public WeekScheduleViewModel(INavigation navi, WeekSchedulePage page)
         {
+            base._page = page;
             this.page = page;
-            _navigation = navi;
+            Navigation = navi;
             GetUserScheduleAsync();
         }
         private async void GetUserScheduleAsync()
@@ -80,10 +78,11 @@ namespace Arxius.UserIntreface.ViewModels
             }
 
             MapLessons(lessons, rows, startHour, grid);
-            var stack = new StackLayout();
-            stack.Children.Add(grid);
-            var scroll = new ScrollView() { Content = stack, Orientation = ScrollOrientation.Both };
-            page.Content = scroll;
+            var scroll = new ScrollView() { Content = grid, Orientation = ScrollOrientation.Both };
+            var stack = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand ,VerticalOptions = LayoutOptions.FillAndExpand};
+            stack.Children.Add(new Label() { Text = BreadCrumb,FontAttributes =FontAttributes.Italic,FontSize=15,Margin=10,HorizontalOptions=LayoutOptions.CenterAndExpand });
+            stack.Children.Add(scroll);
+            page.Content = stack;
             page.grid = grid;
         }
         private void MapLessons(List<Lesson> lessons, int hours, int begingHour, Grid grid)
@@ -137,10 +136,7 @@ namespace Arxius.UserIntreface.ViewModels
                 {
                     _schedule = value;
 
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Schedule"));
-                    }
+                    OnPropertyChanged("Schedule");
                 }
             }
             get
@@ -153,7 +149,7 @@ namespace Arxius.UserIntreface.ViewModels
         {
             var prevColor = l.BackgroundColor;
             l.BackgroundColor = clickedCellColor;
-            await _navigation.PushAsync(new CourseDetailsPage(_navigation, course));
+            await Navigation.PushAsync(new CourseDetailsPage(Navigation, course));
             l.BackgroundColor = prevColor;
         }
     }

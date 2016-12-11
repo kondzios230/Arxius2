@@ -3,13 +3,13 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class MainViewModel
+    class MainViewModel :AbstractViewModel
     {
       
-        private INavigation _navigation;
-        public MainViewModel(INavigation navi)
+        public MainViewModel(INavigation navi,Page page)
         {
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
             ShowPlan = new Command(ExecuteShowPlan);
            
             ShowUserProfile = new Command(ExecuteShowUserProfile);
@@ -22,31 +22,30 @@ namespace Arxius.UserIntreface.ViewModels
 
         public ICommand ShowPlan { private set; get; }
         async void ExecuteShowPlan()
-        {
-            //await _navigation.PushAsync(new SchedulePage(_navigation));    
-            await _navigation.PushAsync(new WeekSchedulePage(_navigation));
+        { 
+            await Navigation.PushAsync(new WeekSchedulePage(Navigation));
         }
 
 
         public ICommand ShowUserProfile { private set; get; }
         async void ExecuteShowUserProfile()
         {
-            await _navigation.PushAsync(new UserProfilePage(_navigation));
+            await Navigation.PushAsync(new UserProfilePage(Navigation));
         }
         public ICommand ShowNews { private set; get; }
         async void ExecuteShowNews()
         {
-            await _navigation.PushAsync(new NewsFeedPage(_navigation));
+            await Navigation.PushAsync(new NewsFeedPage(Navigation));
         }
         public ICommand ShowEmployeeList { private set; get; }
         async void ExecuteShowEmployeeList()
         {
-            await _navigation.PushAsync(new EmployeeListPage(_navigation));
+            await Navigation.PushAsync(new EmployeeListPage(Navigation));
         }
         public ICommand ShowCoursesList { private set; get; }
         async void ExecuteShowCoursesList()
         {
-            await _navigation.PushAsync(new CourseListPage(_navigation));
+            await Navigation.PushAsync(new CourseListPage(Navigation));
         }
     }
 }

@@ -12,9 +12,10 @@ namespace Arxius.UserIntreface
     {
         public MainPage()
         {
+            Title = Properties.Resources.PageNameMain;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new MainViewModel(Navigation);
+            BindingContext = new MainViewModel(Navigation,this);
         }
         
     }

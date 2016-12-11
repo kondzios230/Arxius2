@@ -8,14 +8,13 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class CourseListViewModel : INotifyPropertyChanged
+    class CourseListViewModel : AbstractViewModel
     {
-      
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
-        public CourseListViewModel(INavigation navi)
+
+        public CourseListViewModel(INavigation navi, Page page)
         {
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
             GetCoursesAsync();
             ShowCourse = new Command(ExecuteShowCourse);
         }
@@ -33,10 +32,9 @@ namespace Arxius.UserIntreface.ViewModels
                 {
                     _allCourses = value;
 
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("AllCourses"));
-                    }
+
+                    OnPropertyChanged("AllCourses");
+
                 }
             }
             get
@@ -66,7 +64,7 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand ShowCourse { private set; get; }
         async void ExecuteShowCourse()
         {
-            await _navigation.PushAsync(new CourseDetailsPage(_navigation, SelectedCourse));
+            await Navigation.PushAsync(new CourseDetailsPage(Navigation, SelectedCourse));
         }
     }
 }

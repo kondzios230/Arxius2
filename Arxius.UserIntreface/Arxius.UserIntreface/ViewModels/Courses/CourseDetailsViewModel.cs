@@ -10,14 +10,13 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class CourseDetailsViewModel : INotifyPropertyChanged
+    class CourseDetailsViewModel : AbstractViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
         private ICourseService cService;
-        public CourseDetailsViewModel(INavigation navi, Course course)
+        public CourseDetailsViewModel(INavigation navi, Course course, Page page)
         {
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
             cService = new CoursesService();
             GetCourseDetailsAsync(course);
             CanEnroll = false;
@@ -27,10 +26,7 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private async void GetCourseDetailsAsync(Course course)
         {
-
             _Course = await cService.GetCourseWideDetails(course);
-
-
         }
         #region BindableProperties
         private Course _courseBF;
@@ -41,28 +37,22 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_courseBF != value)
                 {
                     _courseBF = value;
+                    OnPropertyChanged("Course");
+                    OnPropertyChanged("CourseName");
+                    OnPropertyChanged("CourseEcts");
+                    OnPropertyChanged("CourseClasses");
+                    OnPropertyChanged("CanEnroll");
+                    OnPropertyChanged("CourseKind");
+                    OnPropertyChanged("CourseHourSchema");
+                    OnPropertyChanged("CourseGroup");
+                    OnPropertyChanged("CourseIsExam");
+                    OnPropertyChanged("CourseIsForFirstYear");
 
-                    if (PropertyChanged != null)
+                    if (_courseBF != null && _courseBF.Classes.Count != 0)
                     {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Course"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseName"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseEcts"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseClasses"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseNotes"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CanEnroll"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseHourSchema"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseKind"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseGroup"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseIsExam"));
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseIsForFirstYear"));
-
-                        if (_courseBF != null && _courseBF.Classes.Count != 0)
-                        {
-                            CanEnroll = _courseBF.Classes.All(c => c.IsEnrollment);
-                        }
-
-
+                        CanEnroll = _courseBF.Classes.All(c => c.IsEnrollment);
                     }
+
                 }
             }
             get
@@ -77,10 +67,9 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 _Course.Name = value;
 
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("CourseName"));
-                }
+
+                OnPropertyChanged("CourseName");
+
             }
             get
             {
@@ -98,10 +87,9 @@ namespace Arxius.UserIntreface.ViewModels
                     _Course.Notes = value;
                     if (SaveCourseNotes != null)
                         ((Command)SaveCourseNotes).ChangeCanExecute();
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("CourseNotes"));
-                    }
+
+                    OnPropertyChanged("CourseNotes");
+
                 }
             }
             get
@@ -122,11 +110,9 @@ namespace Arxius.UserIntreface.ViewModels
                     canEnroll = value;
                     if (EnrollOrUnroll != null)
                         ((Command)EnrollOrUnroll).ChangeCanExecute();
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("CanEnroll"));
 
-                    }
+                    OnPropertyChanged("CanEnroll");
+
                 }
             }
         }
@@ -193,10 +179,9 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 _Course.Classes = value;
 
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("CourseClasses"));
-                }
+
+                OnPropertyChanged("CourseClasses");
+
             }
             get
             {
@@ -215,7 +200,7 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 c.ButtonEnrollText = enrollmentTuple.Item2;
                 c.IsSignedIn = !c.IsSignedIn;
-                PropertyChanged(this, new PropertyChangedEventArgs("CourseClasses"));
+                OnPropertyChanged("CourseClasses");
             }
             MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, newTuple);
         }
@@ -223,7 +208,7 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand ShowList { private set; get; }
         async void ExecuteShowList(_Class c)
         {
-            await _navigation.PushAsync(new StudentsListPage(_navigation, c));
+            await Navigation.PushAsync(new StudentsListPage(Navigation, c));
 
         }
         public ICommand SaveCourseNotes { private set; get; }

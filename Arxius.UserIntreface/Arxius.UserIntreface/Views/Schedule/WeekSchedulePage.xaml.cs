@@ -14,6 +14,7 @@ namespace Arxius.UserIntreface
         public ScrollView scroll;
         public WeekSchedulePage(INavigation _navi)
         {
+            Title = Properties.Resources.PageNameSchedule;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new WeekScheduleViewModel(_navi,this);

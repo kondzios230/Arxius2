@@ -10,7 +10,7 @@
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
                  Spacing="15">
-
+      <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="15" HorizontalOptions="CenterAndExpand" LineBreakMode="CharacterWrap" Margin="10"  />
       <Label Text ="{Binding Title}" FontSize="Large"/>
       <Label Text ="{Binding Date}" />
       <Label Text ="{Binding Author}" />

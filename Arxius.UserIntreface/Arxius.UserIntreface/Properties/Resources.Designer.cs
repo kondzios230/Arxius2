@@ -78,5 +78,86 @@ namespace Arxius.UserIntreface.Properties {
                 return ResourceManager.GetString("MsgSave", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Szczegóły kursu.
+        /// </summary>
+        internal static string PageNameCourseDetails {
+            get {
+                return ResourceManager.GetString("PageNameCourseDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lista kursów.
+        /// </summary>
+        internal static string PageNameCoursesList {
+            get {
+                return ResourceManager.GetString("PageNameCoursesList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Punkty ECTS.
+        /// </summary>
+        internal static string PageNameEcts {
+            get {
+                return ResourceManager.GetString("PageNameEcts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lista pracowników.
+        /// </summary>
+        internal static string PageNameEmployeesList {
+            get {
+                return ResourceManager.GetString("PageNameEmployeesList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Strona główna.
+        /// </summary>
+        internal static string PageNameMain {
+            get {
+                return ResourceManager.GetString("PageNameMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktualności.
+        /// </summary>
+        internal static string PageNameNewsFeed {
+            get {
+                return ResourceManager.GetString("PageNameNewsFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plan zajęć.
+        /// </summary>
+        internal static string PageNameSchedule {
+            get {
+                return ResourceManager.GetString("PageNameSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lista studentów.
+        /// </summary>
+        internal static string PageNameStudentsList {
+            get {
+                return ResourceManager.GetString("PageNameStudentsList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profil użytkownika.
+        /// </summary>
+        internal static string PageNameUserProfile {
+            get {
+                return ResourceManager.GetString("PageNameUserProfile", resourceCulture);
+            }
+        }
     }
 }

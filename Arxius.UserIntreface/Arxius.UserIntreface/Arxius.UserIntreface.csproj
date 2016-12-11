@@ -44,7 +44,6 @@
     <Compile Include="ViewModels\Courses\StudentsListViewModel.cs" />
     <Compile Include="ViewModels\Employees\EmployeeListViewModel.cs" />
     <Compile Include="ViewModels\Courses\CourseDetailsViewModel.cs" />
-    <Compile Include="ViewModels\Schedule\ScheduleCourseDetailsViewModel.cs" />
     <Compile Include="ViewModels\Employees\EmployeeDetailsViewModel.cs" />
     <Compile Include="ViewModels\NewsFeed\NewsDetailsViewModel.cs" />
     <Compile Include="ViewModels\NewsFeed\NewsFeedViewModel.cs" />
@@ -52,7 +51,7 @@
     <Compile Include="ViewModels\Profile\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\Profile\ProfileViewModel.cs" />
     <Compile Include="ViewModels\Schedule\WeekScheduleViewModel.cs" />
-    <Compile Include="ViewModels\Schedule\ScheduleViewModel.cs" />
+    <Compile Include="ViewModels\Utils\AbstractViewModel.cs" />
     <Compile Include="ViewModels\Utils\MainViewModel.cs" />
     <Compile Include="Views\Courses\StudentsListPage.xaml.cs">
       <DependentUpon>StudentsListPage.xaml</DependentUpon>
@@ -66,9 +65,6 @@
     <Compile Include="ViewModels\Utils\LoginViewModel.cs" />
     <Compile Include="Views\Courses\CourseDetailsPage.xaml.cs">
       <DependentUpon>CourseDetailsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Schedule\ScheduleCourseDetailsPage.xaml.cs">
-      <DependentUpon>ScheduleCourseDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Employees\EmployeeDetailsPage.xaml.cs">
       <DependentUpon>EmployeeDetailsPage.xaml</DependentUpon>
@@ -90,9 +86,6 @@
     </Compile>
     <Compile Include="Views\Profile\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Schedule\SchedulePage.xaml.cs">
-      <DependentUpon>SchedulePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Utils\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -147,18 +140,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\Schedule\SchedulePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\Schedule\ScheduleCourseDetailsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Profile\ProfilePage.xaml">

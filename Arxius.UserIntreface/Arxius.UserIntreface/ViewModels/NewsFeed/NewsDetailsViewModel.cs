@@ -4,20 +4,17 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class NewsDetailsViewModel : INotifyPropertyChanged
+    class NewsDetailsViewModel : AbstractViewModel
     {
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
-        public NewsDetailsViewModel(INavigation navi, News _news)
+        public NewsDetailsViewModel(INavigation navi, News _news, Page page)
         {
             Title = _news.Title;
             Author = _news.Author;
-            Date= _news.Date;
+            Date = _news.Date;
             Content = _news.Content;
 
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
         }
 
         #region Bindable properties
@@ -30,11 +27,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_title != value)
                 {
                     _title = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Title"));
-                    }
+                    OnPropertyChanged("Title");
                 }
             }
         }
@@ -47,11 +40,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_author != value)
                 {
                     _author = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Author"));
-                    }
+                    OnPropertyChanged("Author");
                 }
             }
         }
@@ -64,11 +53,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_date != value)
                 {
                     _date = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Date"));
-                    }
+                    OnPropertyChanged("Date");
                 }
             }
         }
@@ -80,12 +65,8 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 if (_content != value)
                 {
-                    _content = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Content"));
-                    }
+                    _content = value;                    
+                    OnPropertyChanged("Content");
                 }
             }
         }

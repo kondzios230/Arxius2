@@ -12,9 +12,10 @@ namespace Arxius.UserIntreface
     {
         public EmployeeListPage(INavigation _navi)
         {
+            Title = Properties.Resources.PageNameEmployeesList;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new EmployeeListViewModel(_navi);
+            BindingContext = new EmployeeListViewModel(_navi,this);
             EmployeeList.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;
             };

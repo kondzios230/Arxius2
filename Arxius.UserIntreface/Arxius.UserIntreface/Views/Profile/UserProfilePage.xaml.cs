@@ -12,9 +12,10 @@ namespace Arxius.UserIntreface
     {
         public UserProfilePage(INavigation _navi)
         {
+            Title = Properties.Resources.PageNameUserProfile;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new UserProfileViewModel(_navi);
+            BindingContext = new UserProfileViewModel(_navi,this);
             GroupedView.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;
             };

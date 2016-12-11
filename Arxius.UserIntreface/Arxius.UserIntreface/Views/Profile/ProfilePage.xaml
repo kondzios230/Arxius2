@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Arxius.UserIntreface"
-             x:Class="Arxius.UserIntreface.ProfilePage">
+             x:Class="Arxius.UserIntreface.EctsPage">
 
 
   <ContentPage.Content>
@@ -11,7 +11,7 @@
                  Orientation="Vertical"
                  Spacing="15">
 
-     
+      <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="15" HorizontalOptions="CenterAndExpand" LineBreakMode="CharacterWrap" Margin="10"  />
       <ListView x:Name="Ects"  ItemsSource="{Binding EctsPoints}">
         <ListView.ItemTemplate >
           <DataTemplate>

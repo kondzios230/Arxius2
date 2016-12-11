@@ -10,7 +10,8 @@
                  Orientation="Vertical"
                  Spacing="5"
                  >
-
+      
+      <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="15" HorizontalOptions="CenterAndExpand" Margin="10"  />
       <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand" FontSize="20"/>
       <Label Text="{Binding CourseEcts}" HorizontalOptions="CenterAndExpand"/>
       <Label FormattedText="{Binding CourseHourSchema}" HorizontalOptions="CenterAndExpand"/>
@@ -49,7 +50,7 @@
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
-      <Editor Text="{Binding CourseNotes}" />
+      <Editor Text="{Binding CourseNotes}" HeightRequest = "50"/>
       <Button Text="Zapisz notatki" Command="{Binding SaveCourseNotes}" />
     </StackLayout>
   </ContentPage.Content>

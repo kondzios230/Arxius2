@@ -7,14 +7,13 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class StudentsListViewModel : INotifyPropertyChanged
+    class StudentsListViewModel : AbstractViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
         private ICourseService cService;
-        public StudentsListViewModel(INavigation navi, _Class _class)
+        public StudentsListViewModel(INavigation navi, _Class _class,Page page)
         {
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
             cService = new CoursesService();
             GetStudentsListAsync(_class);
         }
@@ -37,10 +36,9 @@ namespace Arxius.UserIntreface.ViewModels
                 {
                     _class = value;
 
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("ClassField"));
-                    }
+                    
+                        OnPropertyChanged("ClassField");
+                    
                 }
             }
         }
@@ -53,12 +51,9 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_enrolled != value)
                 {
                     _enrolled = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        
-                        PropertyChanged(this, new PropertyChangedEventArgs("Enrolled"));
-                                            }
+                    
+                        OnPropertyChanged("Enrolled");
+                                       
                 }
             }
         }
@@ -71,12 +66,9 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_total != value)
                 {
                     _total = value;
-
-                    if (PropertyChanged != null)
-                    {
-
-                        PropertyChanged(this, new PropertyChangedEventArgs("Total"));
-                    }
+                    
+                        OnPropertyChanged("Total");
+                    
                 }
             }
         }
@@ -89,12 +81,9 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_studentsList != value)
                 {
                     _studentsList = value;
-
-                    if (PropertyChanged != null)
-                    {
-
-                        PropertyChanged(this, new PropertyChangedEventArgs("StudentsList"));
-                    }
+                    
+                        OnPropertyChanged("StudentsList");
+                    
                 }
             }
         }

@@ -9,16 +9,13 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class NewsFeedViewModel : INotifyPropertyChanged
+    class NewsFeedViewModel : AbstractViewModel
     {
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
-        
         private IUtilsService uService;
-        public NewsFeedViewModel(INavigation navi)
+        public NewsFeedViewModel(INavigation navi,Page page)
         {
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
             PageNumber = 1;
             uService = new UtilsService();
             GetNewsPageAsync();
@@ -45,11 +42,7 @@ namespace Arxius.UserIntreface.ViewModels
                     pageNumber = value;
                     if(PreviousPage!=null)
                         ((Command)PreviousPage).ChangeCanExecute();
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("PageNumber"));
-
-                    }
+                    OnPropertyChanged("NewsFeed");
                 }
             }
         }
@@ -63,12 +56,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_newsFeed != value)
                 {
                     _newsFeed = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("NewsFeed"));
-                      
-                    }
+                    OnPropertyChanged("NewsFeed");
                 }
             }
         }
@@ -96,7 +84,7 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand ShowNews { private set; get; }
         async void ExecuteShowNews()
         {
-            await _navigation.PushAsync(new NewsDetailsPage(_navigation, SelectedNews));
+            await Navigation.PushAsync(new NewsDetailsPage(Navigation, SelectedNews));
         }
         public ICommand PreviousPage { private set; get; }
         async void ExecutePreviousPage()

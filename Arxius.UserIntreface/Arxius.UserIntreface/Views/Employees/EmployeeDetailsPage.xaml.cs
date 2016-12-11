@@ -11,11 +11,12 @@ namespace Arxius.UserIntreface
 {
     public partial class EmployeeDetailsPage : ContentPage
     {
-        public EmployeeDetailsPage(INavigation _navi,Employee _news)
+        public EmployeeDetailsPage(INavigation _navi,Employee _employee)
         {
+            Title = _employee.Name;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new EmployeeDetailsViewModel(_navi,_news);
+            BindingContext = new EmployeeDetailsViewModel(_navi, _employee,this);
           
         }
         

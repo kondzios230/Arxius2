@@ -13,11 +13,10 @@ namespace Arxius.UserIntreface
     {
         public CourseDetailsPage(INavigation navi, Course course)
         {
-           
+            Title = course.Name;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            var vm = new CourseDetailsViewModel(navi, course);
-            BindingContext = vm;
+            BindingContext = new CourseDetailsViewModel(navi, course,this);
             Classes.ItemSelected += (sender, e) =>
             {
                 ((ListView)sender).SelectedItem = null;

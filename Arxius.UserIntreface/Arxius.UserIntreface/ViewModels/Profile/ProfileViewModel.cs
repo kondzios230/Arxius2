@@ -5,14 +5,12 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class ProfileViewModel : INotifyPropertyChanged
+    class EctsViewModel : AbstractViewModel
     {
-      
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
-        public ProfileViewModel(INavigation navi)
+        public EctsViewModel(INavigation navi,Page page)
         {
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
             GetProfileAsync();
             EctsPoints = new List<string>() { "To może trochę potrwać...." };
         }
@@ -35,11 +33,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_ectsPoints != value)
                 {
                     _ectsPoints = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("EctsPoints"));
-                    }
+                    OnPropertyChanged("EctsPoints");
                 }
             }
         }

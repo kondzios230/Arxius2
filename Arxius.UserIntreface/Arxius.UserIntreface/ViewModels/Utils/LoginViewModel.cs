@@ -5,14 +5,11 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class LoginViewModel : INotifyPropertyChanged
+    class LoginViewModel : AbstractViewModel
     {
-        
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
         public LoginViewModel(INavigation navi)
         {
-            _navigation = navi;
+            Navigation = navi;
             Login = AuthDoNotSync.Login().Item1;
             Password= AuthDoNotSync.Login().Item2;
             ExecuteLogin = new Command(DoLogin);
@@ -27,10 +24,7 @@ namespace Arxius.UserIntreface.ViewModels
                 {
                     _login = value;
 
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this,new PropertyChangedEventArgs("Login"));
-                    }
+                    OnPropertyChanged("Login");
                 }
             }
             get
@@ -48,10 +42,7 @@ namespace Arxius.UserIntreface.ViewModels
                 {
                     _password = value;
 
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Password"));
-                    }
+                    OnPropertyChanged("Password");
                 }
             }
             get
@@ -60,26 +51,7 @@ namespace Arxius.UserIntreface.ViewModels
             }
         }
 
-        static string _success;
-        public string Success
-        {
-            set
-            {
-                if (_success != value)
-                {
-                    _success = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Success"));
-                    }
-                }
-            }
-            get
-            {
-                return _success;
-            }
-        }
+      
 
         public ICommand ExecuteLogin { private set; get; }
         async void DoLogin()
@@ -87,7 +59,6 @@ namespace Arxius.UserIntreface.ViewModels
             var us = new UtilsService();
             if (await us.Login(Login, Password))
             {
-               // await _navigation.PushModalAsync(new NavigationPage(new MainPage()));
                 Application.Current.MainPage = new NavigationPage(new MainPage());
             }
         }

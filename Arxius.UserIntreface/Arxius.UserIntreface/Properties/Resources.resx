@@ -123,4 +123,31 @@
   <data name="MsgSave" xml:space="preserve">
     <value>MsgSave</value>
   </data>
+  <data name="PageNameCourseDetails" xml:space="preserve">
+    <value>Szczegóły kursu</value>
+  </data>
+  <data name="PageNameCoursesList" xml:space="preserve">
+    <value>Lista kursów</value>
+  </data>
+  <data name="PageNameEcts" xml:space="preserve">
+    <value>Punkty ECTS</value>
+  </data>
+  <data name="PageNameEmployeesList" xml:space="preserve">
+    <value>Lista pracowników</value>
+  </data>
+  <data name="PageNameMain" xml:space="preserve">
+    <value>Strona główna</value>
+  </data>
+  <data name="PageNameNewsFeed" xml:space="preserve">
+    <value>Aktualności</value>
+  </data>
+  <data name="PageNameSchedule" xml:space="preserve">
+    <value>Plan zajęć</value>
+  </data>
+  <data name="PageNameStudentsList" xml:space="preserve">
+    <value>Lista studentów</value>
+  </data>
+  <data name="PageNameUserProfile" xml:space="preserve">
+    <value>Profil użytkownika</value>
+  </data>
 </root>

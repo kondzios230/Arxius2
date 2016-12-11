@@ -6,19 +6,16 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
 {
-    class EmployeeDetailsViewModel : INotifyPropertyChanged
+    class EmployeeDetailsViewModel : AbstractViewModel
     {
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private INavigation _navigation;
-        public EmployeeDetailsViewModel(INavigation navi, Employee _news)
+        public EmployeeDetailsViewModel(INavigation navi, Employee _news, Page page)
         {
+
             Name = _news.Name;
             Email = _news.Email;
             Url = _news.Url;
-
-            _navigation = navi;
+            _page = page;
+            Navigation = navi;
         }
 
         #region Bindable properties
@@ -31,11 +28,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_name != value)
                 {
                     _name = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Name"));
-                    }
+                    OnPropertyChanged("Name");
                 }
             }
         }
@@ -48,11 +41,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_eMail != value)
                 {
                     _eMail = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Email"));
-                    }
+                    OnPropertyChanged("Email");
                 }
             }
         }
@@ -65,11 +54,7 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_url != value)
                 {
                     _url = value;
-
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Url"));
-                    }
+                    OnPropertyChanged("Url");
                 }
             }
         }

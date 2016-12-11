@@ -6,6 +6,8 @@
  
 
   <ContentPage.Content>
+    <StackLayout>
+    <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="15" HorizontalOptions="CenterAndExpand" LineBreakMode="CharacterWrap" Margin="10"  />
     <ListView x:Name="Courses"  ItemsSource="{Binding AllCourses}" SelectedItem="{Binding SelectedCourse, Mode=TwoWay}"  >
       <ListView.ItemTemplate>
         <DataTemplate>
@@ -13,6 +15,7 @@
         </DataTemplate>
       </ListView.ItemTemplate>
     </ListView>
+    </StackLayout>
   </ContentPage.Content>
 
 </ContentPage>

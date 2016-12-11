@@ -8,13 +8,14 @@ using Xamarin.Forms;
 
 namespace Arxius.UserIntreface
 {
-    public partial class ProfilePage : ContentPage
+    public partial class EctsPage : ContentPage
     {
-        public ProfilePage(INavigation _navi)
+        public EctsPage(INavigation _navi)
         {
+            Title = Properties.Resources.PageNameEcts;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new ProfileViewModel(_navi);
+            BindingContext = new EctsViewModel(_navi,this);
            
            
         }

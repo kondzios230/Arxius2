@@ -9,7 +9,7 @@
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
                  Spacing="15">
-
+      <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="15" HorizontalOptions="CenterAndExpand" LineBreakMode="CharacterWrap" Margin="10"  />
       <Label Text="{Binding ClassField.Teacher.Name}" HorizontalOptions="CenterAndExpand"/>
       <Label Text="{Binding Enrolled}" HorizontalOptions="CenterAndExpand"/>
       <Label Text="{Binding Total}" HorizontalOptions="CenterAndExpand"/>
