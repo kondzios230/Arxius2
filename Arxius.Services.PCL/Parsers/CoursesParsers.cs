@@ -319,6 +319,7 @@ namespace Arxius.Services.PCL.Parsers
                     lesson.Course = course;
                     _class.Lessons.Add(lesson);
                 }
+                _class.IsSignedIn = true;
                 list.Add(_class);
             }
 

@@ -11,16 +11,17 @@ namespace Arxius.UserIntreface.ViewModels
         {
             _page = page;
             Navigation = navi;
-            GetProfileAsync();
             EctsPoints = new List<string>() { "To może trochę potrwać...." };
+            GetProfileAsync();
         }
         private async void GetProfileAsync()
         {
             var s = new CoursesService();
             var ects= await s.SumAllECTSPoints();
-            EctsPoints = new List<string>();
+            var l = new List<string>();
             foreach (var val in ects.Keys)
-                EctsPoints.Add(string.Format("{0}: {1}", val, ects[val]));
+                l.Add(string.Format("{0}: {1}", val, ects[val]));
+            EctsPoints = l;
         }
 
         private List<string> _ectsPoints;

@@ -39,7 +39,7 @@ namespace Arxius.UserIntreface.ViewModels
             var lEnd = new List<Lesson>();
             foreach (var course in Schedule)
             {
-                foreach (var c in course.Classes)
+                foreach (var c in course.Classes.Where(c=>c.IsSignedIn))
                     lStart.AddRange(c.Lessons);
             }
             lEnd.AddRange(lStart);

@@ -38,6 +38,7 @@ namespace Arxius.UserIntreface.ViewModels
                 {
                     _courseBF = value;
                     OnPropertyChanged("Course");
+                    OnPropertyChanged("CourseNotes");
                     OnPropertyChanged("CourseName");
                     OnPropertyChanged("CourseEcts");
                     OnPropertyChanged("CourseClasses");

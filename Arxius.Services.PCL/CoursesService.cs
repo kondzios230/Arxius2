@@ -90,24 +90,18 @@ namespace Arxius.Services.PCL
 
         private async Task<List<Course>> GetAllUserCoursesWithDetails(bool clean = false)
         {
-            return await Cache.Get("GetCourseWideDetails", async () =>
+            var courses = await GetAllUserCourses();
+            foreach (var course in courses)
             {
-                var courses = await GetAllUserCourses();
-                foreach (var course in courses)
-                {
-                    await GetCourseDetails(course);
-                }
-                return courses;
-            }, clean);
+                await GetCourseECTSPoints(course);
+            }
+            return courses;
         }
-        private async Task<Course> GetCourseDetails(Course course, bool clean = false)
+        private async Task<Course> GetCourseECTSPoints(Course course, bool clean = false)
         {
-            return await Cache.Get(new { c = course, a = "GetCourseDetails" }, async () =>
-            {
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
-                CoursesParsers.GetCourseECTSandGroup(page, course);
-                return course;
-            }, clean);
+            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
+            CoursesParsers.GetCourseECTSandGroup(page, course);
+            return course;
         }
     }
 }
