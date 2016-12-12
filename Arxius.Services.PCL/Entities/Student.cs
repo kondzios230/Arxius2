@@ -8,6 +8,8 @@
         public string Index { get; set; }
         public string StudiesKind { get; set; }
         public string Semester { get; set; }
+        public string SemesterString { get { return "Semestr: " + Semester; } }
+        public string FullName { get { return Name + " " + Surname; } }
 
     }
 }

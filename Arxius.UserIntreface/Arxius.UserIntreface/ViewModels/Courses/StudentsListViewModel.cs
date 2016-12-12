@@ -11,7 +11,7 @@ namespace Arxius.UserIntreface.ViewModels
     class StudentsListViewModel : AbstractViewModel
     {
         private ICourseService cService;
-        public StudentsListViewModel(INavigation navi, _Class _class,Page page)
+        public StudentsListViewModel(INavigation navi, _Class _class, Page page)
         {
             _page = page;
             Navigation = navi;
@@ -22,8 +22,8 @@ namespace Arxius.UserIntreface.ViewModels
         private async void GetStudentsListAsync(_Class _class)
         {
             var tuple = await cService.GetStudentsList(_class);
-            Enrolled = tuple.Item1;
-            Total = tuple.Item2;
+            Enrolled = tuple.Item1.ToString();
+            Total = tuple.Item2.ToString();
             StudentsList = tuple.Item3;
             ClassField = _class;
         }
@@ -37,40 +37,45 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_class != value)
                 {
                     _class = value;
-
-                    
-                        OnPropertyChanged("ClassField");
-                    
+                    OnPropertyChanged("ClassField");
+                    OnPropertyChanged("ClassType");
                 }
             }
         }
-        private int _enrolled;
-        public int Enrolled
+        public string ClassType
         {
-            get { return _enrolled; }
+            get {
+                if (ClassField == null) return "";
+                return ClassTypeEnums.ToFriendlyString(ClassField.ClassType);
+            }
+        }
+        private string _enrolled;
+        public string Enrolled
+        {
+            get { return "Zapisanych: " + _enrolled; }
             set
             {
                 if (_enrolled != value)
                 {
                     _enrolled = value;
-                    
-                        OnPropertyChanged("Enrolled");
-                                       
+
+                    OnPropertyChanged("Enrolled");
+
                 }
             }
         }
-        private int _total;
-        public int Total
+        private string _total;
+        public string Total
         {
-            get { return _total; }
+            get { return "Max: " + _total; }
             set
             {
                 if (_total != value)
                 {
                     _total = value;
-                    
-                        OnPropertyChanged("Total");
-                    
+
+                    OnPropertyChanged("Total");
+
                 }
             }
         }
@@ -83,9 +88,9 @@ namespace Arxius.UserIntreface.ViewModels
                 if (_studentsList != value)
                 {
                     _studentsList = value;
-                    
-                        OnPropertyChanged("StudentsList");
-                    
+
+                    OnPropertyChanged("StudentsList");
+
                 }
             }
         }
@@ -96,14 +101,14 @@ namespace Arxius.UserIntreface.ViewModels
         async void ExecuteRefresh()
         {
             (_page as StudentsListPage).SetRefreshImage("refresh2.jpg");
-            var tuple = await cService.GetStudentsList(_class,true);
+            var tuple = await cService.GetStudentsList(_class, true);
             (_page as StudentsListPage).SetRefreshImage("refresh.jpg");
-            Enrolled = tuple.Item1;
-            Total = tuple.Item2;
+            Enrolled = tuple.Item1.ToString();
+            Total = tuple.Item2.ToString();
             StudentsList = tuple.Item3;
             ClassField = _class;
         }
 
 
     }
-    }
+}
