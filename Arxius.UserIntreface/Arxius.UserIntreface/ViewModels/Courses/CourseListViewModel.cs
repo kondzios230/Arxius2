@@ -17,6 +17,7 @@ namespace Arxius.UserIntreface.ViewModels
             Navigation = navi;
             GetCoursesAsync();
             ShowCourse = new Command(ExecuteShowCourse);
+            Refresh = new Command(ExecuteRefresh);
         }
         private async void GetCoursesAsync()
         {
@@ -65,6 +66,15 @@ namespace Arxius.UserIntreface.ViewModels
         async void ExecuteShowCourse()
         {
             await Navigation.PushAsync(new CourseDetailsPage(Navigation, SelectedCourse));
+        }
+        public ICommand Refresh { private set; get; }
+        async void ExecuteRefresh()
+        {
+            var s = new CoursesService();
+            (_page as CourseListPage).SetRefreshImage("refresh2.jpg");
+            AllCourses = await s.GetAllCourses(true);
+            (_page as CourseListPage).SetRefreshImage("refresh.jpg");
+          
         }
     }
 }

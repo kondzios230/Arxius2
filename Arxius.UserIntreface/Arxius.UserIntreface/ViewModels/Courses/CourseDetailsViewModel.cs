@@ -23,6 +23,7 @@ namespace Arxius.UserIntreface.ViewModels
             EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll, (s) => CanEnroll);
             SaveCourseNotes = new Command(ExecuteSaveCourseNotes, () => CourseNotes.Length > 0);
             ShowList = new Command<_Class>(ExecuteShowList);
+            Refresh = new Command(ExecuteRefresh);
         }
         private async void GetCourseDetailsAsync(Course course)
         {
@@ -228,7 +229,13 @@ namespace Arxius.UserIntreface.ViewModels
             MessagingCenter.Send(this, Properties.Resources.MsgSave, true);
 
         }
-
+        public ICommand Refresh { private set; get; }
+        async void ExecuteRefresh()
+        {
+            (_page as CourseDetailsPage).SetRefreshImage("refresh2.jpg");
+            _Course = await cService.GetCourseWideDetails(_Course, true);
+            (_page as CourseDetailsPage).SetRefreshImage("refresh.jpg");
+        }
 
     }
 }

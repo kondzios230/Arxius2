@@ -3,6 +3,7 @@ using Arxius.Services.PCL.Entities;
 using Arxius.Services.PCL.Interfaces_and_mocks;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
@@ -16,6 +17,7 @@ namespace Arxius.UserIntreface.ViewModels
             Navigation = navi;
             cService = new CoursesService();
             GetStudentsListAsync(_class);
+            Refresh = new Command(ExecuteRefresh);
         }
         private async void GetStudentsListAsync(_Class _class)
         {
@@ -90,7 +92,17 @@ namespace Arxius.UserIntreface.ViewModels
 
 
         #endregion
-
+        public ICommand Refresh { private set; get; }
+        async void ExecuteRefresh()
+        {
+            (_page as StudentsListPage).SetRefreshImage("refresh2.jpg");
+            var tuple = await cService.GetStudentsList(_class,true);
+            (_page as StudentsListPage).SetRefreshImage("refresh.jpg");
+            Enrolled = tuple.Item1;
+            Total = tuple.Item2;
+            StudentsList = tuple.Item3;
+            ClassField = _class;
+        }
 
 
     }

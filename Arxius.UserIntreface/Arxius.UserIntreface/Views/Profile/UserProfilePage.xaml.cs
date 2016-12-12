@@ -20,6 +20,10 @@ namespace Arxius.UserIntreface
                 ((ListView)sender).SelectedItem = null;
             };
         }
-        
+        public void SetRefreshImage(string imagePath)
+        {
+            RefreshButton.Source = imagePath;
+        }
+
     }
 }

@@ -21,6 +21,10 @@ namespace Arxius.UserIntreface
             };
            
         }
-        
+        public void SetRefreshImage(string imagePath)
+        {
+            RefreshButton.Source = imagePath;
+        }
+
     }
 }

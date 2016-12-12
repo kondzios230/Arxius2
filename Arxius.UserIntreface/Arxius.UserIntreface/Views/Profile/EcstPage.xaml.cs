@@ -16,9 +16,14 @@ namespace Arxius.UserIntreface
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new EctsViewModel(_navi,this);
-           
-           
+
+
         }
-        
+        public void SetRefreshImage(string imagePath)
+        {
+            RefreshButton.Source = imagePath;
+        }
+
+
     }
 }

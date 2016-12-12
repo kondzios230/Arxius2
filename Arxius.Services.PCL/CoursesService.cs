@@ -18,7 +18,7 @@ namespace Arxius.Services.PCL
             return await Cache.Get("SumAllECTSPoints", async () =>
             {
                 var ret = new Dictionary<string, int>();
-                var courses = await GetAllUserCoursesWithDetails();
+                var courses = await GetAllUserCoursesWithDetails(clean);
                 var groupedCourses = courses.GroupBy(c => c.Kind);
                 foreach (var group in groupedCourses)
                 {

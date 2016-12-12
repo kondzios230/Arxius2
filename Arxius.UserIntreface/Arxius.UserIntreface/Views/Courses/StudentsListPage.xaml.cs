@@ -13,6 +13,7 @@ namespace Arxius.UserIntreface
     {
         public StudentsListPage(INavigation navi,_Class course)
         {
+            
             Title = Properties.Resources.PageNameStudentsList;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -23,6 +24,9 @@ namespace Arxius.UserIntreface
             };
         }
     
-
+        public void SetRefreshImage(string imagePath)
+        {
+            RefreshButton.Source = imagePath;
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace Arxius.UserIntreface.ViewModels
             GetNewsPageAsync();
             ShowNews = new Command(ExecuteShowNews);
             PreviousPage = new Command(ExecutePreviousPage,()=> PageNumber > 1);
+            Refresh = new Command(ExecuteRefresh);
             NextPage = new Command(ExecuteNextPage);
         }
         private async Task<bool> GetNewsPageAsync(int i=1)
@@ -97,6 +98,13 @@ namespace Arxius.UserIntreface.ViewModels
         {
             PageNumber++;
             await GetNewsPageAsync(PageNumber);
+        }
+        public ICommand Refresh { private set; get; }
+        async void ExecuteRefresh()
+        {
+            (_page as NewsFeedPage).SetRefreshImage("refresh2.jpg");
+            NewsFeed = await uService.GetFeedPage(1,true);
+            (_page as NewsFeedPage).SetRefreshImage("refresh.jpg");
         }
     }
 }

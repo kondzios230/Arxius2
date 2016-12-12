@@ -19,7 +19,12 @@ namespace Arxius.UserIntreface
             NewsList.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;
             };
+
         }
-        
+        public void SetRefreshImage(string imagePath)
+        {
+            RefreshButton.Source = imagePath;
+        }
+
     }
 }

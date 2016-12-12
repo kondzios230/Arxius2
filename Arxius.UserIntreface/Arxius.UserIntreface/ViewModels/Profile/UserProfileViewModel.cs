@@ -15,6 +15,7 @@ namespace Arxius.UserIntreface.ViewModels
             Navigation = navi;
             GetUserProfileAsync();
             ShowProfile = new Command(ExecuteShowProfile);
+            Refresh = new Command(ExecuteRefresh);
         }
         private async void GetUserProfileAsync()
         {
@@ -100,6 +101,14 @@ namespace Arxius.UserIntreface.ViewModels
         async void ExecuteShowProfile()
         {
             await Navigation.PushAsync(new EctsPage(Navigation));
+        }
+        public ICommand Refresh { private set; get; }
+        async void ExecuteRefresh()
+        {
+            (_page as UserProfilePage).SetRefreshImage("refresh2.jpg");
+            var s = new UtilsService();
+            UserPage = await s.GetUserPage(true);
+            (_page as UserProfilePage).SetRefreshImage("refresh.jpg");
         }
     }
 }
