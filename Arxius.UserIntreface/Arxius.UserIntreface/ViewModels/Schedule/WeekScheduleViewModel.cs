@@ -39,7 +39,7 @@ namespace Arxius.UserIntreface.ViewModels
             var lEnd = new List<Lesson>();
             foreach (var course in Schedule)
             {
-                foreach (var c in course.Classes.Where(c=>c.IsSignedIn))
+                foreach (var c in course.Classes.Where(c => c.IsSignedIn))
                     lStart.AddRange(c.Lessons);
             }
             lEnd.AddRange(lStart);
@@ -79,13 +79,17 @@ namespace Arxius.UserIntreface.ViewModels
 
             MapLessons(lessons, rows, startHour, grid);
             var scroll = new ScrollView() { Content = grid, Orientation = ScrollOrientation.Both };
-            var stack = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand ,VerticalOptions = LayoutOptions.FillAndExpand};
-            var headerGrid = new Grid() { HorizontalOptions = LayoutOptions.EndAndExpand };
-            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); 
+            var stack = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.FillAndExpand };
+
+            var headerGrid = new Grid() { HorizontalOptions = LayoutOptions.EndAndExpand,Padding= new Thickness(2) };
+            var image = new Image() { Source = "refresh.png" };
+            image.GestureRecognizers.Add(new TapGestureRecognizer() { Command = new Command(() => ExecuteForceRefresh(image)) });
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50, GridUnitType.Absolute) });
-            headerGrid.RowDefinitions.Add(new RowDefinition{ Height= new GridLength(50, GridUnitType.Absolute) });
-            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = 15, Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand ,VerticalOptions = LayoutOptions.CenterAndExpand}, 0, 0);
-            headerGrid.Children.Add(new Button() { Text = "O", Command = new Command(() => ExecuteForceRefresh()) }, 1, 0);
+            headerGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) });
+            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = 15, Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalTextAlignment = TextAlignment.Center }, 0, 0);
+            headerGrid.Children.Add(image, 1, 0);
+
             stack.Children.Add(headerGrid);
             stack.Children.Add(scroll);
             page.Content = stack;
@@ -159,10 +163,14 @@ namespace Arxius.UserIntreface.ViewModels
             l.BackgroundColor = prevColor;
         }
 
-        async void ExecuteForceRefresh()
+        async void ExecuteForceRefresh(Image i)
         {
+            var so = i.Source;
+            i.Source = "refresh2.jpg";
             var s = new CoursesService();
+            i.Opacity = 1d;
             Schedule = await s.GetUserPlanForCurrentSemester(true);
+            i.Source = so;
             AnalyzeSchedule(Schedule);
         }
     }
