@@ -10,7 +10,17 @@
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
                  Spacing="15">
-      <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="15" HorizontalOptions="CenterAndExpand" LineBreakMode="CharacterWrap" Margin="10"  />
+      <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Micro" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center"  Grid.Row="0" Grid.Column="0"/>
+
+      </Grid>
       <Label Text ="{Binding Name}" FontSize="Large"/>
       <Label Text ="{Binding Url}" />
       <Label Text ="{Binding Email}" />

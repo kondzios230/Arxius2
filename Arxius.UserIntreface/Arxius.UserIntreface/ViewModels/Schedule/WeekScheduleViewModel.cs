@@ -85,9 +85,9 @@ namespace Arxius.UserIntreface.ViewModels
             var image = new Image() { Source = "refresh.png" };
             image.GestureRecognizers.Add(new TapGestureRecognizer() { Command = new Command(() => ExecuteForceRefresh(image)) });
             headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50, GridUnitType.Absolute) });
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(25, GridUnitType.Absolute) });
             headerGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) });
-            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = 15, Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalTextAlignment = TextAlignment.Center }, 0, 0);
+            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)), Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalTextAlignment = TextAlignment.Center }, 0, 0);
             headerGrid.Children.Add(image, 1, 0);
 
             stack.Children.Add(headerGrid);
