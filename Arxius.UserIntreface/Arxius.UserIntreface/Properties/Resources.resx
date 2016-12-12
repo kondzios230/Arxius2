@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessageLoginFailed" xml:space="preserve">
+    <value>Logowanie nieudane</value>
+  </data>
   <data name="MsgEnrollment" xml:space="preserve">
     <value>MsgEnrollment</value>
+  </data>
+  <data name="MsgLoginFailed" xml:space="preserve">
+    <value>MsgLoginFailed</value>
   </data>
   <data name="MsgSave" xml:space="preserve">
     <value>MsgSave</value>

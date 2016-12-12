@@ -11,12 +11,12 @@ namespace Arxius.Services.PCL
     {
         public async Task<List<News>> GetFeedPage(int pageNumber = 1, bool clean = false)
         {
-            //return await Cache.Get(new { a = "GetFeedPage", p = pageNumber }, async () =>
-            //{
-            var s1 = string.Format(Properties.Resources.baseUri, "/news/?page={0}");
+            return await Cache.Get(new { a = "GetFeedPage", p = pageNumber }, async () =>
+            {
+                var s1 = string.Format(Properties.Resources.baseUri, "/news/?page={0}");
             var page = await HTMLUtils.GetPage(string.Format(s1, pageNumber));
             return UtilsParsers.GetFeedElementsContent(page);
-            //}, clean);
+            }, clean);
         }
         public async Task<UserPage> GetUserPage(bool clean = false)
         {
@@ -28,7 +28,9 @@ namespace Arxius.Services.PCL
         }
         public async Task<bool> Login(string login, string password)
         {
-            return await HTMLUtils.Login(Properties.Resources.baseUri, login, password);
+            await HTMLUtils.Login(Properties.Resources.baseUri, login, password);
+            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/users/"));
+            return page.Contains("user_is_authenticated = true");
         }
         public async Task<List<Employee>> GetEmployees(bool clean = false)
         {

@@ -1,4 +1,5 @@
 ﻿using Arxius.Services.PCL;
+using Arxius.Services.PCL.Interfaces_and_mocks;
 using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -7,12 +8,14 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class LoginViewModel : AbstractViewModel
     {
+        private IUtilsService service;
         public LoginViewModel(INavigation navi)
         {
             Navigation = navi;
             Login = AuthDoNotSync.Login().Item1;
             Password= AuthDoNotSync.Login().Item2;
             ExecuteLogin = new Command(DoLogin);
+            service = new UtilsService();
         }
 
         static string  _login;
@@ -56,10 +59,14 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand ExecuteLogin { private set; get; }
         async void DoLogin()
         {
-            var us = new UtilsService();
-            if (await us.Login(Login, Password))
+           
+            if (await service.Login(Login, Password))
             {
                 Application.Current.MainPage = new NavigationPage(new MainPage());
+            }
+            else
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgLoginFailed);
             }
         }
     }

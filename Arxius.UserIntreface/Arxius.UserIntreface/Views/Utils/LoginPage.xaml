@@ -5,23 +5,43 @@
              x:Class="Arxius.UserIntreface.LoginPage">
 
   <ContentPage.Content>
-    <StackLayout VerticalOptions="CenterAndExpand"
+    <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Label Text="Arxius" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large" Grid.Row="0" Grid.Column="0"/>
+      <StackLayout VerticalOptions="CenterAndExpand"
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
-                 Spacing="15">
+                 Spacing="15" Grid.Row="1" Grid.Column="0">
 
-      <Entry Text="{Binding Login}"
-               VerticalOptions="Center"
-               HorizontalOptions="CenterAndExpand"
-               Placeholder="Podaj login"/>
-      <Entry Text="{Binding Password}"
-               VerticalOptions="Center"
-               HorizontalOptions="CenterAndExpand"
-               Placeholder="Podaj hasło"
-              IsPassword="True"/>
-      <Button Text="Login" Command="{Binding ExecuteLogin}" />
-   
-    </StackLayout>
+        <Entry Text="{Binding Login}"
+                 VerticalOptions="Center"
+                 HorizontalOptions="CenterAndExpand"
+                 Placeholder="Podaj login"/>
+        <Entry Text="{Binding Password}"
+                 VerticalOptions="Center"
+                 HorizontalOptions="CenterAndExpand"
+                 Placeholder="Podaj hasło"
+                IsPassword="True"/>
+        <Button Text="Login" Command="{Binding ExecuteLogin}" />
+        
+
+      </StackLayout>
+      <StackLayout VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                Orientation="Vertical"
+                Spacing="1" Grid.Row="2" Grid.Column="0">
+        <Label Text="Nieoficjalna aplikacja Systemu Zapisów Instytutu Informatyki UWr" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+        <Label Text="2016-2017" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+      </StackLayout>
+    </Grid>
+    
   </ContentPage.Content>
 
 </ContentPage>

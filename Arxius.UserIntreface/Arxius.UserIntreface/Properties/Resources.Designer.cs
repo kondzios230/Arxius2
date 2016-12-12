@@ -62,11 +62,29 @@ namespace Arxius.UserIntreface.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logowanie nieudane.
+        /// </summary>
+        internal static string MessageLoginFailed {
+            get {
+                return ResourceManager.GetString("MessageLoginFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MsgEnrollment.
         /// </summary>
         internal static string MsgEnrollment {
             get {
                 return ResourceManager.GetString("MsgEnrollment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MsgLoginFailed.
+        /// </summary>
+        internal static string MsgLoginFailed {
+            get {
+                return ResourceManager.GetString("MsgLoginFailed", resourceCulture);
             }
         }
         

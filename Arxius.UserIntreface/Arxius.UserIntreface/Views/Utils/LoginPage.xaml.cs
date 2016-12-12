@@ -14,6 +14,11 @@ namespace Arxius.UserIntreface
         {
             InitializeComponent();
             BindingContext = new LoginViewModel(Navigation);
+            MessagingCenter.Subscribe<LoginViewModel>(this, Properties.Resources.MsgLoginFailed,
+                async (sender) =>
+                {
+                    await this.DisplayAlert("",Properties.Resources.MessageLoginFailed, "OK");
+                });
         }
         
     }
