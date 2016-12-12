@@ -26,6 +26,15 @@
           </Image.GestureRecognizers>
         </Image>
       </Grid>
+
+      <ListView  x:Name="NewsList"  ItemsSource="{Binding NewsFeed}"  SelectedItem="{Binding SelectedNews, Mode=TwoWay}" >
+        <ListView.ItemTemplate >
+          <DataTemplate>
+            <TextCell Text="{Binding Title}" TextColor="#000000"/>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+
       <Grid x:Name="buttonsGrid" RowSpacing="1" ColumnSpacing="1">
         <Grid.RowDefinitions>
           <RowDefinition Height="*" />
@@ -39,15 +48,6 @@
         <Label Text="{Binding PageNumber}"  Grid.Row="0" Grid.Column="1" YAlign="Center" XAlign="Center"/>
         <Button Text="&gt;" Command="{Binding NextPage}" Grid.Row="0" Grid.Column="2" />
       </Grid>
-      <ListView  x:Name="NewsList"  ItemsSource="{Binding NewsFeed}"  SelectedItem="{Binding SelectedNews, Mode=TwoWay}" >
-        <ListView.ItemTemplate >
-          <DataTemplate>
-            <TextCell Text="{Binding Title}" TextColor="#000000"/>
-          </DataTemplate>
-        </ListView.ItemTemplate>
-           </ListView>
-     
-
 
     </StackLayout>
   </ContentPage.Content>

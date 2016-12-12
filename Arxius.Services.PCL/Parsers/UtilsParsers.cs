@@ -1,7 +1,10 @@
 ﻿using Arxius.Services.PCL.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 
 namespace Arxius.Services.PCL.Parsers
 {
@@ -9,19 +12,26 @@ namespace Arxius.Services.PCL.Parsers
     {
         public static List<News> GetFeedElementsContent(string page)
         {
-            var matches = Regex.Matches(page.Replace("\n", ""), @"<div class=\""od-news-header\""><h3>(.*?)<\/h3><(.*?)>(.*?)<(.*?)<p>(.*?)<\/p>(.*?)""od-news-footer\"">(.*?)<\/div>", RegexOptions.Multiline);
+            page = page.Replace("\n", string.Empty);
+            var matches = Regex.Matches(page, @"<h3>(.*?)<\/h3>(.*?)\/div><\/div>", RegexOptions.Multiline).Cast<Match>().ToList();
+
             var list = new List<News>();
-            var dipa = matches.Count;
             foreach (var match in matches)
             {
                 var _match = match as Match;
-                //var cnt = Regex.Replace(_match.Groups[5].ToString(), @"<.*?>|&nbsp;", "");
-                var cnt = _match.Groups[5].ToString();
-                list.Add(new News() { Title = _match.Groups[1].ToString(), Date = _match.Groups[3].ToString(), Content = cnt.Replace("&oacute;", "ó"), Author = _match.Groups[7].ToString().Trim(' ') });
+                list.Add(new News() { Title = _match.Groups[1].ToString().ToUpper()[0]+_match.Groups[1].ToString().Substring(1), RestToParse= _match.Groups[2].ToString() });
             }
             return list;
         }
+        public static News GetNewsDetails(News news)
+        {
+            var newsDetailsMatch = Regex.Match(news.RestToParse, @"<span class=""od-news-date"">(.*?)<\/span><\/div><div class=""od-news-body""><p>(.*?)<\/p><\/div><div class=""od-news-footer"">(.*?)<");
+            news.Date = newsDetailsMatch.Groups[1].ToString().Trim(' ');
+            news.Content = Regex.Replace(newsDetailsMatch.Groups[2].ToString().Trim(' '), @"<.*?>|&nbsp;", "").Replace("&oacute;", "ó"); 
+            news.Author= newsDetailsMatch.Groups[3].ToString().Trim(' ');
 
+            return news;
+        }
         public static UserPage GetUserPage(string page)
         {
             var ectsMatch = Regex.Matches(page, @"<tr><th>Punkty ECTS<\/th><td>(\d*)<\/td>", RegexOptions.Multiline);

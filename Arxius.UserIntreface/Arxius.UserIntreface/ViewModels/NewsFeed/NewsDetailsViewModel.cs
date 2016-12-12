@@ -1,4 +1,5 @@
 ﻿using Arxius.Services.PCL.Entities;
+using Arxius.Services.PCL.Parsers;
 using System.ComponentModel;
 using Xamarin.Forms;
 
@@ -8,6 +9,7 @@ namespace Arxius.UserIntreface.ViewModels
     {
         public NewsDetailsViewModel(INavigation navi, News _news, Page page)
         {
+            UtilsParsers.GetNewsDetails(_news);
             Title = _news.Title;
             Author = _news.Author;
             Date = _news.Date;

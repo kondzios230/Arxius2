@@ -7,6 +7,7 @@ namespace Arxius.Services.PCL.Entities
         public string Date { get; set; }
         public string Content { get; set; }
         public string Author { get; set; }
+        public string RestToParse { get; set; }
         public News()
         {
 

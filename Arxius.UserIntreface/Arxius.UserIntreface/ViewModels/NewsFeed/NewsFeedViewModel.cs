@@ -43,7 +43,7 @@ namespace Arxius.UserIntreface.ViewModels
                     pageNumber = value;
                     if(PreviousPage!=null)
                         ((Command)PreviousPage).ChangeCanExecute();
-                    OnPropertyChanged("NewsFeed");
+                    OnPropertyChanged("PageNumber");
                 }
             }
         }
@@ -105,6 +105,7 @@ namespace Arxius.UserIntreface.ViewModels
             (_page as NewsFeedPage).SetRefreshImage("refresh2.jpg");
             NewsFeed = await uService.GetFeedPage(1,true);
             (_page as NewsFeedPage).SetRefreshImage("refresh.jpg");
+            PageNumber = 1;
         }
     }
 }
