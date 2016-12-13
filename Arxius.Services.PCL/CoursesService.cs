@@ -43,7 +43,7 @@ namespace Arxius.Services.PCL
             return await Cache.Get("GetAllUserCourses", async () =>
             {
                 var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/courses/"));
-                return CoursesParsers.GetAllUserCourses(page);
+                return CoursesParsers.GetAllCourses(page,true);
             }, clean);
         }
         public async Task<List<Course>> GetAllCourses(bool clean = false)
@@ -51,7 +51,7 @@ namespace Arxius.Services.PCL
             return await Cache.Get("GetAllCourses", async () =>
             {
                 var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/courses/"));
-                return CoursesParsers.GetAllCourses(page);
+                return CoursesParsers.GetAllCourses(page,false);
             }, clean);
         }
         public async Task<Course> GetCourseWideDetails(Course course, bool clean = false)

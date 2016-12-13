@@ -6,9 +6,9 @@ namespace Arxius.Services.PCL.Entities
     public class RegistrationTimesCollection : List<Course>
     {
         public string Time { get; set; }
-        public RegistrationTimesCollection(DateTime time)
+        public RegistrationTimesCollection(string time)
         {
-            Time = time.ToString();
+            Time = time;
         }
 
         public static IList<Course> All { private set; get; }

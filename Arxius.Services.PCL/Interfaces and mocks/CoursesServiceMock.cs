@@ -250,7 +250,7 @@ Przedmioty
 </script></body></html>";
             #endregion
 
-            return CoursesParsers.GetAllUserCourses(page);
+            return CoursesParsers.GetAllCourses(page,true);
         }
         public async Task<List<Course>> GetAllCourses(bool clean = false)
         {
@@ -327,7 +327,7 @@ Przedmioty
 
 </script></body></html>";
             #endregion
-            return CoursesParsers.GetAllCourses(page);
+            return CoursesParsers.GetAllCourses(page,false);
         }
         public async Task<Course> GetCourseWideDetails(Course course, bool clean = false)
         {

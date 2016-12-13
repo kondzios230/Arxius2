@@ -82,12 +82,16 @@ namespace Arxius.Services.PCL.Parsers
             }
             return courseList;
         }
-        public static List<Course> GetAllUserCourses(string page)
+        public static List<Course> GetAllCourses(string page, bool onlyUser)
         {
-            var allCoursesHtmlElements = Regex.Matches(page, Properties.Regex.RegexForListElement, RegexOptions.Multiline);
-            var allEnrolledCourses = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString()).ToList().FindAll(c => c.Contains("name=\"wasEnrolled\" value=\"True\"")).ToList();
+            var allCoursesHtmlElements = Regex.Matches(page, @"<li>(.*?)<\/li>", RegexOptions.Multiline);
+            var allCoursesStrings = new List<string>();
+            if (onlyUser)
+                allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString().Replace("\n",string.Empty)).ToList().FindAll(c => c.Contains("name=\"wasEnrolled\" value=\"True\"")).ToList();
+            else
+                allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString()).ToList();
             var listOfCourses = new List<Course>();
-            foreach (var courseString in allEnrolledCourses)
+            foreach (var courseString in allCoursesStrings)
             {
                 var parsedCourseGroupsMatch = Regex.Matches(courseString, @"<li><a href=\""(.*?)"" id=\""(.*?)"">(.*?)<\/a><(.*?)value=\""(.*?)"" \/><(.*?)value=\""(.*?)"" \/><(.*?)value=\""(.*?)"" \/><(.*?) value=\""(.*?)"" \/><(.*?) value=\""(.*?)"" \/><\/li>", RegexOptions.Multiline);
                 if (parsedCourseGroupsMatch.Count != 0)
@@ -108,32 +112,7 @@ namespace Arxius.Services.PCL.Parsers
             }
             return listOfCourses.Distinct(new CourseNameComparer()).ToList();
         }
-        public static List<Course> GetAllCourses(string page)
-        {
-            var allCoursesHtmlElements = Regex.Matches(page, Properties.Regex.RegexForListElement, RegexOptions.Multiline);
-            var listOfCourses = new List<Course>();
-            foreach (var courseMatch in allCoursesHtmlElements)
-            {
-                var courseString = (courseMatch as Match).ToString();
-                var parsedCourseGroupsMatch = Regex.Matches(courseString, @"<li><a href=\""(.*?)"" id=\""(.*?)"">(.*?)<\/a><(.*?)value=\""(.*?)"" \/><(.*?)value=\""(.*?)"" \/><(.*?)value=\""(.*?)"" \/><(.*?) value=\""(.*?)"" \/><(.*?) value=\""(.*?)"" \/><\/li>", RegexOptions.Multiline);
-                if (parsedCourseGroupsMatch.Count != 0)
-                {
-                    var parsedCourseGroups = parsedCourseGroupsMatch[0];
-                    listOfCourses.Add(new Course()
-                    {
-                        Url = parsedCourseGroups.Groups[1].ToString(),
-                        CourseID = parsedCourseGroups.Groups[2].ToString(),
-                        Name = parsedCourseGroups.Groups[3].ToString(),
-                        Type = Convert.ToInt32(parsedCourseGroups.Groups[5].ToString()),
-                        WasEnrolled = parsedCourseGroups.Groups[7].ToString() == "True",
-                        IsEnglish = parsedCourseGroups.Groups[9].ToString() == "True",
-                        IsExam = parsedCourseGroups.Groups[11].ToString() == "True",
-                        SugestedFor1stYear = parsedCourseGroups.Groups[12].ToString() == "True"
-                    });
-                }
-            }
-            return listOfCourses.Distinct(new CourseNameComparer()).ToList();
-        }
+        
         public static Tuple<int, int, List<Student>> GetStudentsList(string page)
         {
             var item1 = 0;

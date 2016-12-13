@@ -50,7 +50,7 @@ namespace Arxius.Services.PCL.Parsers
                     var _course = course as Match;
                     courseList.Add(new Course() { Url = _course.Groups[1].ToString(), Name = _course.Groups[2].ToString() });
                 }
-                var x = new RegistrationTimesCollection(Convert.ToDateTime(time));
+                var x = new RegistrationTimesCollection(time);
                 x.AddRange(courseList);
                 dict.Add(x);
             }
