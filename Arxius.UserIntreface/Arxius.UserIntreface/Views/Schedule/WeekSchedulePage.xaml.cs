@@ -18,6 +18,11 @@ namespace Arxius.UserIntreface
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new WeekScheduleViewModel(_navi,this);
+            MessagingCenter.Subscribe<WeekScheduleViewModel>(this, Properties.Resources.MsgEmptySchedule,
+             async (sender) =>
+             {
+                 await this.DisplayAlert("Plan zajęć", "Twój plan jest pusty", "OK");
+             });
         }       
         
     }

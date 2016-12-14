@@ -71,6 +71,15 @@ namespace Arxius.UserIntreface.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MsgEmptySchedule.
+        /// </summary>
+        internal static string MsgEmptySchedule {
+            get {
+                return ResourceManager.GetString("MsgEmptySchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MsgEnrollment.
         /// </summary>
         internal static string MsgEnrollment {

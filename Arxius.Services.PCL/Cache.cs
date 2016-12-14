@@ -25,5 +25,15 @@ namespace Arxius.Services.PCL
                 return (T)dictionary[key];
             }
         }
+        public static void Clear(object key)
+        {
+            if (dictionary != null)
+            {
+                object ret;
+                if (dictionary.TryGetValue(key, out ret))
+                    dictionary.Remove(key);
+            }
+            
+        }
     }
 }

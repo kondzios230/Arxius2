@@ -120,6 +120,9 @@
   <data name="MessageLoginFailed" xml:space="preserve">
     <value>Logowanie nieudane</value>
   </data>
+  <data name="MsgEmptySchedule" xml:space="preserve">
+    <value>MsgEmptySchedule</value>
+  </data>
   <data name="MsgEnrollment" xml:space="preserve">
     <value>MsgEnrollment</value>
   </data>

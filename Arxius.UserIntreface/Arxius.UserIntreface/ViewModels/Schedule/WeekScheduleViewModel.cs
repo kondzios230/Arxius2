@@ -42,14 +42,22 @@ namespace Arxius.UserIntreface.ViewModels
                 foreach (var c in course.Classes.Where(c => c.IsSignedIn))
                     lStart.AddRange(c.Lessons);
             }
-            lEnd.AddRange(lStart);
-            lStart.Sort(new LessonStartTimeComparer());
-            lEnd.Sort(new LessonStartTimeComparer());
-            var startHour = lStart[0].StartTime.Hour;
-            var endHour = lEnd[lEnd.Count - 1].EndTime.Hour;
-            var hourDifference = endHour - startHour;
-            GenerateGrid(hourDifference, startHour, lStart);
-
+            if (lStart.Count == 0)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgEmptySchedule);
+                Navigation.PopAsync();
+                Cache.Clear("GetUserPlanForCurrentSemester");
+            }
+            else
+            {
+                lEnd.AddRange(lStart);
+                lStart.Sort(new LessonStartTimeComparer());
+                lEnd.Sort(new LessonStartTimeComparer());
+                var startHour = lStart[0].StartTime.Hour;
+                var endHour = lEnd[lEnd.Count - 1].EndTime.Hour;
+                var hourDifference = endHour - startHour;
+                GenerateGrid(hourDifference, startHour, lStart);
+            }
         }
         private void GenerateGrid(int rows, int startHour, List<Lesson> lessons)
         {

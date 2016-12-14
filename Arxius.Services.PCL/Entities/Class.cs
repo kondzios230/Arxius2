@@ -12,7 +12,6 @@ namespace Arxius.Services.PCL.Entities
         public string TotalPeople { get; set; }
         public string SignedInPeople { get; set; }
         public string QueuedPeople { get; set; }
-        public bool IsSignedIn { get; set; }
         public string ListUrl { get; set; }
         public string Priority { get; set; }
         public string csrfToken { get; set; }
@@ -38,6 +37,22 @@ namespace Arxius.Services.PCL.Entities
                 return _buttonEnrollText;
             }
         }
+
+        private bool _isSignedIn;
+
+        public bool IsSignedIn
+        {
+            get { return _isSignedIn; }
+            set { _isSignedIn = value;
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsSignedIn"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("GridColor"));
+                }
+            }
+        }
+
         public string buttonListText { get; set; }
         public _Class()
         {

@@ -13,13 +13,16 @@ namespace Arxius.UserIntreface.ViewModels
     class CourseDetailsViewModel : AbstractViewModel
     {
         private ICourseService cService;
+        private Course emptyCourse;
         public CourseDetailsViewModel(INavigation navi, Course course, Page page)
         {
             _page = page;
+            emptyCourse = course;
             Navigation = navi;
+            CanEnroll = false;
             cService = new CoursesService();
             GetCourseDetailsAsync(course);
-            CanEnroll = false;
+
             EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll, (s) => CanEnroll);
             SaveCourseNotes = new Command(ExecuteSaveCourseNotes, () => CourseNotes.Length > 0);
             ShowList = new Command<_Class>(ExecuteShowList);
@@ -35,26 +38,22 @@ namespace Arxius.UserIntreface.ViewModels
         {
             set
             {
-                if (_courseBF != value)
+                _courseBF = value;
+                OnPropertyChanged("Course");
+                OnPropertyChanged("CourseNotes");
+                OnPropertyChanged("CourseName");
+                OnPropertyChanged("CourseEcts");
+                OnPropertyChanged("CourseClasses");
+                OnPropertyChanged("CanEnroll");
+                OnPropertyChanged("CourseKind");
+                OnPropertyChanged("CourseHourSchema");
+                OnPropertyChanged("CourseGroup");
+                OnPropertyChanged("CourseIsExam");
+                OnPropertyChanged("CourseIsForFirstYear");
+
+                if (_courseBF != null && _courseBF.Classes.Count != 0)
                 {
-                    _courseBF = value;
-                    OnPropertyChanged("Course");
-                    OnPropertyChanged("CourseNotes");
-                    OnPropertyChanged("CourseName");
-                    OnPropertyChanged("CourseEcts");
-                    OnPropertyChanged("CourseClasses");
-                    OnPropertyChanged("CanEnroll");
-                    OnPropertyChanged("CourseKind");
-                    OnPropertyChanged("CourseHourSchema");
-                    OnPropertyChanged("CourseGroup");
-                    OnPropertyChanged("CourseIsExam");
-                    OnPropertyChanged("CourseIsForFirstYear");
-
-                    if (_courseBF != null && _courseBF.Classes.Count != 0)
-                    {
-                        CanEnroll = _courseBF.Classes.All(c => c.IsEnrollment);
-                    }
-
+                    CanEnroll = _courseBF.Classes.All(c => c.IsEnrollment);
                 }
             }
             get
@@ -197,14 +196,14 @@ namespace Arxius.UserIntreface.ViewModels
         async void ExecuteEnrollOrUnroll(_Class c)
         {
             var enrollmentTuple = await cService.EnrollOrUnroll(c);
-            var newTuple = Tuple.Create(enrollmentTuple.Item1, c.ButtonEnrollText, enrollmentTuple.Item3);
             if (enrollmentTuple.Item1)
             {
-                c.ButtonEnrollText = enrollmentTuple.Item2;
-                c.IsSignedIn = !c.IsSignedIn;
-                OnPropertyChanged("CourseClasses");
+                ExecuteRefresh();
+                Cache.Clear("GetUserPlanForCurrentSemester");
+                if (BreadCrumb.Contains(Properties.Resources.PageNameSchedule))
+                    enrollmentTuple.Item3.Add("Odśwież plan zajęć");
             }
-            MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, newTuple);
+            MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, Tuple.Create(enrollmentTuple.Item1, enrollmentTuple.Item2, enrollmentTuple.Item3));
         }
 
         public ICommand ShowList { private set; get; }
@@ -233,7 +232,8 @@ namespace Arxius.UserIntreface.ViewModels
         async void ExecuteRefresh()
         {
             (_page as CourseDetailsPage).SetRefreshImage("refresh2.jpg");
-            _Course = await cService.GetCourseWideDetails(_Course, true);
+            _Course = null;
+            _Course = await cService.GetCourseWideDetails(emptyCourse, true);
             (_page as CourseDetailsPage).SetRefreshImage("refresh.jpg");
         }
 

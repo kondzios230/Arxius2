@@ -87,7 +87,7 @@ namespace Arxius.Services.PCL.Parsers
             var allCoursesHtmlElements = Regex.Matches(page, @"<li>(.*?)<\/li>", RegexOptions.Multiline);
             var allCoursesStrings = new List<string>();
             if (onlyUser)
-                allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString().Replace("\n",string.Empty)).ToList().FindAll(c => c.Contains("name=\"wasEnrolled\" value=\"True\"")).ToList();
+                allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString().Replace("\n", string.Empty)).ToList().FindAll(c => c.Contains("name=\"wasEnrolled\" value=\"True\"")).ToList();
             else
                 allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString()).ToList();
             var listOfCourses = new List<Course>();
@@ -112,7 +112,7 @@ namespace Arxius.Services.PCL.Parsers
             }
             return listOfCourses.Distinct(new CourseNameComparer()).ToList();
         }
-        
+
         public static Tuple<int, int, List<Student>> GetStudentsList(string page)
         {
             var item1 = 0;
@@ -143,14 +143,15 @@ namespace Arxius.Services.PCL.Parsers
         public static Tuple<bool, string, List<string>> IsSignedIn(string response, _Class _class)
         {
             response = response.Replace("\n", string.Empty);
-            var match = Regex.Match(response, string.Format(@"<div class=""alert-message info""(.*?)<div id=""enr-coursesList-top-bar""(.*?)<input type=""hidden"" name=""is-signed-in""(.*?)value=""(.*?)""\/>(.*?)<input type=""hidden"" name=""group"" value=""{0}""\/>(.*?)<button type=""(.*?)Button"">(.*?)<\/button>", _class.enrollmentId), RegexOptions.Multiline);
-            if (match == null) throw new Exception();
-            var messages = Regex.Matches(match.Groups[1].ToString(), @">(.*?)</div>", RegexOptions.Multiline);
+            var messagesMatches = Regex.Matches(response, @"<div class=""alert-message info"">(.*?)<\/div>", RegexOptions.Multiline);            
             var listOfMessages = new List<string>();
-            foreach (Match messageMatch in messages)
+            foreach (Match messageMatch in messagesMatches)
                 listOfMessages.Add(messageMatch.Groups[1].ToString().Trim(' '));
-
-            return Tuple.Create(match.Groups[4].ToString() == "true", match.Groups[8].ToString().Trim(' '), listOfMessages);
+            var classesMatch = Regex.Matches(response, @"<tr(.*?)<\/tr>", RegexOptions.Multiline).Cast<Match>().ToList();
+            var classMatch = classesMatch.FirstOrDefault(c => c.ToString().Contains(_class.enrollmentId));
+            if (classMatch == null) throw new Exception();
+            var r = Regex.Match(classMatch.ToString(), @"<input type=""hidden"" name=""is-signed-in""(.*?)value=""(.*?)""\/>(.*?)<button type=""(.*?)Button"">(.*?)<\/button>");
+            return Tuple.Create(r.Groups[2].ToString() == "true", r.Groups[5].ToString().Trim(' '), listOfMessages);
         }
         #region Private Methods
         private static void parseInEnrollmentClasses(MatchCollection enrollmentCourseMatch, Course course, ClassTypeEnum type)
