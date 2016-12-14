@@ -98,6 +98,15 @@ namespace Arxius.UserIntreface.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MsgNetworkError.
+        /// </summary>
+        internal static string MsgNetworkError {
+            get {
+                return ResourceManager.GetString("MsgNetworkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MsgSave.
         /// </summary>
         internal static string MsgSave {

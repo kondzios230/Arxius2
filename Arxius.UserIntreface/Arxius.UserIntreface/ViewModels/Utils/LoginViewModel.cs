@@ -1,4 +1,5 @@
 ﻿using Arxius.Services.PCL;
+using Arxius.Services.PCL.Entities;
 using Arxius.Services.PCL.Interfaces_and_mocks;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -59,14 +60,20 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand ExecuteLogin { private set; get; }
         async void DoLogin()
         {
-           
-            if (await service.Login(Login, Password))
+            try
             {
-                Application.Current.MainPage = new NavigationPage(new MainPage());
+                if (await service.Login(Login, Password))
+                {
+                    Application.Current.MainPage = new NavigationPage(new MainPage());
+                }
+                else
+                {
+                    MessagingCenter.Send(this, Properties.Resources.MsgLoginFailed);
+                }
             }
-            else
+            catch( ArxiusException e)
             {
-                MessagingCenter.Send(this, Properties.Resources.MsgLoginFailed);
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError,e.Message);
             }
         }
     }

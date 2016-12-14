@@ -14,8 +14,8 @@ namespace Arxius.Services.PCL
             return await Cache.Get(new { a = "GetFeedPage", p = pageNumber }, async () =>
             {
                 var s1 = string.Format(Properties.Resources.baseUri, "/news/?page={0}");
-            var page = await HTMLUtils.GetPage(string.Format(s1, pageNumber));
-            return UtilsParsers.GetFeedElementsContent(page);
+                var page = await HTMLUtils.GetPage(string.Format(s1, pageNumber));
+                return UtilsParsers.GetFeedElementsContent(page);
             }, clean);
         }
         public async Task<UserPage> GetUserPage(bool clean = false)
@@ -28,9 +28,16 @@ namespace Arxius.Services.PCL
         }
         public async Task<bool> Login(string login, string password)
         {
-            await HTMLUtils.Login(Properties.Resources.baseUri, login, password);
-            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/users/"));
-            return page.Contains("user_is_authenticated = true");
+            try
+            {
+                await HTMLUtils.Login(Properties.Resources.baseUri, login, password);
+                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/users/"));
+                return page.Contains("user_is_authenticated = true");
+            }
+            catch (ArxiusDataException e)
+            {
+                throw new ArxiusException(e);
+            }
         }
         public async Task<List<Employee>> GetEmployees(bool clean = false)
         {

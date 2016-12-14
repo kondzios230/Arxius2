@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CoursesService.cs" />
+    <Compile Include="Entities\ArxiusException.cs" />
     <Compile Include="Entities\StudyHour.cs" />
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Entities\Lesson.cs" />
