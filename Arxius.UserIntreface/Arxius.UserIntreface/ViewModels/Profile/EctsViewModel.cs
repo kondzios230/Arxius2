@@ -1,4 +1,5 @@
 ﻿using Arxius.Services.PCL;
+using Arxius.Services.PCL.Entities;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -18,12 +19,20 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private async void GetProfileAsync()
         {
-            var s = new CoursesService();
-            var ects= await s.SumAllECTSPoints();
-            var l = new List<string>();
-            foreach (var val in ects.Keys)
-                l.Add(string.Format("{0}: {1}", val, ects[val]));
-            EctsPoints = l;
+            try
+            {
+                var s = new CoursesService();
+                var ects = await s.SumAllECTSPoints();
+                var l = new List<string>();
+                foreach (var val in ects.Keys)
+                    l.Add(string.Format("{0}: {1}", val, ects[val]));
+                EctsPoints = l;
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+           
         }
 
         private List<string> _ectsPoints;
@@ -43,13 +52,21 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand Refresh { private set; get; }
         async void ExecuteRefresh()
         {
-            (_page as EctsPage).SetRefreshImage("refresh2.jpg");
-            var s = new CoursesService();
-            var ects = await s.SumAllECTSPoints(true);
-            var l = new List<string>();
-            foreach (var val in ects.Keys)
-                l.Add(string.Format("{0}: {1}", val, ects[val]));
-            EctsPoints = l;
+            try
+            {
+                (_page as EctsPage).SetRefreshImage("refresh2.jpg");
+                var s = new CoursesService();
+                var ects = await s.SumAllECTSPoints(true);
+                var l = new List<string>();
+                foreach (var val in ects.Keys)
+                    l.Add(string.Format("{0}: {1}", val, ects[val]));
+                EctsPoints = l;
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+            
             (_page as EctsPage).SetRefreshImage("refresh.jpg");
         }
 

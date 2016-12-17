@@ -15,11 +15,16 @@ namespace Arxius.UserIntreface
             Title = Properties.Resources.PageNameNewsFeed;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new NewsFeedViewModel(_navi,this);
-            NewsList.ItemSelected += (sender, e) => {
+            BindingContext = new NewsFeedViewModel(_navi, this);
+            NewsList.ItemSelected += (sender, e) =>
+            {
                 ((ListView)sender).SelectedItem = null;
             };
-
+            MessagingCenter.Subscribe<NewsFeedViewModel, string>(this, Properties.Resources.MsgNetworkError,
+          async (sender, message) =>
+          {
+              await this.DisplayAlert("Problem z siecią", message, "OK");
+          });
         }
         public void SetRefreshImage(string imagePath)
         {

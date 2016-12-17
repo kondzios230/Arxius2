@@ -21,8 +21,15 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private async void GetCoursesAsync()
         {
-            var s = new CoursesService();
-            AllCourses = await s.GetAllCourses();
+            try
+            {
+                var s = new CoursesService();
+                AllCourses = await s.GetAllCourses();
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
         }
         private List<Course> _allCourses;
         public List<Course> AllCourses
@@ -69,12 +76,19 @@ namespace Arxius.UserIntreface.ViewModels
         }
         public ICommand Refresh { private set; get; }
         async void ExecuteRefresh()
-        {
-            var s = new CoursesService();
-            (_page as CourseListPage).SetRefreshImage("refresh2.jpg");
-            AllCourses = await s.GetAllCourses(true);
-            (_page as CourseListPage).SetRefreshImage("refresh.jpg");
-          
+        {            
+            try
+            {
+                var s = new CoursesService();
+                (_page as CourseListPage).SetRefreshImage("refresh2.jpg");
+                AllCourses = await s.GetAllCourses(true);
+                (_page as CourseListPage).SetRefreshImage("refresh.jpg");
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+
         }
     }
 }

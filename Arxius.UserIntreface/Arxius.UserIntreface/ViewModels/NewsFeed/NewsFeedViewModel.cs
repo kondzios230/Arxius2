@@ -25,8 +25,16 @@ namespace Arxius.UserIntreface.ViewModels
             NextPage = new Command(ExecuteNextPage);
         }
         private async Task<bool> GetNewsPageAsync(int i=1)
-        {             
-            NewsFeed = await uService.GetFeedPage(i);
+        {
+            try
+            {
+                NewsFeed = await uService.GetFeedPage(i);
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+           
             return true;
         }
         #region Bindable properties
@@ -102,10 +110,17 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand Refresh { private set; get; }
         async void ExecuteRefresh()
         {
-            (_page as NewsFeedPage).SetRefreshImage("refresh2.jpg");
-            NewsFeed = await uService.GetFeedPage(1,true);
-            (_page as NewsFeedPage).SetRefreshImage("refresh.jpg");
-            PageNumber = 1;
+            try
+            {
+                (_page as NewsFeedPage).SetRefreshImage("refresh2.jpg");
+                NewsFeed = await uService.GetFeedPage(1, true);
+                PageNumber = 1;
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }            
+            (_page as NewsFeedPage).SetRefreshImage("refresh.jpg");            
         }
     }
 }

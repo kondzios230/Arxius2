@@ -16,7 +16,11 @@ namespace Arxius.UserIntreface
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new EctsViewModel(_navi,this);
-
+            MessagingCenter.Subscribe<EctsViewModel, string>(this, Properties.Resources.MsgNetworkError,
+        async (sender, message) =>
+        {
+            await this.DisplayAlert("Problem z siecią", message, "OK");
+        });
 
         }
         public void SetRefreshImage(string imagePath)

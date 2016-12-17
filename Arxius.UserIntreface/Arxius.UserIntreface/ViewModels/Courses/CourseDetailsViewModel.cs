@@ -30,7 +30,15 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private async void GetCourseDetailsAsync(Course course)
         {
-            _Course = await cService.GetCourseWideDetails(course);
+            try
+            {
+                _Course = await cService.GetCourseWideDetails(course);
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+            
         }
         #region BindableProperties
         private Course _courseBF;
@@ -195,15 +203,23 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand EnrollOrUnroll { private set; get; }
         async void ExecuteEnrollOrUnroll(_Class c)
         {
-            var enrollmentTuple = await cService.EnrollOrUnroll(c);
-            if (enrollmentTuple.Item1)
+            try
             {
-                ExecuteRefresh();
-                Cache.Clear("GetUserPlanForCurrentSemester");
-                if (BreadCrumb.Contains(Properties.Resources.PageNameSchedule))
-                    enrollmentTuple.Item3.Add("Odśwież plan zajęć");
+                var enrollmentTuple = await cService.EnrollOrUnroll(c);
+                if (enrollmentTuple.Item1)
+                {
+                    ExecuteRefresh();
+                    Cache.Clear("GetUserPlanForCurrentSemester");
+                    if (BreadCrumb.Contains(Properties.Resources.PageNameSchedule))
+                        enrollmentTuple.Item3.Add("Odśwież plan zajęć");
+                }
+                MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, Tuple.Create(enrollmentTuple.Item1, enrollmentTuple.Item2, enrollmentTuple.Item3));
             }
-            MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, Tuple.Create(enrollmentTuple.Item1, enrollmentTuple.Item2, enrollmentTuple.Item3));
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+           
         }
 
         public ICommand ShowList { private set; get; }
@@ -230,12 +246,18 @@ namespace Arxius.UserIntreface.ViewModels
         }
         public ICommand Refresh { private set; get; }
         async void ExecuteRefresh()
-        {
-            (_page as CourseDetailsPage).SetRefreshImage("refresh2.jpg");
-            _Course = null;
-            _Course = await cService.GetCourseWideDetails(emptyCourse, true);
-            (_page as CourseDetailsPage).SetRefreshImage("refresh.jpg");
+        {          
+            try
+            {
+                (_page as CourseDetailsPage).SetRefreshImage("refresh2.jpg");
+                _Course = null;
+                _Course = await cService.GetCourseWideDetails(emptyCourse, true);
+                (_page as CourseDetailsPage).SetRefreshImage("refresh.jpg");
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
         }
-
     }
 }

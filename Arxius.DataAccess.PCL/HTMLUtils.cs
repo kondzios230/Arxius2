@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace Arxius.DataAccess.PCL
 {
     public static class HTMLUtils
     {
-        public static HttpClient client = new HttpClient();
+        public static HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 5) };
         public static string csrfToken;
         public async static Task<bool> Login(string baseUri, string username, string password)
         {
@@ -20,9 +21,11 @@ namespace Arxius.DataAccess.PCL
                 var postData = string.Format(@"csrfmiddlewaretoken={0}&next=%2Frecords%2Fschedule%2F&username={1}&password={2}", cookieValue[0].Groups[1], username, password);
                 return (await client.PostAsync(string.Format(baseUri, "/users/login/"), new StringContent(postData))).IsSuccessStatusCode;
             }
-            catch (System.Net.WebException e)
+            catch (Exception e)
             {
-                throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                if(e is WebException || e is TaskCanceledException)
+                    throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                throw new ArxiusDataException("Wystąpił nieznany problem", e);
             }
         }
         public static async Task<string> GetPage(string uri)
@@ -32,9 +35,11 @@ namespace Arxius.DataAccess.PCL
                 Debug.WriteLine("\n\n\n                       GetPage({0})\n\n\n", uri);
                 return await client.GetStringAsync(uri);
             }
-            catch (System.Net.WebException e)
+            catch (Exception e)
             {
-                throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                if (e is WebException || e is TaskCanceledException)
+                    throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                throw new ArxiusDataException("Wystąpił nieznany problem", e);
             }
         }
 
@@ -43,11 +48,13 @@ namespace Arxius.DataAccess.PCL
             try
             {
                 var response = await client.PostAsync(uri, new StringContent(postData));
-            return await response.Content.ReadAsStringAsync();
+                return await response.Content.ReadAsStringAsync();
             }
-            catch (System.Net.WebException e)
+            catch (Exception e)
             {
-                throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                if (e is WebException || e is TaskCanceledException)
+                    throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                throw new ArxiusDataException("Wystąpił nieznany problem", e);
             }
         }
     }

@@ -21,11 +21,18 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private async void GetStudentsListAsync(_Class _class)
         {
-            var tuple = await cService.GetStudentsList(_class);
-            Enrolled = tuple.Item1.ToString();
-            Total = tuple.Item2.ToString();
-            StudentsList = tuple.Item3;
-            ClassField = _class;
+            try
+            {
+                var tuple = await cService.GetStudentsList(_class);
+                Enrolled = tuple.Item1.ToString();
+                Total = tuple.Item2.ToString();
+                StudentsList = tuple.Item3;
+                ClassField = _class;
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
         }
         #region BindableProperties
         private _Class _class;
@@ -100,13 +107,21 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand Refresh { private set; get; }
         async void ExecuteRefresh()
         {
-            (_page as StudentsListPage).SetRefreshImage("refresh2.jpg");
-            var tuple = await cService.GetStudentsList(_class, true);
+            try
+            {
+                (_page as StudentsListPage).SetRefreshImage("refresh2.jpg");
+                var tuple = await cService.GetStudentsList(_class, true);
+                
+                Enrolled = tuple.Item1.ToString();
+                Total = tuple.Item2.ToString();
+                StudentsList = tuple.Item3;
+                ClassField = _class;
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
             (_page as StudentsListPage).SetRefreshImage("refresh.jpg");
-            Enrolled = tuple.Item1.ToString();
-            Total = tuple.Item2.ToString();
-            StudentsList = tuple.Item3;
-            ClassField = _class;
         }
 
 

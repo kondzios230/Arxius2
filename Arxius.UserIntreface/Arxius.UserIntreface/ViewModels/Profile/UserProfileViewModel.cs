@@ -19,8 +19,16 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private async void GetUserProfileAsync()
         {
-            var s = new UtilsService();
-            UserPage = await s.GetUserPage();
+            try
+            {
+                var s = new UtilsService();
+                UserPage = await s.GetUserPage();
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+           
 
         }
         #region Bindable properties
@@ -105,9 +113,16 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand Refresh { private set; get; }
         async void ExecuteRefresh()
         {
-            (_page as UserProfilePage).SetRefreshImage("refresh2.jpg");
-            var s = new UtilsService();
-            UserPage = await s.GetUserPage(true);
+            try
+            {
+                (_page as UserProfilePage).SetRefreshImage("refresh2.jpg");
+                var s = new UtilsService();
+                UserPage = await s.GetUserPage(true);
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
             (_page as UserProfilePage).SetRefreshImage("refresh.jpg");
         }
     }

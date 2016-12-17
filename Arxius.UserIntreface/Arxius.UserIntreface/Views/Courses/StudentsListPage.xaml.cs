@@ -22,6 +22,11 @@ namespace Arxius.UserIntreface
             Students.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;
             };
+            MessagingCenter.Subscribe<StudentsListViewModel, string>(this, Properties.Resources.MsgNetworkError,
+            async (sender, message) =>
+            {
+                await this.DisplayAlert("Problem z siecią", message, "OK");
+            });
         }
     
         public void SetRefreshImage(string imagePath)

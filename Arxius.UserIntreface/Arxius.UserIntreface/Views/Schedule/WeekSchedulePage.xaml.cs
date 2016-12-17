@@ -23,6 +23,11 @@ namespace Arxius.UserIntreface
              {
                  await this.DisplayAlert("Plan zajęć", "Twój plan jest pusty", "OK");
              });
+            MessagingCenter.Subscribe<WeekScheduleViewModel, string>(this, Properties.Resources.MsgNetworkError,
+           async (sender, message) =>
+           {
+               await this.DisplayAlert("Problem z siecią", message, "OK");
+           });
         }       
         
     }

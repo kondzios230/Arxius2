@@ -28,9 +28,17 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private async void GetUserScheduleAsync()
         {
-            var s = new CoursesService();
-            Schedule = await s.GetUserPlanForCurrentSemester();
-            AnalyzeSchedule(Schedule);
+            try
+            {
+                var s = new CoursesService();
+                Schedule = await s.GetUserPlanForCurrentSemester();
+                AnalyzeSchedule(Schedule);
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+           
         }
 
         private void AnalyzeSchedule(List<Course> _Schedule)
@@ -172,14 +180,21 @@ namespace Arxius.UserIntreface.ViewModels
         }
 
         async void ExecuteForceRefresh(Image i)
-        {
-            var so = i.Source;
-            i.Source = "refresh2.jpg";
-            var s = new CoursesService();
-            i.Opacity = 1d;
-            Schedule = await s.GetUserPlanForCurrentSemester(true);
-            i.Source = so;
-            AnalyzeSchedule(Schedule);
+        {        
+            try
+            {
+                var so = i.Source;
+                i.Source = "refresh2.jpg";
+                var s = new CoursesService();
+                i.Opacity = 1d;
+                Schedule = await s.GetUserPlanForCurrentSemester(true);
+                i.Source = so;
+                AnalyzeSchedule(Schedule);
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
         }
     }
 }

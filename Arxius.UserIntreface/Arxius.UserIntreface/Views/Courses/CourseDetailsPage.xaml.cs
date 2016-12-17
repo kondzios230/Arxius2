@@ -16,7 +16,7 @@ namespace Arxius.UserIntreface
             Title = course.Name;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new CourseDetailsViewModel(navi, course,this);
+            BindingContext = new CourseDetailsViewModel(navi, course, this);
             Classes.ItemSelected += (sender, e) =>
             {
                 ((ListView)sender).SelectedItem = null;
@@ -38,7 +38,7 @@ namespace Arxius.UserIntreface
                     if (flag)
                     {
                         title = "Sukces";
-                        message = "Zapis notatek udany"; 
+                        message = "Zapis notatek udany";
                     }
                     else
                     {
@@ -48,6 +48,11 @@ namespace Arxius.UserIntreface
                     await this.DisplayAlert(title, message, "OK");
 
                 });
+            MessagingCenter.Subscribe<CourseDetailsViewModel, string>(this, Properties.Resources.MsgNetworkError,
+           async (sender, message) =>
+           {
+               await this.DisplayAlert("Problem z siecią", message, "OK");
+           });
         }
         public void SetRefreshImage(string imagePath)
         {

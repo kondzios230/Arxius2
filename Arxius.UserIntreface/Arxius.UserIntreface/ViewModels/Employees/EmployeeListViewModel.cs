@@ -19,9 +19,15 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private async void GetEmployeeListAsync()
         {
-            var s = new UtilsService();
-            EmployeeList = await s.GetEmployees();
-
+            try
+            {
+                var s = new UtilsService();
+                EmployeeList = await s.GetEmployees();
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
         }
         #region Bindable properties
 
@@ -67,9 +73,16 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand Refresh { private set; get; }
         async void ExecuteRefresh()
         {
-            (_page as EmployeeListPage).SetRefreshImage("refresh2.jpg");
-            var s = new UtilsService();
-            EmployeeList = await s.GetEmployees(true);
+            try
+            {
+                (_page as EmployeeListPage).SetRefreshImage("refresh2.jpg");
+                var s = new UtilsService();
+                EmployeeList = await s.GetEmployees(true);                
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
             (_page as EmployeeListPage).SetRefreshImage("refresh.jpg");
         }
     }
