@@ -53,17 +53,17 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 return _password;
             }
-        }
-
-      
+        }      
 
         public ICommand ExecuteLogin { private set; get; }
         async void DoLogin()
         {
             try
             {
+                IsAIRunning = true;
                 if (await service.Login(Login, Password))
                 {
+                    IsAIRunning = false;
                     Application.Current.MainPage = new NavigationPage(new MainPage());
                 }
                 else
@@ -75,6 +75,7 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError,e.Message);
             }
+            IsAIRunning = false;
         }
     }
 }

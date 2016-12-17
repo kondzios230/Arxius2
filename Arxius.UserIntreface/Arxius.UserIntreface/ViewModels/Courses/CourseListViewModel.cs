@@ -10,26 +10,28 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class CourseListViewModel : AbstractViewModel
     {
-
+        
         public CourseListViewModel(INavigation navi, Page page)
         {
+            cService = new CoursesService();
             _page = page;
             Navigation = navi;
             GetCoursesAsync();
             ShowCourse = new Command(ExecuteShowCourse);
             Refresh = new Command(ExecuteRefresh);
         }
-        private async void GetCoursesAsync()
+        private async void GetCoursesAsync(bool clear =false)
         {
             try
             {
-                var s = new CoursesService();
-                AllCourses = await s.GetAllCourses();
+                IsAIRunning = true;
+                AllCourses = await cService.GetAllCourses(clear);
             }
             catch (ArxiusException e)
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
+            IsAIRunning = false;
         }
         private List<Course> _allCourses;
         public List<Course> AllCourses
@@ -75,20 +77,9 @@ namespace Arxius.UserIntreface.ViewModels
             await Navigation.PushAsync(new CourseDetailsPage(Navigation, SelectedCourse));
         }
         public ICommand Refresh { private set; get; }
-        async void ExecuteRefresh()
-        {            
-            try
-            {
-                var s = new CoursesService();
-                (_page as CourseListPage).SetRefreshImage("refresh2.jpg");
-                AllCourses = await s.GetAllCourses(true);
-                (_page as CourseListPage).SetRefreshImage("refresh.jpg");
-            }
-            catch (ArxiusException e)
-            {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
-            }
-
+        void ExecuteRefresh()
+        {
+            GetCoursesAsync(true);
         }
     }
 }

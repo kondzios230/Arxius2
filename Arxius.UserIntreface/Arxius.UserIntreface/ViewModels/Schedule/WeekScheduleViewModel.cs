@@ -1,5 +1,6 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
+using Arxius.Services.PCL.Interfaces_and_mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,26 +20,28 @@ namespace Arxius.UserIntreface.ViewModels
         private Color todayColor = Color.FromHex("#bfe9ff");
         private Color todayCellColor = Color.FromHex("#35bbff");
         private Color clickedCellColor = Color.FromHex("#00aaff");
+        private ICourseService cService;
         public WeekScheduleViewModel(INavigation navi, WeekSchedulePage page)
         {
-            base._page = page;
-            this.page = page;
+            cService = new CoursesService();
+            _page = this.page = page;
+            page.Content = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
+            (page.Content as StackLayout).Children.Add(new ActivityIndicator() { Color = todayCellColor, IsVisible = true, IsRunning = true });
             Navigation = navi;
             GetUserScheduleAsync();
         }
         private async void GetUserScheduleAsync()
         {
             try
-            {
-                var s = new CoursesService();
-                Schedule = await s.GetUserPlanForCurrentSemester();
+            {               
+                Schedule = await cService.GetUserPlanForCurrentSemester();
                 AnalyzeSchedule(Schedule);
             }
             catch (ArxiusException e)
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+                await Navigation.PopAsync();
             }
-           
         }
 
         private void AnalyzeSchedule(List<Course> _Schedule)
@@ -97,9 +100,9 @@ namespace Arxius.UserIntreface.ViewModels
             var scroll = new ScrollView() { Content = grid, Orientation = ScrollOrientation.Both };
             var stack = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.FillAndExpand };
 
-            var headerGrid = new Grid() { HorizontalOptions = LayoutOptions.EndAndExpand,Padding= new Thickness(2) };
-            var image = new Image() { Source = "refresh.png" };
-            image.GestureRecognizers.Add(new TapGestureRecognizer() { Command = new Command(() => ExecuteForceRefresh(image)) });
+            var headerGrid = new Grid() { HorizontalOptions = LayoutOptions.EndAndExpand, Padding = new Thickness(2) };
+            var image = new Image() { Source = "refresh2.png" };
+            image.GestureRecognizers.Add(new TapGestureRecognizer() { Command = new Command(() => ExecuteForceRefresh()) });
             headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(25, GridUnitType.Absolute) });
             headerGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) });
@@ -179,22 +182,20 @@ namespace Arxius.UserIntreface.ViewModels
             l.BackgroundColor = prevColor;
         }
 
-        async void ExecuteForceRefresh(Image i)
-        {        
+        async void ExecuteForceRefresh()
+        {
+            var ai = new ActivityIndicator() { Color = todayCellColor, IsVisible = true, IsRunning = true };
             try
             {
-                var so = i.Source;
-                i.Source = "refresh2.jpg";
-                var s = new CoursesService();
-                i.Opacity = 1d;
-                Schedule = await s.GetUserPlanForCurrentSemester(true);
-                i.Source = so;
+                ((page.Content as StackLayout).Children[0] as Grid).Children.Add(ai);
+                Schedule = await cService.GetUserPlanForCurrentSemester(true);
                 AnalyzeSchedule(Schedule);
             }
             catch (ArxiusException e)
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
+            ai.IsRunning = false;
         }
     }
 }

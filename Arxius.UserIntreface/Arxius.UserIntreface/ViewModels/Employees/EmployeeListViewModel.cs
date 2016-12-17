@@ -11,23 +11,25 @@ namespace Arxius.UserIntreface.ViewModels
     {
         public EmployeeListViewModel(INavigation navi,Page page)
         {
+            uService = new UtilsService();
             _page = page;
             Navigation = navi;
             GetEmployeeListAsync();
             ShowEmployee = new Command(ExecuteShowEmployee);
             Refresh = new Command(ExecuteRefresh);
         }
-        private async void GetEmployeeListAsync()
+        private async void GetEmployeeListAsync(bool clear = false)
         {
             try
             {
-                var s = new UtilsService();
-                EmployeeList = await s.GetEmployees();
+                IsAIRunning = true;
+                EmployeeList = await uService.GetEmployees(clear);
             }
             catch (ArxiusException e)
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
+            IsAIRunning = false;
         }
         #region Bindable properties
 
@@ -71,19 +73,9 @@ namespace Arxius.UserIntreface.ViewModels
             await Navigation.PushAsync(new EmployeeDetailsPage(Navigation, SelectedEmployee  ));
         }
         public ICommand Refresh { private set; get; }
-        async void ExecuteRefresh()
+        void ExecuteRefresh()
         {
-            try
-            {
-                (_page as EmployeeListPage).SetRefreshImage("refresh2.jpg");
-                var s = new UtilsService();
-                EmployeeList = await s.GetEmployees(true);                
-            }
-            catch (ArxiusException e)
-            {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
-            }
-            (_page as EmployeeListPage).SetRefreshImage("refresh.jpg");
+            GetEmployeeListAsync(true);
         }
     }
 }

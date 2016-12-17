@@ -15,7 +15,17 @@ namespace Arxius.Services.PCL
         {
             if (dictionary == null) dictionary = new Dictionary<object, object>();
             if (clean)
-                dictionary[key] = await delegat();
+            {
+                try
+                {
+                    dictionary[key] = await delegat();
+                    return (T)dictionary[key];
+                }
+                catch (ArxiusDataException e)
+                {
+                    throw new ArxiusException(e);
+                }
+            }
             try
             {
                 return (T)dictionary[key];

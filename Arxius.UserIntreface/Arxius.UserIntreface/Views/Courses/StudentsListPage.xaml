@@ -19,12 +19,13 @@
         </Grid.ColumnDefinitions>
 
         <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Micro" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center"  Grid.Row="0" Grid.Column="0"/>
-        <Image x:Name="RefreshButton" Source="refresh.jpg" Grid.Row="0" Grid.Column="1">
+        <Image x:Name="RefreshButton" Source="refresh2.jpg" Grid.Row="0" Grid.Column="1">
           <Image.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding Refresh }"/>
           </Image.GestureRecognizers>
         </Image>
       </Grid>
+      <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
       <Label Text="{Binding ClassField.Teacher.Name}" HorizontalOptions="CenterAndExpand"/>
       <Label Text="{Binding ClassType}" HorizontalOptions="CenterAndExpand"/>
       <Label Text="{Binding Enrolled}" HorizontalOptions="CenterAndExpand"/>

@@ -11,7 +11,6 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class NewsFeedViewModel : AbstractViewModel
     {
-        private IUtilsService uService;
         public NewsFeedViewModel(INavigation navi,Page page)
         {
             _page = page;
@@ -24,17 +23,18 @@ namespace Arxius.UserIntreface.ViewModels
             Refresh = new Command(ExecuteRefresh);
             NextPage = new Command(ExecuteNextPage);
         }
-        private async Task<bool> GetNewsPageAsync(int i=1)
+        private async Task<bool> GetNewsPageAsync(int i=1,bool clear = false)
         {
             try
             {
-                NewsFeed = await uService.GetFeedPage(i);
+                IsAIRunning = true;
+                NewsFeed = await uService.GetFeedPage(i,clear);
             }
             catch (ArxiusException e)
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
-           
+            IsAIRunning = false;
             return true;
         }
         #region Bindable properties
@@ -110,17 +110,7 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand Refresh { private set; get; }
         async void ExecuteRefresh()
         {
-            try
-            {
-                (_page as NewsFeedPage).SetRefreshImage("refresh2.jpg");
-                NewsFeed = await uService.GetFeedPage(1, true);
-                PageNumber = 1;
-            }
-            catch (ArxiusException e)
-            {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
-            }            
-            (_page as NewsFeedPage).SetRefreshImage("refresh.jpg");            
+            await GetNewsPageAsync(1,true);
         }
     }
 }

@@ -11,18 +11,19 @@ namespace Arxius.UserIntreface.ViewModels
     {
         public EctsViewModel(INavigation navi,Page page)
         {
+            cService = new CoursesService();  
             _page = page;
             Navigation = navi;
             Refresh = new Command(ExecuteRefresh);
             EctsPoints = new List<string>() { "To może trochę potrwać...." };
             GetProfileAsync();
         }
-        private async void GetProfileAsync()
+        private async void GetProfileAsync(bool clear = false)
         {
             try
             {
-                var s = new CoursesService();
-                var ects = await s.SumAllECTSPoints();
+                IsAIRunning = true;
+                var ects = await cService.SumAllECTSPoints(clear);
                 var l = new List<string>();
                 foreach (var val in ects.Keys)
                     l.Add(string.Format("{0}: {1}", val, ects[val]));
@@ -32,7 +33,7 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
-           
+            IsAIRunning = false;
         }
 
         private List<string> _ectsPoints;
@@ -50,24 +51,9 @@ namespace Arxius.UserIntreface.ViewModels
             }
         }
         public ICommand Refresh { private set; get; }
-        async void ExecuteRefresh()
+        void ExecuteRefresh()
         {
-            try
-            {
-                (_page as EctsPage).SetRefreshImage("refresh2.jpg");
-                var s = new CoursesService();
-                var ects = await s.SumAllECTSPoints(true);
-                var l = new List<string>();
-                foreach (var val in ects.Keys)
-                    l.Add(string.Format("{0}: {1}", val, ects[val]));
-                EctsPoints = l;
-            }
-            catch (ArxiusException e)
-            {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
-            }
-            
-            (_page as EctsPage).SetRefreshImage("refresh.jpg");
+            GetProfileAsync(true);
         }
 
 

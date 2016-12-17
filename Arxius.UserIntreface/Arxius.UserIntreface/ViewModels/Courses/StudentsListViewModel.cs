@@ -10,7 +10,6 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class StudentsListViewModel : AbstractViewModel
     {
-        private ICourseService cService;
         public StudentsListViewModel(INavigation navi, _Class _class, Page page)
         {
             _page = page;
@@ -19,11 +18,11 @@ namespace Arxius.UserIntreface.ViewModels
             GetStudentsListAsync(_class);
             Refresh = new Command(ExecuteRefresh);
         }
-        private async void GetStudentsListAsync(_Class _class)
+        private async void GetStudentsListAsync(_Class _class, bool clear = false)
         {
             try
             {
-                var tuple = await cService.GetStudentsList(_class);
+                var tuple = await cService.GetStudentsList(_class,clear);
                 Enrolled = tuple.Item1.ToString();
                 Total = tuple.Item2.ToString();
                 StudentsList = tuple.Item3;
@@ -105,23 +104,9 @@ namespace Arxius.UserIntreface.ViewModels
 
         #endregion
         public ICommand Refresh { private set; get; }
-        async void ExecuteRefresh()
+        void ExecuteRefresh()
         {
-            try
-            {
-                (_page as StudentsListPage).SetRefreshImage("refresh2.jpg");
-                var tuple = await cService.GetStudentsList(_class, true);
-                
-                Enrolled = tuple.Item1.ToString();
-                Total = tuple.Item2.ToString();
-                StudentsList = tuple.Item3;
-                ClassField = _class;
-            }
-            catch (ArxiusException e)
-            {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
-            }
-            (_page as StudentsListPage).SetRefreshImage("refresh.jpg");
+            GetStudentsListAsync(_class, true);
         }
 
 

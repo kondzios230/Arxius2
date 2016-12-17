@@ -21,24 +21,28 @@ namespace Arxius.UserIntreface.ViewModels
             Navigation = navi;
             CanEnroll = false;
             cService = new CoursesService();
-            GetCourseDetailsAsync(course);
+            GetCourseDetailsAsync();
 
             EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll, (s) => CanEnroll);
             SaveCourseNotes = new Command(ExecuteSaveCourseNotes, () => CourseNotes.Length > 0);
             ShowList = new Command<_Class>(ExecuteShowList);
             Refresh = new Command(ExecuteRefresh);
         }
-        private async void GetCourseDetailsAsync(Course course)
+        private async void GetCourseDetailsAsync(bool clear = false)
         {
             try
             {
-                _Course = await cService.GetCourseWideDetails(course);
+                _Course = null;
+                IsAIRunning = true;
+                _Course = await cService.GetCourseWideDetails(emptyCourse,clear);
             }
             catch (ArxiusException e)
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+                await Navigation.PopAsync();
             }
-            
+            IsAIRunning = false;
+
         }
         #region BindableProperties
         private Course _courseBF;
@@ -245,19 +249,9 @@ namespace Arxius.UserIntreface.ViewModels
 
         }
         public ICommand Refresh { private set; get; }
-        async void ExecuteRefresh()
-        {          
-            try
-            {
-                (_page as CourseDetailsPage).SetRefreshImage("refresh2.jpg");
-                _Course = null;
-                _Course = await cService.GetCourseWideDetails(emptyCourse, true);
-                (_page as CourseDetailsPage).SetRefreshImage("refresh.jpg");
-            }
-            catch (ArxiusException e)
-            {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
-            }
+        void ExecuteRefresh()
+        {
+            GetCourseDetailsAsync(true);
         }
     }
 }

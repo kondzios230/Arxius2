@@ -9,7 +9,7 @@ namespace Arxius.DataAccess.PCL
 {
     public static class HTMLUtils
     {
-        public static HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 5) };
+        public static HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 10) };
         public static string csrfToken;
         public async static Task<bool> Login(string baseUri, string username, string password)
         {
@@ -23,8 +23,10 @@ namespace Arxius.DataAccess.PCL
             }
             catch (Exception e)
             {
-                if(e is WebException || e is TaskCanceledException)
+                if (e is WebException)
                     throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                if (e is TaskCanceledException)
+                    throw new ArxiusDataException("Przekroczono czas oczekiwania", e);
                 throw new ArxiusDataException("Wystąpił nieznany problem", e);
             }
         }
@@ -37,8 +39,10 @@ namespace Arxius.DataAccess.PCL
             }
             catch (Exception e)
             {
-                if (e is WebException || e is TaskCanceledException)
+                if (e is WebException)
                     throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                if(e is TaskCanceledException)
+                    throw new ArxiusDataException("Przekroczono czas oczekiwania", e);
                 throw new ArxiusDataException("Wystąpił nieznany problem", e);
             }
         }
@@ -52,8 +56,10 @@ namespace Arxius.DataAccess.PCL
             }
             catch (Exception e)
             {
-                if (e is WebException || e is TaskCanceledException)
+                if (e is WebException)
                     throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                if (e is TaskCanceledException)
+                    throw new ArxiusDataException("Przekroczono czas oczekiwania", e);
                 throw new ArxiusDataException("Wystąpił nieznany problem", e);
             }
         }

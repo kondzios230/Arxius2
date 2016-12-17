@@ -11,25 +11,25 @@ namespace Arxius.UserIntreface.ViewModels
     {
         public UserProfileViewModel(INavigation navi,Page page)
         {
+            uService = new UtilsService();
             _page = page;
             Navigation = navi;
             GetUserProfileAsync();
             ShowProfile = new Command(ExecuteShowProfile);
             Refresh = new Command(ExecuteRefresh);
         }
-        private async void GetUserProfileAsync()
+        private async void GetUserProfileAsync(bool clear = false)
         {
             try
             {
-                var s = new UtilsService();
-                UserPage = await s.GetUserPage();
+                IsAIRunning = true;
+                UserPage = await uService.GetUserPage(clear);
             }
             catch (ArxiusException e)
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
-           
-
+            IsAIRunning = false;
         }
         #region Bindable properties
 
@@ -111,19 +111,9 @@ namespace Arxius.UserIntreface.ViewModels
             await Navigation.PushAsync(new EctsPage(Navigation));
         }
         public ICommand Refresh { private set; get; }
-        async void ExecuteRefresh()
+        void ExecuteRefresh()
         {
-            try
-            {
-                (_page as UserProfilePage).SetRefreshImage("refresh2.jpg");
-                var s = new UtilsService();
-                UserPage = await s.GetUserPage(true);
-            }
-            catch (ArxiusException e)
-            {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
-            }
-            (_page as UserProfilePage).SetRefreshImage("refresh.jpg");
+            GetUserProfileAsync(true);
         }
     }
 }

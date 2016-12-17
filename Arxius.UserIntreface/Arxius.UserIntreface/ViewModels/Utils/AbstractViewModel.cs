@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Arxius.Services.PCL.Interfaces_and_mocks;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
 
@@ -6,6 +7,8 @@ namespace Arxius.UserIntreface.ViewModels
 {
     public abstract class AbstractViewModel : INotifyPropertyChanged
     {
+        protected ICourseService cService;
+        protected IUtilsService uService;
         public event PropertyChangedEventHandler PropertyChanged;
         private string _breadCrumb;
         protected Page _page;
@@ -47,6 +50,12 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 return _navigation;
             }
+        }
+        private bool isAIRunning;
+        public bool IsAIRunning
+        {
+            get { return isAIRunning; }
+            set { isAIRunning = value; OnPropertyChanged("IsAIRunning"); }
         }
         public void OnPropertyChanged(string propName)
         {
