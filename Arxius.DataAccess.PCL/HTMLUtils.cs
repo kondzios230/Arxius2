@@ -34,8 +34,14 @@ namespace Arxius.DataAccess.PCL
         {
             try
             {
-                Debug.WriteLine("\n\n\n                       GetPage({0})\n\n\n", uri);
-                return await client.GetStringAsync(uri);
+                var s = new Stopwatch();
+               
+                Debug.WriteLine("GetPage({0})", uri);
+                s.Start();
+                var x = await client.GetStringAsync(uri);
+                s.Stop();
+                Debug.WriteLine("Download - {0}", s.Elapsed);
+                return x;
             }
             catch (Exception e)
             {

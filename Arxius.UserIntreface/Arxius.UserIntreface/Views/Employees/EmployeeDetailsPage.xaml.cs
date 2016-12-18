@@ -17,7 +17,9 @@ namespace Arxius.UserIntreface
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new EmployeeDetailsViewModel(_navi, _employee,this);
-          
+            GroupedView.ItemSelected += (sender, e) => {
+                ((ListView)sender).SelectedItem = null;
+            };
         }
         
     }

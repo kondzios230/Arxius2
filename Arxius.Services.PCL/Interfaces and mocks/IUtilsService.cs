@@ -10,6 +10,6 @@ namespace Arxius.Services.PCL.Interfaces_and_mocks
         Task<UserPage> GetUserPage(bool clean = false);
         Task<bool> Login(string login, string password);
         Task<List<Employee>> GetEmployees(bool clean = false);
-        void GetEmployeeDetails(string employeePage, bool clean = false);
+        Task<Employee> GetEmployeeDetails(Employee employee, bool clean = false);
     }
 }

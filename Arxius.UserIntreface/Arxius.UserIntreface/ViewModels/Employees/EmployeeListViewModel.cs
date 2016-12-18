@@ -15,8 +15,8 @@ namespace Arxius.UserIntreface.ViewModels
             _page = page;
             Navigation = navi;
             GetEmployeeListAsync();
-            ShowEmployee = new Command(ExecuteShowEmployee);
-            Refresh = new Command(ExecuteRefresh);
+            ShowEmployee = new Command(async () => await Navigation.PushAsync(new EmployeeDetailsPage(Navigation, SelectedEmployee)));
+            Refresh = new Command(() => GetEmployeeListAsync(true));
         }
         private async void GetEmployeeListAsync(bool clear = false)
         {
@@ -68,14 +68,7 @@ namespace Arxius.UserIntreface.ViewModels
 
         #endregion
         public ICommand ShowEmployee { private set; get; }
-        async void ExecuteShowEmployee()
-        {
-            await Navigation.PushAsync(new EmployeeDetailsPage(Navigation, SelectedEmployee  ));
-        }
         public ICommand Refresh { private set; get; }
-        void ExecuteRefresh()
-        {
-            GetEmployeeListAsync(true);
-        }
+      
     }
 }

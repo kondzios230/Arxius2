@@ -47,9 +47,10 @@ namespace Arxius.Services.PCL
                 return UtilsParsers.GetEmployeesList(page);
             }, clean);
         }
-        public void GetEmployeeDetails(string employeePage, bool clean = false)
+        public async Task<Employee> GetEmployeeDetails(Employee employee, bool clean = false)
         {
-            var page = HTMLUtils.GetPage(employeePage);
+            var page = await HTMLUtils.GetPage(employee.Url);
+           return  UtilsParsers.GetEmployeeDetails(page,employee);
         }
         public async void GetImportantDates(bool clean = false)
         {

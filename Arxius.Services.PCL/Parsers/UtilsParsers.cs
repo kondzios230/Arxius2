@@ -23,6 +23,7 @@ namespace Arxius.Services.PCL.Parsers
             }
             return list;
         }
+
         public static News GetNewsDetails(News news)
         {
             var newsDetailsMatch = Regex.Match(news.RestToParse, @"<span class=""od-news-date"">(.*?)<\/span><\/div><div class=""od-news-body""><p>(.*?)<\/p><\/div><div class=""od-news-footer"">(.*?)<");
@@ -32,6 +33,7 @@ namespace Arxius.Services.PCL.Parsers
 
             return news;
         }
+
         public static UserPage GetUserPage(string page)
         {
             var ectsMatch = Regex.Matches(page, @"<tr><th>Punkty ECTS<\/th><td>(\d*)<\/td>", RegexOptions.Multiline);
@@ -90,6 +92,40 @@ namespace Arxius.Services.PCL.Parsers
             var m5 = Regex.Matches(page, @"<strong>Sesja poprawkowa:</strong>(.*?)</p>", RegexOptions.Multiline);
         }
 
+        public static Employee GetEmployeeDetails(string page,Employee employee)
+        {
+            page = page.Replace("\n", string.Empty);
+            var employeeDetailsMatch = Regex.Match(page, @"<tr><th>pokój<\/th><td>(.*?)<\/td><\/tr>(.*?)<h3>Konsultacje:<\/h3><p>(.*?)<\/p>(.*?)<div class=""byWeekDays"">(.*?)<\/div>", RegexOptions.Multiline);
+            if (employeeDetailsMatch == null) throw new Exception();
+            employee.Room= "pok. " +employeeDetailsMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty);
+            employee.Consults = employeeDetailsMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty);
+            var weekByDays = employeeDetailsMatch.Groups[5].ToString();
+            var daysMatch = Regex.Matches(weekByDays, @"<h3>(.*?)<\/h3><ul>(.*?)<\/ul>");
+            var dict = new List<StringGroup>();
+            foreach (Match match in daysMatch)
+            {               
+                var day = match.Groups[1].ToString();
+                if (day == "Poniedzialek")
+                    day = "Poniedziałek";
+                if (day == "Sroda")
+                    day = "Środa";
+                if (day == "Piatek")
+                    day = "Piątek";
+                var x = new StringGroup(day);
+                var classesMatch = Regex.Matches(match.Groups[2].ToString(), @"<li><span class=""time"">(.*?)</span><span class=""name"">(.*?)</span><span class=""type"">(.*?)</span><span class=""classroom"">(.*?)</span></li>", RegexOptions.Multiline);
+                foreach (Match classMatch in classesMatch)
+                {
+                    var hours = classMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty);
+                    var name = classMatch.Groups[2].ToString().Trim(' ').Replace("\t", string.Empty);
+                    var type = classMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty).Replace("&ndash;", string.Empty);
+                    var classRoom = classMatch.Groups[4].ToString().Trim(' ').Replace("\t", string.Empty);
+                    x.Add(string.Format("{0} {1} {2} {3}", hours, name, type, classRoom));
+                }
+                dict.Add(x);
+            }
+            employee.WeekPlan = dict;
+            return employee;
+        }
 
 
     }

@@ -4,6 +4,7 @@ using Arxius.Services.PCL.Interfaces_and_mocks;
 using Arxius.Services.PCL.Parsers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,8 +59,12 @@ namespace Arxius.Services.PCL
         {
             var ret = await Cache.Get(new { c = course, a = "GetCourseWideDetails" }, async () =>
             {
+                var s = new Stopwatch();
                 var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
+                s.Start();
                 CoursesParsers.GetCourseWideDetails(page, course);
+                s.Stop();
+                Debug.WriteLine("Parsing - {0}", s.Elapsed);
 
                 return course;
             }, clean);

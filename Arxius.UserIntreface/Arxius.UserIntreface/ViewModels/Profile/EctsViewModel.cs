@@ -15,7 +15,7 @@ namespace Arxius.UserIntreface.ViewModels
             _page = page;
             Navigation = navi;
             Refresh = new Command(ExecuteRefresh);
-            EctsPoints = new List<string>() { "To może trochę potrwać...." };
+            EctsPoints = new List<string>();
             GetProfileAsync();
         }
         private async void GetProfileAsync(bool clear = false)

@@ -9,21 +9,45 @@
     <StackLayout
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
-                 Spacing="15">
+                 Spacing="5"
+                 Padding="2">
       <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand">
         <Grid.RowDefinitions>
           <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="25" />
         </Grid.ColumnDefinitions>
 
         <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Micro" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center"  Grid.Row="0" Grid.Column="0"/>
-
+        <Image x:Name ="RefreshButton" Source="refresh2.jpg" Grid.Row="0" Grid.Column="1">
+          <Image.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Refresh }"/>
+          </Image.GestureRecognizers>
+        </Image>
       </Grid>
-      <Label Text ="{Binding Name}" FontSize="Large"/>
-      <Label Text ="{Binding Url}" />
-      <Label Text ="{Binding Email}" />
+      <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
+      <Label Text ="{Binding Employee.Name}" FontSize="Large" HorizontalTextAlignment="Center"/>
+      <Label Text ="{Binding Employee.Room}" FontSize="Medium"/>
+      <Button Text ="{Binding Employee.Email}" Command ="{Binding SendEmail}"/>
+      <Button Text ="Strona domowa" Command ="{Binding OpenPage}"/>
+      <Label Text ="{Binding Employee.Consults}" />
+     <ListView  x:Name="GroupedView"  ItemsSource="{Binding Employee.WeekPlan}" GroupDisplayBinding="{Binding Key}" IsGroupingEnabled="true" >
+        <ListView.ItemTemplate >
+          <DataTemplate>
+            <TextCell Text="{Binding}" TextColor="#000000" />
+          </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.GroupHeaderTemplate>
+          <DataTemplate>
+            <TextCell Text="{Binding Key}"
+            TextColor="#000000" />
+          </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+
+
+      </ListView>
     </StackLayout>
   </ContentPage.Content>
 

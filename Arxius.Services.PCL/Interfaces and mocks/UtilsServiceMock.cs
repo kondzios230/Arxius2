@@ -299,7 +299,7 @@ $('.checkall').live('click', function(){
             #endregion
             return UtilsParsers.GetEmployeesList(page);
         }
-        public void GetEmployeeDetails(string employeePage, bool clean = false)
+        public Task<Employee> GetEmployeeDetails(Employee employeePage, bool clean = false)
         {
             throw new NotImplementedException();
         }

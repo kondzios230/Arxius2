@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="CoursesService.cs" />
     <Compile Include="Entities\ArxiusException.cs" />
+    <Compile Include="Entities\StringGroup.cs" />
     <Compile Include="Entities\StudyHour.cs" />
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Entities\Lesson.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\UserPage.cs" />
     <Compile Include="Interfaces and mocks\CoursesServiceMock.cs" />
+    <Compile Include="Interfaces and mocks\IOpenMailer.cs" />
     <Compile Include="Interfaces and mocks\ISaveAndLoad.cs" />
     <Compile Include="Interfaces and mocks\IUtilsService.cs" />
     <Compile Include="Interfaces and mocks\ICourseService.cs" />
@@ -104,9 +106,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\Arxius\packages\Xamarin.Forms.2.2.0.45\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\Arxius\packages\Xamarin.Forms.2.2.0.45\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

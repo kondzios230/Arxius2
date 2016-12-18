@@ -1,4 +1,6 @@
-﻿using Arxius.Services.PCL.Entities;
+﻿using Arxius.Services.PCL;
+using Arxius.Services.PCL.Entities;
+using Arxius.Services.PCL.Interfaces_and_mocks;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -8,59 +10,63 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class EmployeeDetailsViewModel : AbstractViewModel
     {
-        public EmployeeDetailsViewModel(INavigation navi, Employee _news, Page page)
+        private Employee emptyEmployee;
+        public EmployeeDetailsViewModel(INavigation navi, Employee employee, Page page)
         {
-
-            Name = _news.Name;
-            Email = _news.Email;
-            Url = _news.Url;
+            emptyEmployee = employee;
+            uService = new UtilsService();
+            GetEmployeDetailsAsync();
             _page = page;
             Navigation = navi;
+            Refresh = new Command(() => GetEmployeDetailsAsync(true));
+            SendEmail = new Command(ExecuteSendEmail);
+            OpenPage = new Command(ExecuteOpenPage);
+        }
+        private async void GetEmployeDetailsAsync(bool clear = false)
+        {
+           
+            try
+            {
+                IsAIRunning = true;
+                Employee = await uService.GetEmployeeDetails(emptyEmployee, clear);
+            }
+            catch (ArxiusException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+            IsAIRunning = false;
+        }
+        #region Bindable properties
+        private Employee _employee;
+        public Employee Employee
+        {
+            get { return _employee; }
+            set
+            {
+                if (_employee != value)
+                {
+                    _employee = value;
+                    OnPropertyChanged("Employee");
+                }
+            }
         }
 
-        #region Bindable properties
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged("Name");
-                }
-            }
-        }
-        private string _eMail;
-        public string Email
-        {
-            get { return _eMail; }
-            set
-            {
-                if (_eMail != value)
-                {
-                    _eMail = value;
-                    OnPropertyChanged("Email");
-                }
-            }
-        }
-        private string _url;
-        public string Url
-        {
-            get { return _url; }
-            set
-            {
-                if (_url != value)
-                {
-                    _url = value;
-                    OnPropertyChanged("Url");
-                }
-            }
-        }
 
         #endregion
-
+        public ICommand Refresh { private set; get; }
+        public ICommand SendEmail { private set; get; }
+        public ICommand OpenPage { private set; get; }
+        void ExecuteSendEmail()
+        {
+            var eMailService = DependencyService.Get<IOpenMailer>();
+            if (eMailService != null&& Employee.Email!=null && Employee.Email.Length != 0)
+                eMailService.SendMail(Employee.Email);
+        }
+        void ExecuteOpenPage()
+        {
+            if (Employee == null || Employee.Url == null) return;
+            Device.OpenUri(new Uri(Employee.Url));
+        }
 
     }
 }

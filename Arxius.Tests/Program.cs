@@ -56,9 +56,11 @@ namespace Arxius.Tests
             else
             {
                 await AuthDoNotSync.Login();
-                var x= await cService.GetAllCourses();
-                var yy= x.Find(c => c.Name == "Ekonomia międzynarodowa");
-                var y = await cService.GetCourseWideDetails(yy);
+                var x = await uService.GetEmployees();
+                var y = x.Find(e => e.Name == "Rafał Nowak");
+                var ay = x.Find(e => e.Name == "Wioletta Nowak");
+                uService.GetEmployeeDetails(y);
+                uService.GetEmployeeDetails(ay);
             }
             Console.Read();
         }
