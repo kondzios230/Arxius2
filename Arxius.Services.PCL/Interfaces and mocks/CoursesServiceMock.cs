@@ -4,13 +4,14 @@ using Arxius.Services.PCL.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Arxius.Services.PCL.Interfaces_and_mocks
 {
     public class CoursesServiceMock : ICourseService
     {
-        public async Task<Dictionary<string, int>> SumAllECTSPoints(bool clean = false)
+        public async Task<Dictionary<string, int>> SumAllECTSPoints(CancellationToken cT,bool clean = false)
         {
             throw new NotImplementedException();
         }

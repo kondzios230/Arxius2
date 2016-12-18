@@ -1,7 +1,9 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -9,8 +11,10 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class EctsViewModel : AbstractViewModel
     {
+        public CancellationTokenSource cT;
         public EctsViewModel(INavigation navi,Page page)
         {
+            cT = new CancellationTokenSource();
             cService = new CoursesService();  
             _page = page;
             Navigation = navi;
@@ -23,7 +27,7 @@ namespace Arxius.UserIntreface.ViewModels
             try
             {
                 IsAIRunning = true;
-                var ects = await cService.SumAllECTSPoints(clear);
+                var ects = await cService.SumAllECTSPoints(cT.Token, clear);
                 var l = new List<string>();
                 foreach (var val in ects.Keys)
                     l.Add(string.Format("{0}: {1}", val, ects[val]));
@@ -32,6 +36,9 @@ namespace Arxius.UserIntreface.ViewModels
             catch (ArxiusException e)
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+            }
+            catch (Exception)
+            {
             }
             IsAIRunning = false;
         }

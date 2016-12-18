@@ -20,7 +20,7 @@ namespace Arxius.UserIntreface.ViewModels
         private Color todayColor = Color.FromHex("#bfe9ff");
         private Color todayCellColor = Color.FromHex("#35bbff");
         private Color clickedCellColor = Color.FromHex("#00aaff");
-        private ICourseService cService;
+        
         public WeekScheduleViewModel(INavigation navi, WeekSchedulePage page)
         {
             cService = new CoursesService();

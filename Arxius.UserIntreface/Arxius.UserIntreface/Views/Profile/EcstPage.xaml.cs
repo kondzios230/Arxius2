@@ -21,13 +21,16 @@ namespace Arxius.UserIntreface
         {
             await this.DisplayAlert("Problem z siecią", message, "OK");
         });
-
+            this.Disappearing += new EventHandler(Foo);
         }
         public void SetRefreshImage(string imagePath)
         {
             RefreshButton.Source = imagePath;
         }
-
+        private void Foo(object s, EventArgs e)
+        {
+            (BindingContext as EctsViewModel).cT.Cancel();
+        }
 
     }
 }
