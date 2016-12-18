@@ -15,25 +15,25 @@ namespace Arxius.Services.PCL
 {
     public class CoursesService : ICourseService
     {
-        public async Task<Dictionary<string, int>> SumAllECTSPoints(CancellationToken cT, bool clean = false)
+        public async Task<Dictionary<string, int>> SumAllECTSPoints(CancellationToken cT, Func<double, double> a, bool clean = false)
         {
-            //return await Cache.Get("SumAllECTSPoints", async () =>
-            //{
-            var ret = new Dictionary<string, int>();
-            var courses = await GetAllUserCoursesWithDetails(cT);
-            if (cT.IsCancellationRequested)
-                throw new Exception();
-
-            var groupedCourses = courses.GroupBy(c => c.Kind);
-            foreach (var group in groupedCourses)
+            return await Cache.Get("SumAllECTSPoints", async () =>
             {
-                int ects = 0;
-                foreach (var course in group.ToList())
-                    ects += course.Ects;
-                ret.Add(group.Key, ects);
-            }
-            return ret;
-            //}, clean);
+                var ret = new Dictionary<string, int>();
+                var courses = await GetAllUserCoursesWithDetails(cT, a);
+                if (cT.IsCancellationRequested)
+                    throw new Exception();
+
+                var groupedCourses = courses.GroupBy(c => c.Kind);
+                foreach (var group in groupedCourses)
+                {
+                    int ects = 0;
+                    foreach (var course in group.ToList())
+                        ects += course.Ects;
+                    ret.Add(group.Key, ects);
+                }
+                return ret;
+            }, clean);
         }
         public async Task<List<Course>> GetUserPlanForCurrentSemester(bool clean = false)
         {
@@ -93,14 +93,17 @@ namespace Arxius.Services.PCL
             return Tuple.Create(sigingResult.Item1 != _class.IsSignedIn, sigingResult.Item2, sigingResult.Item3); //if differs, then some error must have occured
         }
 
-        private async Task<List<Course>> GetAllUserCoursesWithDetails(CancellationToken cT)
+        private async Task<List<Course>> GetAllUserCoursesWithDetails(CancellationToken cT, Func<double, double> a)
         {
             var courses = await GetAllUserCourses();
+            var diff = 1d / (courses.Count + 1d);
+            a(diff);
             foreach (var course in courses)
             {
                 if (cT.IsCancellationRequested)
                     break;
                 await GetCourseECTSPoints(course);
+                a(diff);
             }
             return courses;
         }

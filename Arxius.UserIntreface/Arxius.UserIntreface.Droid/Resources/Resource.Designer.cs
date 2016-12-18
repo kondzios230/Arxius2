@@ -2204,7 +2204,7 @@ namespace Arxius.UserIntreface.Droid
 			public const int notification_template_icon_bg = 2130837668;
 			
 			// aapt resource value: 0x7f0200a1
-			public const int refresh = 2130837665;
+			public const int Refresh = 2130837665;
 			
 			// aapt resource value: 0x7f0200a2
 			public const int refresh2 = 2130837666;

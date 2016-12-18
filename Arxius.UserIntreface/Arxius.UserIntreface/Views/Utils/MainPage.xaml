@@ -27,6 +27,7 @@
       <Button Text="Newsy" Command="{Binding ShowNews}" />
       <Button Text="Pracownicy" Command="{Binding ShowEmployeeList}" />
       <Button Text="Przedmioty" Command="{Binding ShowCoursesList}" />
+      <Button Text="Terminarz" Command="{Binding ShowDates}" />
     </StackLayout>
   </ContentPage.Content>
 

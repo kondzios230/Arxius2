@@ -56,11 +56,7 @@ namespace Arxius.Tests
             else
             {
                 await AuthDoNotSync.Login();
-                var x = await uService.GetEmployees();
-                var y = x.Find(e => e.Name == "Rafał Nowak");
-                var ay = x.Find(e => e.Name == "Wioletta Nowak");
-                uService.GetEmployeeDetails(y);
-                uService.GetEmployeeDetails(ay);
+               uService.GetImportantDates();
             }
             Console.Read();
         }

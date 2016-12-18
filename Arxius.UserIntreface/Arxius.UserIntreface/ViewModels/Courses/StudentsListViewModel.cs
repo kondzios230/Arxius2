@@ -10,13 +10,14 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class StudentsListViewModel : AbstractViewModel
     {
+        
         public StudentsListViewModel(INavigation navi, _Class _class, Page page)
         {
             _page = page;
             Navigation = navi;
             cService = new CoursesService();
             GetStudentsListAsync(_class);
-            Refresh = new Command(ExecuteRefresh);
+            Refresh = new Command(()=> GetStudentsListAsync(_class, true));
         }
         private async void GetStudentsListAsync(_Class _class, bool clear = false)
         {
@@ -103,12 +104,6 @@ namespace Arxius.UserIntreface.ViewModels
 
 
         #endregion
-        public ICommand Refresh { private set; get; }
-        void ExecuteRefresh()
-        {
-            GetStudentsListAsync(_class, true);
-        }
-
-
+      
     }
 }

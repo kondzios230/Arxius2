@@ -11,6 +11,9 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class NewsFeedViewModel : AbstractViewModel
     {
+        public ICommand ShowNews { private set; get; }
+        public ICommand PreviousPage { private set; get; }
+        public ICommand NextPage { private set; get; }
         public NewsFeedViewModel(INavigation navi,Page page)
         {
             _page = page;
@@ -18,10 +21,10 @@ namespace Arxius.UserIntreface.ViewModels
             PageNumber = 1;
             uService = new UtilsService();
             GetNewsPageAsync();
-            ShowNews = new Command(ExecuteShowNews);
-            PreviousPage = new Command(ExecutePreviousPage,()=> PageNumber > 1);
-            Refresh = new Command(ExecuteRefresh);
-            NextPage = new Command(ExecuteNextPage);
+            ShowNews = new Command(async () => await Navigation.PushAsync(new NewsDetailsPage(Navigation, SelectedNews)));
+            PreviousPage = new Command(async ()=>{ PageNumber--; await GetNewsPageAsync(PageNumber); },()=> PageNumber > 1);
+            NextPage = new Command(async ()=>{ PageNumber++; await GetNewsPageAsync(PageNumber); },()=> PageNumber > 1);
+            Refresh = new Command(async () => await GetNewsPageAsync(1, true));
         }
         private async Task<bool> GetNewsPageAsync(int i=1,bool clear = false)
         {
@@ -90,27 +93,6 @@ namespace Arxius.UserIntreface.ViewModels
         }
 
         #endregion
-        public ICommand ShowNews { private set; get; }
-        async void ExecuteShowNews()
-        {
-            await Navigation.PushAsync(new NewsDetailsPage(Navigation, SelectedNews));
-        }
-        public ICommand PreviousPage { private set; get; }
-        async void ExecutePreviousPage()
-        {
-            PageNumber--;
-            await GetNewsPageAsync(PageNumber);
-        }
-        public ICommand NextPage { private set; get; }
-        async void ExecuteNextPage()
-        {
-            PageNumber++;
-            await GetNewsPageAsync(PageNumber);
-        }
-        public ICommand Refresh { private set; get; }
-        async void ExecuteRefresh()
-        {
-            await GetNewsPageAsync(1,true);
-        }
+        
     }
 }

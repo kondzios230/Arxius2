@@ -9,9 +9,8 @@
     <StackLayout
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
-                 Spacing="5"
-                 Padding ="2">
-      <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand">
+                 Spacing="5">
+      <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand" BackgroundColor="#35bbff">
         <Grid.RowDefinitions>
           <RowDefinition Height="50" />
         </Grid.RowDefinitions>
@@ -19,13 +18,13 @@
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Micro" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center"  Grid.Row="0" Grid.Column="0"/>
+        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Micro" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
 
       </Grid>
-      <Label Text ="{Binding Title}" FontSize="Large" HorizontalTextAlignment="Center"/>
-      <Label Text ="{Binding Date}" FontSize="Micro" HorizontalTextAlignment="Center"/>    
-      <Label Text ="{Binding Content}" FontSize="Medium"/>
-      <Label Text ="{Binding Author}" HorizontalTextAlignment="End" />
+      <Label Text ="{Binding Title}" FontSize="Large" HorizontalTextAlignment="Center" Margin ="4"/>
+      <Label Text ="{Binding Date}" FontSize="Micro" HorizontalTextAlignment="Center" Margin ="4"/>    
+      <Label Text ="{Binding Content}" FontSize="Medium" Margin ="4"/>
+      <Label Text ="{Binding Author}" HorizontalTextAlignment="End" Margin ="4" />
     </StackLayout>
   </ContentPage.Content>
 

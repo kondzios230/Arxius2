@@ -9,6 +9,7 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class EmployeeListViewModel : AbstractViewModel
     {
+        public ICommand ShowEmployee { private set; get; }
         public EmployeeListViewModel(INavigation navi,Page page)
         {
             uService = new UtilsService();
@@ -67,8 +68,7 @@ namespace Arxius.UserIntreface.ViewModels
         }
 
         #endregion
-        public ICommand ShowEmployee { private set; get; }
-        public ICommand Refresh { private set; get; }
+       
       
     }
 }

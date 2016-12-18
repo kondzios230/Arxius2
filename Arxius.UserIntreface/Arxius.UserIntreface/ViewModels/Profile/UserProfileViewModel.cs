@@ -9,14 +9,15 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class UserProfileViewModel : AbstractViewModel
     {
+        public ICommand ShowProfile { private set; get; }       
         public UserProfileViewModel(INavigation navi,Page page)
         {
             uService = new UtilsService();
             _page = page;
             Navigation = navi;
             GetUserProfileAsync();
-            ShowProfile = new Command(ExecuteShowProfile);
-            Refresh = new Command(ExecuteRefresh);
+            ShowProfile = new Command(async () => await Navigation.PushAsync(new EctsPage(Navigation)));
+            Refresh = new Command(() => GetUserProfileAsync(true));
         }
         private async void GetUserProfileAsync(bool clear = false)
         {
@@ -105,15 +106,7 @@ namespace Arxius.UserIntreface.ViewModels
         }
 
         #endregion
-        public ICommand ShowProfile { private set; get; }
-        async void ExecuteShowProfile()
-        {
-            await Navigation.PushAsync(new EctsPage(Navigation));
-        }
-        public ICommand Refresh { private set; get; }
-        void ExecuteRefresh()
-        {
-            GetUserProfileAsync(true);
-        }
+    
+        
     }
 }

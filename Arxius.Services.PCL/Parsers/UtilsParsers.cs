@@ -19,7 +19,7 @@ namespace Arxius.Services.PCL.Parsers
             foreach (var match in matches)
             {
                 var _match = match as Match;
-                list.Add(new News() { Title = _match.Groups[1].ToString().ToUpper()[0]+_match.Groups[1].ToString().Substring(1), RestToParse= _match.Groups[2].ToString() });
+                list.Add(new News() { Title = _match.Groups[1].ToString().ToUpper()[0] + _match.Groups[1].ToString().Substring(1), RestToParse = _match.Groups[2].ToString() });
             }
             return list;
         }
@@ -28,8 +28,8 @@ namespace Arxius.Services.PCL.Parsers
         {
             var newsDetailsMatch = Regex.Match(news.RestToParse, @"<span class=""od-news-date"">(.*?)<\/span><\/div><div class=""od-news-body""><p>(.*?)<\/p><\/div><div class=""od-news-footer"">(.*?)<");
             news.Date = newsDetailsMatch.Groups[1].ToString().Trim(' ');
-            news.Content = Regex.Replace(newsDetailsMatch.Groups[2].ToString().Trim(' '), @"<.*?>|&nbsp;", "").Replace("&oacute;", "ó"); 
-            news.Author= newsDetailsMatch.Groups[3].ToString().Trim(' ');
+            news.Content = Regex.Replace(newsDetailsMatch.Groups[2].ToString().Trim(' '), @"<.*?>|&nbsp;", "").Replace("&oacute;", "ó");
+            news.Author = newsDetailsMatch.Groups[3].ToString().Trim(' ');
 
             return news;
         }
@@ -77,33 +77,48 @@ namespace Arxius.Services.PCL.Parsers
             foreach (var employeeMatch in employeesMatch)
             {
                 var employee = employeeMatch as Match;
-                employees.Add(new Employee() { Name = employee.Groups[2].ToString(), Url = string.Format(Properties.Resources.baseUri,employee.Groups[1].ToString()), Email = employee.Groups[4].ToString() });
+                employees.Add(new Employee() { Name = employee.Groups[2].ToString(), Url = string.Format(Properties.Resources.baseUri, employee.Groups[1].ToString()), Email = employee.Groups[4].ToString() });
             }
             return employees;
         }
 
-        public static void GetImportantDates(string page)
+        public static List<StringGroup> GetImportantDates(string page)
         {
-            var m1 = Regex.Matches(page, @"<h4>(S|s)(.*?)<\/h4><p><strong>(.*?)<\/strong>(.*?)<(.*?)\/p>", RegexOptions.Multiline);
-            var m1a = Regex.Matches(page, @"<h4>(.*?)<\/h4><p><strong>(.*?)<\/strong>(.*?)<(.*?)\/p>", RegexOptions.Multiline);
-            var m2 = Regex.Matches(page, @"<strong>Dni rektorskie: <\/strong>(.*?)<br>", RegexOptions.Multiline);
-            var m3a= Regex.Matches(page, @"<strong>Przerwa świąteczna:</strong>(.*?)<br>", RegexOptions.Multiline);
-            var m4 = Regex.Matches(page, @"<strong>Sesja egzaminacyjna:</strong>(.*?)<br>", RegexOptions.Multiline);
-            var m5 = Regex.Matches(page, @"<strong>Sesja poprawkowa:</strong>(.*?)</p>", RegexOptions.Multiline);
+            var headerMatches = Regex.Matches(page, @"<h4>(S|s)(.*?)<\/h4><p><strong>(.*?)<\/strong>(.*?)<(.*?)\/p>", RegexOptions.Multiline);
+            string[] tableHeaders = { "Dni rektorskie: ", "Przerwa świąteczna:", "Sesja egzaminacyjna:", "Sesja poprawkowa:" };
+            var dic = new List<StringGroup>();
+            if (headerMatches.Count == 2)
+            {
+                
+                var semsters = new List<string>() { page.Substring(headerMatches[0].Index, headerMatches[1].Index - headerMatches[0].Index), page.Substring(headerMatches[1].Index) };
+               
+                for (int i = 0; i < 2; i++)
+                {
+                    var result= new StringGroup(headerMatches[i].Groups[1].ToString()+ headerMatches[i].Groups[2].ToString());
+                    foreach (var head in tableHeaders)
+                    {
+                        var match = Regex.Match(semsters[i], string.Format(@"<strong>{0}<\/strong>(.*?)<", head), RegexOptions.Multiline);
+                        if (match != null)
+                            result.Add(string.Format("{0} - {1}", head, match.Groups[1]));
+                    }
+                    dic.Add(result);
+                }
+            }
+            return dic;
         }
 
-        public static Employee GetEmployeeDetails(string page,Employee employee)
+        public static Employee GetEmployeeDetails(string page, Employee employee)
         {
             page = page.Replace("\n", string.Empty);
             var employeeDetailsMatch = Regex.Match(page, @"<tr><th>pokój<\/th><td>(.*?)<\/td><\/tr>(.*?)<h3>Konsultacje:<\/h3><p>(.*?)<\/p>(.*?)<div class=""byWeekDays"">(.*?)<\/div>", RegexOptions.Multiline);
             if (employeeDetailsMatch == null) throw new Exception();
-            employee.Room= "pok. " +employeeDetailsMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty);
+            employee.Room = "pok. " + employeeDetailsMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty);
             employee.Consults = employeeDetailsMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty);
             var weekByDays = employeeDetailsMatch.Groups[5].ToString();
             var daysMatch = Regex.Matches(weekByDays, @"<h3>(.*?)<\/h3><ul>(.*?)<\/ul>");
             var dict = new List<StringGroup>();
             foreach (Match match in daysMatch)
-            {               
+            {
                 var day = match.Groups[1].ToString();
                 if (day == "Poniedzialek")
                     day = "Poniedziałek";

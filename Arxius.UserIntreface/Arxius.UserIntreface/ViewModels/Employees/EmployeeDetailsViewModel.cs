@@ -10,7 +10,10 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class EmployeeDetailsViewModel : AbstractViewModel
     {
+        public ICommand SendEmail { private set; get; }
+        public ICommand OpenPage { private set; get; }
         private Employee emptyEmployee;
+
         public EmployeeDetailsViewModel(INavigation navi, Employee employee, Page page)
         {
             emptyEmployee = employee;
@@ -19,8 +22,8 @@ namespace Arxius.UserIntreface.ViewModels
             _page = page;
             Navigation = navi;
             Refresh = new Command(() => GetEmployeDetailsAsync(true));
-            SendEmail = new Command(ExecuteSendEmail);
-            OpenPage = new Command(ExecuteOpenPage);
+            SendEmail = new Command(ExecuteSendEmail,()=> { return Employee != null && Employee.Email.Length != 0; });
+            OpenPage = new Command(ExecuteOpenPage, () => { return Employee != null && Employee.Url.Length != 0; });
         }
         private async void GetEmployeDetailsAsync(bool clear = false)
         {
@@ -47,15 +50,17 @@ namespace Arxius.UserIntreface.ViewModels
                 {
                     _employee = value;
                     OnPropertyChanged("Employee");
+                    if (SendEmail != null)
+                        ((Command)SendEmail).ChangeCanExecute();
+                    if (OpenPage != null)
+                        ((Command)OpenPage).ChangeCanExecute();
                 }
             }
         }
 
 
         #endregion
-        public ICommand Refresh { private set; get; }
-        public ICommand SendEmail { private set; get; }
-        public ICommand OpenPage { private set; get; }
+       
         void ExecuteSendEmail()
         {
             var eMailService = DependencyService.Get<IOpenMailer>();

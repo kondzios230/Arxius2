@@ -12,8 +12,11 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class CourseDetailsViewModel : AbstractViewModel
     {
-        private ICourseService cService;
         private Course emptyCourse;
+        public ICommand EnrollOrUnroll { private set; get; }
+        public ICommand ShowList { private set; get; }
+        public ICommand SaveCourseNotes { private set; get; }
+
         public CourseDetailsViewModel(INavigation navi, Course course, Page page)
         {
             _page = page;
@@ -25,8 +28,8 @@ namespace Arxius.UserIntreface.ViewModels
 
             EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll, (s) => CanEnroll);
             SaveCourseNotes = new Command(ExecuteSaveCourseNotes, () => CourseNotes.Length > 0);
-            ShowList = new Command<_Class>(ExecuteShowList);
-            Refresh = new Command(ExecuteRefresh);
+            ShowList = new Command<_Class>(async (c)=> await Navigation.PushAsync(new StudentsListPage(Navigation, c)));
+            Refresh = new Command(()=> GetCourseDetailsAsync(true));
         }
         private async void GetCourseDetailsAsync(bool clear = false)
         {
@@ -204,7 +207,9 @@ namespace Arxius.UserIntreface.ViewModels
         }
 
         #endregion
-        public ICommand EnrollOrUnroll { private set; get; }
+       
+
+
         async void ExecuteEnrollOrUnroll(_Class c)
         {
             try
@@ -212,7 +217,7 @@ namespace Arxius.UserIntreface.ViewModels
                 var enrollmentTuple = await cService.EnrollOrUnroll(c);
                 if (enrollmentTuple.Item1)
                 {
-                    ExecuteRefresh();
+                    GetCourseDetailsAsync(true);
                     Cache.Clear("GetUserPlanForCurrentSemester");
                     if (BreadCrumb.Contains(Properties.Resources.PageNameSchedule))
                         enrollmentTuple.Item3.Add("Odśwież plan zajęć");
@@ -226,13 +231,7 @@ namespace Arxius.UserIntreface.ViewModels
            
         }
 
-        public ICommand ShowList { private set; get; }
-        async void ExecuteShowList(_Class c)
-        {
-            await Navigation.PushAsync(new StudentsListPage(Navigation, c));
-
-        }
-        public ICommand SaveCourseNotes { private set; get; }
+        
         async void ExecuteSaveCourseNotes()
         {
             var fileService = DependencyService.Get<ISaveAndLoad>();
@@ -247,11 +246,6 @@ namespace Arxius.UserIntreface.ViewModels
             }
             MessagingCenter.Send(this, Properties.Resources.MsgSave, true);
 
-        }
-        public ICommand Refresh { private set; get; }
-        void ExecuteRefresh()
-        {
-            GetCourseDetailsAsync(true);
         }
     }
 }

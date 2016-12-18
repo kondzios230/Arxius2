@@ -18,7 +18,7 @@ namespace Arxius.UserIntreface.ViewModels
             cService = new CoursesService();  
             _page = page;
             Navigation = navi;
-            Refresh = new Command(ExecuteRefresh);
+            Refresh = new Command(()=> GetProfileAsync(true));
             EctsPoints = new List<string>();
             GetProfileAsync();
         }
@@ -27,11 +27,12 @@ namespace Arxius.UserIntreface.ViewModels
             try
             {
                 IsAIRunning = true;
-                var ects = await cService.SumAllECTSPoints(cT.Token, clear);
+                var ects = await cService.SumAllECTSPoints(cT.Token, (d) => Progress = (Progress+d)%1,  clear);
                 var l = new List<string>();
                 foreach (var val in ects.Keys)
                     l.Add(string.Format("{0}: {1}", val, ects[val]));
                 EctsPoints = l;
+                Progress = 1;
             }
             catch (ArxiusException e)
             {
@@ -44,7 +45,6 @@ namespace Arxius.UserIntreface.ViewModels
         }
 
         private List<string> _ectsPoints;
-
         public List<string> EctsPoints
         {
             get { return _ectsPoints; }
@@ -57,11 +57,23 @@ namespace Arxius.UserIntreface.ViewModels
                 }
             }
         }
-        public ICommand Refresh { private set; get; }
-        void ExecuteRefresh()
+
+        private double _progress;
+        public double Progress
         {
-            GetProfileAsync(true);
+            get { return _progress; }
+            set
+            {
+                if (_progress != value)
+                {
+                    _progress = value;
+                    OnPropertyChanged("Progress");
+                }
+            }
         }
+
+
+        
 
 
     }

@@ -10,15 +10,15 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class CourseListViewModel : AbstractViewModel
     {
-        
+        public ICommand ShowCourse { private set; get; }
         public CourseListViewModel(INavigation navi, Page page)
         {
             cService = new CoursesService();
             _page = page;
             Navigation = navi;
             GetCoursesAsync();
-            ShowCourse = new Command(ExecuteShowCourse);
-            Refresh = new Command(ExecuteRefresh);
+            ShowCourse = new Command(async ()=> await Navigation.PushAsync(new CourseDetailsPage(Navigation, SelectedCourse)));
+            Refresh = new Command(()=>GetCoursesAsync(true));
         }
         private async void GetCoursesAsync(bool clear =false)
         {
@@ -71,15 +71,9 @@ namespace Arxius.UserIntreface.ViewModels
                 SelectedCourse = null;
             }
         }
-        public ICommand ShowCourse { private set; get; }
-        async void ExecuteShowCourse()
-        {
-            await Navigation.PushAsync(new CourseDetailsPage(Navigation, SelectedCourse));
-        }
-        public ICommand Refresh { private set; get; }
-        void ExecuteRefresh()
-        {
-            GetCoursesAsync(true);
-        }
+
+        
+        
+        
     }
 }

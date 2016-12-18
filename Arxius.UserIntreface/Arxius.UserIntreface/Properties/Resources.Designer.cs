@@ -134,6 +134,15 @@ namespace Arxius.UserIntreface.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Terminarz.
+        /// </summary>
+        internal static string PageNameDates {
+            get {
+                return ResourceManager.GetString("PageNameDates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Punkty ECTS.
         /// </summary>
         internal static string PageNameEcts {

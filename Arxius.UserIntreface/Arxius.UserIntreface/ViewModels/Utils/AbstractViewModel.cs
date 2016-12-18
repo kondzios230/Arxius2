@@ -1,6 +1,7 @@
 ﻿using Arxius.Services.PCL.Interfaces_and_mocks;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
@@ -9,6 +10,7 @@ namespace Arxius.UserIntreface.ViewModels
     {
         protected ICourseService cService;
         protected IUtilsService uService;
+        public ICommand Refresh { protected set; get; }
         public event PropertyChangedEventHandler PropertyChanged;
         private string _breadCrumb;
         protected Page _page;

@@ -141,6 +141,9 @@
   <data name="PageNameCoursesList" xml:space="preserve">
     <value>Lista kursów</value>
   </data>
+  <data name="PageNameDates" xml:space="preserve">
+    <value>Terminarz</value>
+  </data>
   <data name="PageNameEcts" xml:space="preserve">
     <value>Punkty ECTS</value>
   </data>

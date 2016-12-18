@@ -49,15 +49,22 @@ namespace Arxius.Services.PCL
         }
         public async Task<Employee> GetEmployeeDetails(Employee employee, bool clean = false)
         {
-            var page = await HTMLUtils.GetPage(employee.Url);
-           return  UtilsParsers.GetEmployeeDetails(page,employee);
+            return await Cache.Get(new { a = "GetEmployeeDetails", p = employee.Name }, async () =>
+            {
+                var page = await HTMLUtils.GetPage(employee.Url);
+                return UtilsParsers.GetEmployeeDetails(page, employee);
+            }
+                , clean);
         }
-        public async void GetImportantDates(bool clean = false)
+        public async Task<List<StringGroup>> GetImportantDates(bool clean = false)
         {
-            var page = (await HTMLUtils.GetPage(@"http://ii.uni.wroc.pl/dla-studenta/kalendarz")).Replace("\n", string.Empty);
-            UtilsParsers.GetImportantDates(page);
-
-
+            return await Cache.Get("GetImportantDates", async () =>
+            {
+                var page = (await HTMLUtils.GetPage(@"http://ii.uni.wroc.pl/dla-studenta/kalendarz")).Replace("\n", string.Empty);
+                return UtilsParsers.GetImportantDates(page);
+            }
+             , clean);
+           
         }
     }
 }
