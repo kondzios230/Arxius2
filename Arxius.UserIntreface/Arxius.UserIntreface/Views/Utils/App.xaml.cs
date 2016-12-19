@@ -12,7 +12,7 @@ namespace Arxius.UserIntreface
         public App()
         {
             InitializeComponent();
-            MainPage = new Arxius.UserIntreface.LoginPage();
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()

@@ -9,7 +9,7 @@ namespace Arxius.Services.PCL.Interfaces_and_mocks
     public interface ICourseService
     {
         Task<Dictionary<string, int>> SumAllECTSPoints(CancellationToken cT, Func<double,double> a, bool clean=false);
-        Task<List<Course>> GetUserPlanForCurrentSemester(bool clean = false);
+        Task<List<Course>> GetUserPlanForCurrentSemester(bool isOffline, bool clean = false);
         Task<List<Course>> GetAllUserCourses(bool clean = false);
         Task<List<Course>> GetAllCourses(bool clean = false);
         Task<Course> GetCourseWideDetails(Course course, bool clean = false);

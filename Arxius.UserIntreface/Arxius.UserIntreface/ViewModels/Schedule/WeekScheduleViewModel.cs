@@ -20,21 +20,23 @@ namespace Arxius.UserIntreface.ViewModels
         private Color todayColor = Color.FromHex("#bfe9ff");
         private Color todayCellColor = Color.FromHex("#35bbff");
         private Color clickedCellColor = Color.FromHex("#00aaff");
-        
-        public WeekScheduleViewModel(INavigation navi, WeekSchedulePage page)
+        private bool isOffline;
+        public WeekScheduleViewModel(INavigation navi, WeekSchedulePage page, bool isOffline)
         {
+            this.isOffline = isOffline;
             cService = new CoursesService();
             _page = this.page = page;
+            Navigation = navi;
             page.Content = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
             (page.Content as StackLayout).Children.Add(new ActivityIndicator() { Color = todayCellColor, IsVisible = true, IsRunning = true });
-            Navigation = navi;
+
             GetUserScheduleAsync();
         }
         private async void GetUserScheduleAsync()
         {
             try
-            {               
-                Schedule = await cService.GetUserPlanForCurrentSemester();
+            {
+                Schedule = await cService.GetUserPlanForCurrentSemester(isOffline);
                 AnalyzeSchedule(Schedule);
             }
             catch (ArxiusException e)
@@ -99,7 +101,7 @@ namespace Arxius.UserIntreface.ViewModels
             MapLessons(lessons, rows, startHour, grid);
             var scroll = new ScrollView() { Content = grid, Orientation = ScrollOrientation.Both };
             var stack = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.FillAndExpand };
-            
+
 
             stack.Children.Add(GenerateHeaderGrid());
             stack.Children.Add(scroll);
@@ -149,14 +151,15 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private Grid GenerateHeaderGrid()
         {
-            var headerGrid = new Grid() { HorizontalOptions = LayoutOptions.EndAndExpand, Padding = new Thickness(2),BackgroundColor=todayCellColor };
+            var headerGrid = new Grid() { HorizontalOptions = LayoutOptions.EndAndExpand, Padding = new Thickness(2), BackgroundColor = todayCellColor };
             var image = new Image() { Source = "Refresh.png" };
             image.GestureRecognizers.Add(new TapGestureRecognizer() { Command = new Command(() => ExecuteForceRefresh()) });
             headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(25, GridUnitType.Absolute) });
             headerGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) });
-            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)), TextColor=Color.White, Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalTextAlignment = TextAlignment.Center }, 0, 0);
-            headerGrid.Children.Add(image, 1, 0);
+            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)), TextColor = Color.White, Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalTextAlignment = TextAlignment.Center }, 0, 0);
+            if(!isOffline)
+                headerGrid.Children.Add(image, 1, 0);
             return headerGrid;
         }
         private List<Course> _schedule;
@@ -187,7 +190,7 @@ namespace Arxius.UserIntreface.ViewModels
 
         async void ExecuteForceRefresh()
         {
-            var ai = new ActivityIndicator() { Color = Color.White    , IsVisible = true, IsRunning = true };
+            var ai = new ActivityIndicator() { Color = Color.White, IsVisible = true, IsRunning = true };
             try
             {
                 ((page.Content as StackLayout).Children[0] as Grid).Children.Add(ai);

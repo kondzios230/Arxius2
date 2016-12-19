@@ -126,6 +126,9 @@
   <data name="MsgEnrollment" xml:space="preserve">
     <value>MsgEnrollment</value>
   </data>
+  <data name="MsgFileError" xml:space="preserve">
+    <value>MsgFileError</value>
+  </data>
   <data name="MsgLoginFailed" xml:space="preserve">
     <value>MsgLoginFailed</value>
   </data>
@@ -150,11 +153,17 @@
   <data name="PageNameEmployeesList" xml:space="preserve">
     <value>Lista pracowników</value>
   </data>
+  <data name="PageNameLogin" xml:space="preserve">
+    <value>Strona logowania</value>
+  </data>
   <data name="PageNameMain" xml:space="preserve">
     <value>Strona główna</value>
   </data>
   <data name="PageNameNewsFeed" xml:space="preserve">
     <value>Aktualności</value>
+  </data>
+  <data name="PageNameOfflineSchedule" xml:space="preserve">
+    <value>Plan zajęć offline</value>
   </data>
   <data name="PageNameSchedule" xml:space="preserve">
     <value>Plan zajęć</value>

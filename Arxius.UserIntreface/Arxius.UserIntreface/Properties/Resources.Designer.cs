@@ -89,6 +89,15 @@ namespace Arxius.UserIntreface.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MsgFileError.
+        /// </summary>
+        internal static string MsgFileError {
+            get {
+                return ResourceManager.GetString("MsgFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MsgLoginFailed.
         /// </summary>
         internal static string MsgLoginFailed {
@@ -161,6 +170,15 @@ namespace Arxius.UserIntreface.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Strona logowania.
+        /// </summary>
+        internal static string PageNameLogin {
+            get {
+                return ResourceManager.GetString("PageNameLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Strona główna.
         /// </summary>
         internal static string PageNameMain {
@@ -175,6 +193,15 @@ namespace Arxius.UserIntreface.Properties {
         internal static string PageNameNewsFeed {
             get {
                 return ResourceManager.GetString("PageNameNewsFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plan zajęć offline.
+        /// </summary>
+        internal static string PageNameOfflineSchedule {
+            get {
+                return ResourceManager.GetString("PageNameOfflineSchedule", resourceCulture);
             }
         }
         

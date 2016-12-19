@@ -12,8 +12,10 @@ namespace Arxius.UserIntreface
     {
         public LoginPage()
         {
+            Title = Properties.Resources.PageNameLogin;
             InitializeComponent();
             BindingContext = new LoginViewModel(Navigation);
+            NavigationPage.SetHasNavigationBar(this, false);
             MessagingCenter.Subscribe<LoginViewModel>(this, Properties.Resources.MsgLoginFailed,
                 async (sender) =>
                 {

@@ -22,7 +22,7 @@ namespace Arxius.Tests
         public async Task<bool> IsCorrectNumberOfCoursesInCurrentSemesterReturned()
         {
             var sService = new CoursesService();
-            var x = await sService.GetUserPlanForCurrentSemester();
+            var x = await sService.GetUserPlanForCurrentSemester(false);
 
             return (x.Count == 2);
         }

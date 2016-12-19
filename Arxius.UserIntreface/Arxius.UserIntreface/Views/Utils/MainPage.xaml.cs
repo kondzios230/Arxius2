@@ -12,7 +12,6 @@ namespace Arxius.UserIntreface
     {
         public MainPage()
         {
-
             Title = Properties.Resources.PageNameMain;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);

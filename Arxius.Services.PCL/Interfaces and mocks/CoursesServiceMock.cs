@@ -545,5 +545,9 @@ A. Quarteroni, R. Sacco, F. Saleri, Numerical Mathematics, Springer-Verlag, 2000
             return Tuple.Create(sigingResult.Item1 != _class.IsSignedIn, sigingResult.Item2, sigingResult.Item3); //if differs, then some error must have occured
         }
 
+        public Task<List<Course>> GetUserPlanForCurrentSemester(bool isOffline, bool clean = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

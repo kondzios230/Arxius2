@@ -1,6 +1,7 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
 using Arxius.Services.PCL.Interfaces_and_mocks;
+using Arxius.Services.PCL.Parsers;
 using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -14,12 +15,13 @@ namespace Arxius.UserIntreface.ViewModels
         {
             Navigation = navi;
             Login = AuthDoNotSync.Login().Item1;
-            Password= AuthDoNotSync.Login().Item2;
+            Password = AuthDoNotSync.Login().Item2;
             ExecuteLogin = new Command(DoLogin);
+            ShowPlan = new Command(Foo);
             service = new UtilsService();
         }
 
-        static string  _login;
+        static string _login;
         public string Login
         {
             set
@@ -53,9 +55,10 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 return _password;
             }
-        }      
+        }
 
         public ICommand ExecuteLogin { private set; get; }
+        public ICommand ShowPlan { private set; get; }
         async void DoLogin()
         {
             try
@@ -71,11 +74,16 @@ namespace Arxius.UserIntreface.ViewModels
                     MessagingCenter.Send(this, Properties.Resources.MsgLoginFailed);
                 }
             }
-            catch( ArxiusException e)
+            catch (ArxiusException e)
             {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError,e.Message);
+                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
             IsAIRunning = false;
+        }
+        async void Foo()
+        {
+           await  Navigation.PushAsync(new WeekSchedulePage(Navigation,true));
+           
         }
     }
 }

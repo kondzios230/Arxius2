@@ -35,11 +35,32 @@ namespace Arxius.Services.PCL
                 return ret;
             }, clean);
         }
-        public async Task<List<Course>> GetUserPlanForCurrentSemester(bool clean = false)
+        public async Task<List<Course>> GetUserPlanForCurrentSemester(bool IsOffline,bool clean = false)
         {
+            if(IsOffline)
+            {
+                var fileService = DependencyService.Get<ISaveAndLoad>();
+                if (fileService == null || !fileService.FileExists("Schedule1.txt"))
+                    throw new ArxiusException();
+                else
+                {
+                    var page = await fileService.LoadTextAsync("Schedule1.txt");
+                    if (page == null || page.Length == 0)
+                        throw new ArxiusException();
+                   return CoursesParsers.GetUserPlanForCurrentSemester(page);
+                }
+            }
             return await Cache.Get("GetUserPlanForCurrentSemester", async () =>
             {
                 var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/records/schedule/"));
+                var fileService = DependencyService.Get<ISaveAndLoad>();
+                try
+                {
+                    await fileService.SaveTextAsync("Schedule1.txt", page);
+                }
+                catch
+                {
+                }
                 return CoursesParsers.GetUserPlanForCurrentSemester(page);
             }, clean);
         }

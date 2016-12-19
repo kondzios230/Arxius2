@@ -7,8 +7,8 @@
   <ContentPage.Content>
     <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand">
       <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="40" />
+        <RowDefinition Height="100" />
+        <RowDefinition Height="20" />
         <RowDefinition Height="*" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
@@ -17,11 +17,12 @@
       </Grid.ColumnDefinitions>
       <Label Text="Arxius" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large" Grid.Row="0" Grid.Column="0"/>
       <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}" Grid.Row="1" Grid.Column="0" />
+   
       <StackLayout VerticalOptions="CenterAndExpand"
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
-                 Spacing="15" Grid.Row="2" Grid.Column="0">
-
+                 Spacing="5" Grid.Row="2" Grid.Column="0">
+        <Button Text="Sprawdź plan offline" Command="{Binding ShowPlan}" Grid.Row="1" Grid.Column="0"/>
         <Entry Text="{Binding Login}"
                  VerticalOptions="Center"
                  HorizontalOptions="CenterAndExpand"
@@ -32,7 +33,6 @@
                  Placeholder="Podaj hasło"
                 IsPassword="True"/>
         <Button Text="Login" Command="{Binding ExecuteLogin}" />
-        
       </StackLayout>
       <StackLayout VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand"

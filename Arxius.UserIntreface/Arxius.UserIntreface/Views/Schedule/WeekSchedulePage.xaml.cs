@@ -12,12 +12,12 @@ namespace Arxius.UserIntreface
     {
         public Grid grid;
         public ScrollView scroll;
-        public WeekSchedulePage(INavigation _navi)
+        public WeekSchedulePage(INavigation _navi,bool isOffline=false)
         {
-            Title = Properties.Resources.PageNameSchedule;
+            Title = isOffline ? Properties.Resources.PageNameOfflineSchedule:Properties.Resources.PageNameSchedule;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new WeekScheduleViewModel(_navi,this);
+            BindingContext = new WeekScheduleViewModel(_navi,this,isOffline);
             MessagingCenter.Subscribe<WeekScheduleViewModel>(this, Properties.Resources.MsgEmptySchedule,
              async (sender) =>
              {
