@@ -157,7 +157,7 @@ namespace Arxius.UserIntreface.ViewModels
             headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(25, GridUnitType.Absolute) });
             headerGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) });
-            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)), TextColor = Color.White, Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalTextAlignment = TextAlignment.Center }, 0, 0);
+            headerGrid.Children.Add(new Label() { Text = BreadCrumb, FontAttributes = FontAttributes.Italic, FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)), TextColor = Color.White, Margin = 10, HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalTextAlignment = TextAlignment.Center }, 0, 0);
             if(!isOffline)
                 headerGrid.Children.Add(image, 1, 0);
             return headerGrid;
@@ -194,7 +194,7 @@ namespace Arxius.UserIntreface.ViewModels
             try
             {
                 ((page.Content as StackLayout).Children[0] as Grid).Children.Add(ai);
-                Schedule = await cService.GetUserPlanForCurrentSemester(true);
+                Schedule = await cService.GetUserPlanForCurrentSemester(false,true);
                 AnalyzeSchedule(Schedule);
             }
             catch (ArxiusException e)

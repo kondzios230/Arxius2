@@ -62,7 +62,7 @@ namespace Arxius.Services.PCL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://zapisy.ii.uni.wroc.pl{0}.
+        ///   Looks up a localized string similar to http://192.168.0.16:8002{0}.
         /// </summary>
         internal static string baseUri {
             get {
@@ -76,15 +76,6 @@ namespace Arxius.Services.PCL.Properties {
         internal static string baseUri2 {
             get {
                 return ResourceManager.GetString("baseUri2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Brak dopasowania regExa {0} w tekscie {1}.
-        /// </summary>
-        internal static string ErrorNoRegex {
-            get {
-                return ResourceManager.GetString("ErrorNoRegex", resourceCulture);
             }
         }
         

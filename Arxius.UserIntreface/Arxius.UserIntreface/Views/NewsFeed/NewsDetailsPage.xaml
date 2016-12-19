@@ -18,7 +18,7 @@
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Micro" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
+        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
 
       </Grid>
       <Label Text ="{Binding Title}" FontSize="Large" HorizontalTextAlignment="Center" Margin ="4"/>
