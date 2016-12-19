@@ -29,7 +29,7 @@
       <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
       <Label Text ="Punkty ECTS" FontSize="Large"/>
       <Label Text ="{Binding Ects}"/>
-      <Button Text="Pokaż ECTSy" Command="{Binding ShowProfile}" />
+      <Button Text="TWOJE PUNKTY ECTS" Command="{Binding ShowProfile}" />
       <Label Text ="Data zdjęcia limitu" FontSize="Large"/>
       <Label Text ="{Binding LimitRemovalTime}"/>
       <Label Text ="Data końca zapisów" FontSize="Large"/>

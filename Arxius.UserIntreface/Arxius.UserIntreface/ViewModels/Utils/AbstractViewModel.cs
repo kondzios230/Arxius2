@@ -1,6 +1,8 @@
 ﻿using Arxius.Services.PCL.Interfaces_and_mocks;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -46,7 +48,7 @@ namespace Arxius.UserIntreface.ViewModels
                 }
                 if (_page != null && (s.Count==0 || s[s.Count - 1] != _page.Title))
                     s.Add(_page.Title);
-                BreadCrumb = string.Join(" > ", s);
+                BreadCrumb = string.Join(" > ", s.Skip(Math.Max(0, s.Count() - 2)));
             }
             get
             {

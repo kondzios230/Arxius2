@@ -23,6 +23,7 @@ namespace Arxius.UserIntreface.ViewModels
         {
             try
             {
+                IsAIRunning = true;
                 var tuple = await cService.GetStudentsList(_class,clear);
                 Enrolled = tuple.Item1.ToString();
                 Total = tuple.Item2.ToString();
@@ -33,6 +34,7 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
+            IsAIRunning = false;
         }
         #region BindableProperties
         private _Class _class;

@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.Tests", ".\Arxius.Tests\Arxius.Tests.csproj", "{2E0A444C-8845-400D-B095-A48CAED281E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.Tests", "Arxius.Tests\Arxius.Tests.csproj", "{2E0A444C-8845-400D-B095-A48CAED281E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface", ".\Arxius.UserIntreface\Arxius.UserIntreface\Arxius.UserIntreface.csproj", "{CD364EAD-37CC-4F14-9C2D-5B9B0D82BC45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface", "Arxius.UserIntreface\Arxius.UserIntreface\Arxius.UserIntreface.csproj", "{CD364EAD-37CC-4F14-9C2D-5B9B0D82BC45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.Droid", ".\Arxius.UserIntreface\Arxius.UserIntreface.Droid\Arxius.UserIntreface.Droid.csproj", "{179C7B01-10C8-4127-82F1-5D4373B0FB89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.Droid", "Arxius.UserIntreface\Arxius.UserIntreface.Droid\Arxius.UserIntreface.Droid.csproj", "{179C7B01-10C8-4127-82F1-5D4373B0FB89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.iOS", ".\Arxius.UserIntreface\Arxius.UserIntreface.iOS\Arxius.UserIntreface.iOS.csproj", "{9C7A2A41-7FA6-4FC5-9ECF-EA082FC5DD81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.iOS", "Arxius.UserIntreface\Arxius.UserIntreface.iOS\Arxius.UserIntreface.iOS.csproj", "{9C7A2A41-7FA6-4FC5-9ECF-EA082FC5DD81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.WinPhone", ".\Arxius.UserIntreface\Arxius.UserIntreface.WinPhone\Arxius.UserIntreface.WinPhone.csproj", "{456CB9F8-1D31-460C-AD5B-624FB7AAC074}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.WinPhone", "Arxius.UserIntreface\Arxius.UserIntreface.WinPhone\Arxius.UserIntreface.WinPhone.csproj", "{456CB9F8-1D31-460C-AD5B-624FB7AAC074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.UWP", ".\Arxius.UserIntreface\Arxius.UserIntreface.UWP\Arxius.UserIntreface.UWP.csproj", "{E5C90C45-EE94-44FF-BE5A-A5B4E41B1C11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.UWP", "Arxius.UserIntreface\Arxius.UserIntreface.UWP\Arxius.UserIntreface.UWP.csproj", "{E5C90C45-EE94-44FF-BE5A-A5B4E41B1C11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.Windows", ".\Arxius.UserIntreface\Arxius.UserIntreface.Windows\Arxius.UserIntreface.Windows.csproj", "{27A5E967-5656-453B-BEC9-9C7B093FC265}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.UserIntreface.Windows", "Arxius.UserIntreface\Arxius.UserIntreface.Windows\Arxius.UserIntreface.Windows.csproj", "{27A5E967-5656-453B-BEC9-9C7B093FC265}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.DataAccess.PCL", ".\Arxius.DataAccess.PCL\Arxius.DataAccess.PCL.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.DataAccess.PCL", "Arxius.DataAccess.PCL\Arxius.DataAccess.PCL.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.Services.PCL", ".\Arxius.Services.PCL\Arxius.Services.PCL.csproj", "{94FEEC16-62D2-4F71-9A1C-3DC74BC12130}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arxius.Services.PCL", "Arxius.Services.PCL\Arxius.Services.PCL.csproj", "{94FEEC16-62D2-4F71-9A1C-3DC74BC12130}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unaval", "Unaval", "{BA8D3666-DA6F-4D3F-9623-8890C459C2F7}"
 EndProject
@@ -556,6 +556,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{2E0A444C-8845-400D-B095-A48CAED281E7} = {BA8D3666-DA6F-4D3F-9623-8890C459C2F7}
 		{9C7A2A41-7FA6-4FC5-9ECF-EA082FC5DD81} = {BA8D3666-DA6F-4D3F-9623-8890C459C2F7}
 		{456CB9F8-1D31-460C-AD5B-624FB7AAC074} = {BA8D3666-DA6F-4D3F-9623-8890C459C2F7}
 		{E5C90C45-EE94-44FF-BE5A-A5B4E41B1C11} = {BA8D3666-DA6F-4D3F-9623-8890C459C2F7}

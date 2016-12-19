@@ -23,7 +23,7 @@ namespace Arxius.UserIntreface.ViewModels
             GetNewsPageAsync();
             ShowNews = new Command(async () => await Navigation.PushAsync(new NewsDetailsPage(Navigation, SelectedNews)));
             PreviousPage = new Command(async ()=>{ PageNumber--; await GetNewsPageAsync(PageNumber); },()=> PageNumber > 1);
-            NextPage = new Command(async ()=>{ PageNumber++; await GetNewsPageAsync(PageNumber); },()=> PageNumber > 1);
+            NextPage = new Command(async ()=>{ PageNumber++; await GetNewsPageAsync(PageNumber); });
             Refresh = new Command(async () => await GetNewsPageAsync(1, true));
         }
         private async Task<bool> GetNewsPageAsync(int i=1,bool clear = false)

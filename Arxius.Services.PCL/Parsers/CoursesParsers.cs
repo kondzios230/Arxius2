@@ -177,10 +177,10 @@ namespace Arxius.Services.PCL.Parsers
                 _class.enrollmentUri = courseMatch.Groups[11].ToString().Trim(' ');
                 _class.csrfToken = courseMatch.Groups[12].ToString().Trim(' ');
                 _class.enrollmentId = courseMatch.Groups[13].ToString().Trim(' ');
-                _class.ButtonEnrollText = courseMatch.Groups[16].ToString().Trim(' ');
+                _class.ButtonEnrollText = courseMatch.Groups[16].ToString().Trim(' ').ToUpper();
                 _class.ListUrl = courseMatch.Groups[17].ToString().Trim(' ');
                 _class.IsEnrollment = true;
-                _class.buttonListText = courseMatch.Groups[18].ToString().Trim(' ');
+                _class.buttonListText = courseMatch.Groups[18].ToString().Trim(' ').ToUpper();
                 _class.Priority = courseMatch.Groups[19].ToString().Trim(' ');
                 course.Classes.Add(_class);
             }
@@ -206,7 +206,7 @@ namespace Arxius.Services.PCL.Parsers
                 _class.IsSignedIn = false;
                 _class.IsEnrollment = false;
                 _class.ListUrl = courseMatch.Groups[10].ToString().Trim(' ').Trim('\\');
-                _class.buttonListText = courseMatch.Groups[11].ToString().Trim(' ');
+                _class.buttonListText = courseMatch.Groups[11].ToString().Trim(' ').ToUpper();
                 course.Classes.Add(_class);
             }
         }
@@ -231,8 +231,8 @@ namespace Arxius.Services.PCL.Parsers
                 _class.IsSignedIn = true;
                 _class.ListUrl = courseMatch.Groups[12].ToString().Trim(' ');
                 _class.IsEnrollment = !courseMatch.Groups[10].ToString().Contains("disabled");
-                _class.ButtonEnrollText = courseMatch.Groups[11].ToString().Trim(' ');
-                _class.buttonListText = courseMatch.Groups[13].ToString().Trim(' ');
+                _class.ButtonEnrollText = courseMatch.Groups[11].ToString().Trim(' ').ToUpper();
+                _class.buttonListText = courseMatch.Groups[13].ToString().Trim(' ').ToUpper();
                 course.Classes.Add(_class);
             }
         }

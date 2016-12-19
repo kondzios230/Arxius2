@@ -22,12 +22,12 @@
         <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Micro" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
        
       </Grid>
-      <Button Text="Twój plan" Command="{Binding ShowPlan}" />
-      <Button Text="profil" Command="{Binding ShowUserProfile}" />
-      <Button Text="Newsy" Command="{Binding ShowNews}" />
-      <Button Text="Pracownicy" Command="{Binding ShowEmployeeList}" />
-      <Button Text="Przedmioty" Command="{Binding ShowCoursesList}" />
-      <Button Text="Terminarz" Command="{Binding ShowDates}" />
+      <Button Text="TWÓJ PLAN" Command="{Binding ShowPlan}" />
+      <Button Text="PROFIL" Command="{Binding ShowUserProfile}" />
+      <Button Text="AKTUALNOŚCI" Command="{Binding ShowNews}" />
+      <Button Text="PRACOWNICY" Command="{Binding ShowEmployeeList}" />
+      <Button Text="PRZEDMIOTY" Command="{Binding ShowCoursesList}" />
+      <Button Text="TERMINARZ" Command="{Binding ShowDates}" />
     </StackLayout>
   </ContentPage.Content>
 

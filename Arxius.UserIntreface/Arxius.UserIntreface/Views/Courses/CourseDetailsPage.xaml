@@ -66,7 +66,7 @@
         </ListView.ItemTemplate>
       </ListView>
       <Editor Text="{Binding CourseNotes}" HeightRequest = "50"/>
-      <Button Text="Zapisz notatki" Command="{Binding SaveCourseNotes}" />
+      <Button Text="ZAPISZ NOTATKI" Command="{Binding SaveCourseNotes}" />
     </StackLayout>
   </ContentPage.Content>
 

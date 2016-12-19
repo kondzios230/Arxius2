@@ -17,7 +17,7 @@ namespace Arxius.UserIntreface.ViewModels
             Login = AuthDoNotSync.Login().Item1;
             Password = AuthDoNotSync.Login().Item2;
             ExecuteLogin = new Command(DoLogin);
-            ShowPlan = new Command(Foo);
+            ShowPlan = new Command(async() => await Navigation.PushAsync(new WeekSchedulePage(Navigation, true)));
             service = new UtilsService();
         }
 
@@ -79,11 +79,6 @@ namespace Arxius.UserIntreface.ViewModels
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
             }
             IsAIRunning = false;
-        }
-        async void Foo()
-        {
-           await  Navigation.PushAsync(new WeekSchedulePage(Navigation,true));
-           
         }
     }
 }

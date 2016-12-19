@@ -29,8 +29,8 @@
       <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
       <Label Text ="{Binding Employee.Name}" FontSize="Large" HorizontalTextAlignment="Center"/>
       <Label Text ="{Binding Employee.Room}" FontSize="Medium" Margin ="3"/>
-      <Button Text ="{Binding Employee.Email}" Command ="{Binding SendEmail}"/>
-      <Button Text ="Strona domowa" Command ="{Binding OpenPage}"/>
+      <Button Text ="WYŚLIJ E-MAIL" Command ="{Binding SendEmail}"/>
+      <Button Text ="STRONA DOMOWA" Command ="{Binding OpenPage}"/>
       <Label Text ="{Binding Employee.Consults}"  Margin ="3" />
      <ListView  x:Name="GroupedView"  ItemsSource="{Binding Employee.WeekPlan}" GroupDisplayBinding="{Binding Key}" IsGroupingEnabled="true" >
         <ListView.ItemTemplate >

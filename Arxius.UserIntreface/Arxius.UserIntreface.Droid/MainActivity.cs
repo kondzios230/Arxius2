@@ -17,8 +17,10 @@ namespace Arxius.UserIntreface.Droid
             Window.RequestFeature(WindowFeatures.NoTitle);
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
-            base.SetTheme(global::Android.Resource.Style.ThemeMaterialLight); 
+            if (Convert.ToInt32(global::Android.OS.Build.VERSION.Sdk) > 20)
+                base.SetTheme(global::Android.Resource.Style.ThemeMaterialLight);
+            else
+                base.SetTheme(global::Android.Resource.Style.ThemeHoloLight);
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);

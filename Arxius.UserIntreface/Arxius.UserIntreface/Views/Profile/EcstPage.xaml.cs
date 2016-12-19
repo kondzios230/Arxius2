@@ -16,6 +16,9 @@ namespace Arxius.UserIntreface
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = new EctsViewModel(_navi,this);
+            Ects.ItemSelected += (sender, e) => {
+                ((ListView)sender).SelectedItem = null;
+            };
             MessagingCenter.Subscribe<EctsViewModel, string>(this, Properties.Resources.MsgNetworkError,
         async (sender, message) =>
         {
