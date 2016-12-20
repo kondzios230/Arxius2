@@ -146,7 +146,7 @@ namespace Arxius.Services.PCL.Parsers
             var messagesMatches = Regex.Matches(response, @"<div class=""alert-message info"">(.*?)<\/div>", RegexOptions.Multiline);            
             var listOfMessages = new List<string>();
             foreach (Match messageMatch in messagesMatches)
-                listOfMessages.Add(messageMatch.Groups[1].ToString().Trim(' '));
+                listOfMessages.Add(messageMatch.Groups[1].ToString().Trim(' ')+".");
             var classesMatch = Regex.Matches(response, @"<tr(.*?)<\/tr>", RegexOptions.Multiline).Cast<Match>().ToList();
             var classMatch = classesMatch.FirstOrDefault(c => c.ToString().Contains(_class.enrollmentId));
             if (classMatch == null) throw new Exception();
@@ -268,6 +268,8 @@ namespace Arxius.Services.PCL.Parsers
                 {
                     var lesson = new Lesson();
                     lesson.Classroom = lessonMatch.Groups[5].ToString().Trim(' ');
+                    var temp = lesson.Classroom.Split(' ').Where(s => !string.IsNullOrWhiteSpace(s));
+                    lesson.Classroom = string.Join(" ", temp);
                     var split = lessonMatch.Groups[2].ToString().Trim(' ').Split(' ');
                     switch (split[0])
                     {

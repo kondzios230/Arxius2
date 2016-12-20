@@ -9,7 +9,7 @@ namespace Arxius.DataAccess.PCL
 {
     public static class HTMLUtils
     {
-        public static HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 10) };
+        public static HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 20) };
         public static string csrfToken;
         public async static Task<bool> Login(string baseUri, string username, string password)
         {

@@ -99,7 +99,7 @@ namespace Arxius.Services.PCL.Parsers
                     {
                         var match = Regex.Match(semsters[i], string.Format(@"<strong>{0}<\/strong>(.*?)<", head), RegexOptions.Multiline);
                         if (match != null)
-                            result.Add(string.Format("{0} - {1}", head, match.Groups[1]));
+                            result.Add(string.Format("{0} - {1}", head, match.Groups[1].ToString().Replace("r.",string.Empty).Replace(" r.", string.Empty)));
                     }
                     dic.Add(result);
                 }

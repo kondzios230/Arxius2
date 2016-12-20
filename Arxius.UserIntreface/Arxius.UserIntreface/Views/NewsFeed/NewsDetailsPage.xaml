@@ -7,7 +7,7 @@
 
   <ContentPage.Content>
     <StackLayout
-                 HorizontalOptions="CenterAndExpand"
+                 HorizontalOptions="FillAndExpand"
                  Orientation="Vertical"
                  Spacing="5">
       <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand" BackgroundColor="#35bbff">

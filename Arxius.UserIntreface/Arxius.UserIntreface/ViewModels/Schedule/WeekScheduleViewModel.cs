@@ -44,6 +44,11 @@ namespace Arxius.UserIntreface.ViewModels
                 MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
                 await Navigation.PopAsync();
             }
+            catch (ArxiusFileException e)
+            {
+                MessagingCenter.Send(this, Properties.Resources.MsgFileError, e.Message);
+                await Navigation.PopAsync();
+            }
         }
 
         private void AnalyzeSchedule(List<Course> _Schedule)
@@ -137,14 +142,15 @@ namespace Arxius.UserIntreface.ViewModels
             var day = DateTime.Now.DayOfWeek;
             var span = new FormattedString();
             span.Spans.Add(new Span { Text = ClassTypeEnums.ToFriendlyShortString(studyLesson.Lesson.Type) + "\t", FontSize = 10 });
-            span.Spans.Add(new Span { Text = "s: " + studyLesson.Lesson.Classroom, FontSize = 8 });
+            span.Spans.Add(new Span { Text = "s. " + studyLesson.Lesson.Classroom, FontSize = 8 });
 
             var lessonStack = new StackLayout() { Spacing = 1 };
             if (studyLesson.Lesson.Day == day)
                 lessonStack.BackgroundColor = todayCellColor;
             else
                 lessonStack.BackgroundColor = cellColor;
-            lessonStack.GestureRecognizers.Add(new TapGestureRecognizer() { Command = new Command(() => ExecuteShowPlan(studyLesson.Lesson.Course, lessonStack)) });
+            if(!isOffline)
+                lessonStack.GestureRecognizers.Add(new TapGestureRecognizer() { Command = new Command(() => ExecuteShowPlan(studyLesson.Lesson.Course, lessonStack)) });
             lessonStack.Children.Add(new Label() { Text = studyLesson.Lesson.Course.Name, FontSize = 12, FontAttributes = FontAttributes.Bold, TextColor = Color.White });
             lessonStack.Children.Add(new Label() { FormattedText = span, VerticalTextAlignment = TextAlignment.End, TextColor = Color.White });
             return lessonStack;

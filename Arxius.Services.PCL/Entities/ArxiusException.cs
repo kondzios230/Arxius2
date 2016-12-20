@@ -8,4 +8,8 @@ namespace Arxius.Services.PCL.Entities
         public ArxiusException() { }
         public ArxiusException(ArxiusDataException e) : base(e.Message, e.InnerException) { }
     }
+    public class ArxiusFileException : Exception
+    {
+        public ArxiusFileException(string message):base(message) { }
+    }
 }

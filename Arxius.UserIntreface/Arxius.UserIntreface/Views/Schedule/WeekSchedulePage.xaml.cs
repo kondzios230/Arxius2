@@ -28,6 +28,11 @@ namespace Arxius.UserIntreface
            {
                await this.DisplayAlert("Problem z siecią", message, "OK");
            });
+            MessagingCenter.Subscribe<WeekScheduleViewModel, string>(this, Properties.Resources.MsgFileError,
+           async (sender, message) =>
+           {
+               await this.DisplayAlert("Problem z plikiem", message, "OK");
+           });
         }       
         
     }

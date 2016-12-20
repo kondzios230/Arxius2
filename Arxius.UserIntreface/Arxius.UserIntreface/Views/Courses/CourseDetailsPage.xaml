@@ -27,12 +27,13 @@
         </Image>
       </Grid>
       <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
-      <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand" FontSize="20"/>
+      <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand" FontSize="20" Margin="5"/>
+      <Label FormattedText="{Binding CourseKind}" HorizontalOptions="CenterAndExpand"/>
+      <Label FormattedText="{Binding CourseGroup}" HorizontalOptions="CenterAndExpand"/>
       <Label Text="{Binding CourseEcts}" HorizontalOptions="CenterAndExpand"/>
       <Label FormattedText="{Binding CourseHourSchema}" HorizontalOptions="CenterAndExpand"/>
-      <Label Text="{Binding CourseKind}" HorizontalOptions="CenterAndExpand"/>
       <Label Text="{Binding CourseIsExam}" HorizontalOptions="CenterAndExpand"/>
-      <Label Text="{Binding CourseGroup}" HorizontalOptions="CenterAndExpand"/>
+      <Label Text="{Binding CourseIsForFirstYear}" HorizontalOptions="CenterAndExpand"/>
       <ListView x:Name="Classes"  ItemsSource="{Binding CourseClasses}" RowHeight="110">
         <ListView.ItemTemplate>
           <DataTemplate>
@@ -65,7 +66,7 @@
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
-      <Editor Text="{Binding CourseNotes}" HeightRequest = "50"/>
+      <Entry Text="{Binding CourseNotes}" Placeholder="Notatki do przedmiotu"/>
       <Button Text="ZAPISZ NOTATKI" Command="{Binding SaveCourseNotes}" />
     </StackLayout>
   </ContentPage.Content>

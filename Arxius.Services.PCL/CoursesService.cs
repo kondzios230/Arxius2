@@ -41,7 +41,7 @@ namespace Arxius.Services.PCL
             {
                 var fileService = DependencyService.Get<ISaveAndLoad>();
                 if (fileService == null || !fileService.FileExists("Schedule1.txt"))
-                    throw new ArxiusException();
+                    throw new ArxiusFileException("Brak zapisanego offline planu, aby go wygenerować, wejdź na widok planu zajęć");
                 else
                 {
                     var page = await fileService.LoadTextAsync("Schedule1.txt");
@@ -108,7 +108,7 @@ namespace Arxius.Services.PCL
         }
         public async Task<Tuple<bool, string, List<string>>> EnrollOrUnroll(_Class _class, bool clean = false)
         {
-            if (Properties.Resources.baseUri.Contains("zapisy")) throw new Exception(); //safety first
+            
             var response = await HTMLUtils.PostString(string.Format(Properties.Resources.baseUri, "/records/set-enrolled"), string.Format("csrfmiddlewaretoken={0}&group={1}&enroll={2}", HTMLUtils.csrfToken, _class.enrollmentId, (!_class.IsSignedIn).ToString().ToLower()));
             var sigingResult = CoursesParsers.IsSignedIn(response, _class);
             return Tuple.Create(sigingResult.Item1 != _class.IsSignedIn, sigingResult.Item2, sigingResult.Item3); //if differs, then some error must have occured

@@ -18,7 +18,7 @@ namespace Arxius.Services.PCL.Entities
                 case ClassTypeEnum.Lecture:
                     return "Wykład";
                 case ClassTypeEnum.Excercise:
-                    return "Cwiczenia";
+                    return "Ćwiczenia";
                 case ClassTypeEnum.Lab:
                     return "Pracownia";
                 case ClassTypeEnum.Repetitory:

@@ -16,7 +16,7 @@ namespace Arxius.UserIntreface.ViewModels
         public ICommand EnrollOrUnroll { private set; get; }
         public ICommand ShowList { private set; get; }
         public ICommand SaveCourseNotes { private set; get; }
-
+        private bool wasClicked;
         public CourseDetailsViewModel(INavigation navi, Course course, Page page)
         {
             _page = page;
@@ -28,8 +28,8 @@ namespace Arxius.UserIntreface.ViewModels
 
             EnrollOrUnroll = new Command<_Class>(ExecuteEnrollOrUnroll, (s) => CanEnroll);
             SaveCourseNotes = new Command(ExecuteSaveCourseNotes, () => CourseNotes.Length > 0);
-            ShowList = new Command<_Class>(async (c)=> await Navigation.PushAsync(new StudentsListPage(Navigation, c)));
-            Refresh = new Command(()=> GetCourseDetailsAsync(true));
+            ShowList = new Command<_Class>(async (c) => await Navigation.PushAsync(new StudentsListPage(Navigation, c)));
+            Refresh = new Command(() => GetCourseDetailsAsync(true));
         }
         private async void GetCourseDetailsAsync(bool clear = false)
         {
@@ -37,7 +37,7 @@ namespace Arxius.UserIntreface.ViewModels
             {
                 _Course = null;
                 IsAIRunning = true;
-                _Course = await cService.GetCourseWideDetails(emptyCourse,clear);
+                _Course = await cService.GetCourseWideDetails(emptyCourse, clear);
             }
             catch (ArxiusException e)
             {
@@ -110,7 +110,7 @@ namespace Arxius.UserIntreface.ViewModels
             }
             get
             {
-                if (_Course == null || _Course.Notes == null) return "Notatki do przedmiotu";
+                if (_Course == null || _Course.Notes == null) return "";
                 return _Course.Notes;
             }
         }
@@ -150,26 +150,32 @@ namespace Arxius.UserIntreface.ViewModels
                 foreach (var item in _Course.HoursSchema)
                 {
                     span.Spans.Add(new Span { Text = item.Key, FontSize = 17 });
-                    span.Spans.Add(new Span { Text = " - ", FontSize = 17 });
-                    span.Spans.Add(new Span { Text = item.Value + "\t", FontSize = 15 });
+                    span.Spans.Add(new Span { Text = ". - ", FontSize = 17 });
+                    span.Spans.Add(new Span { Text = item.Value + "h\t", FontSize = 15 });
                 }
                 return span;
             }
         }
-        public string CourseKind
+        public FormattedString CourseKind
         {
             get
             {
-                if (_Course == null) return "";
-                return _Course.Kind;
+                if (_Course == null || _Course.Kind == null || _Course.Kind.Length==0) return "";
+                var span = new FormattedString();
+                span.Spans.Add(new Span { Text = "R: ", FontAttributes = FontAttributes.Bold });
+                span.Spans.Add(new Span { Text = _Course.Kind });
+                return span;
             }
         }
-        public string CourseGroup
+        public FormattedString CourseGroup
         {
             get
             {
-                if (_Course == null) return "";
-                return _Course.GroupOfEffects;
+                if (_Course == null || _Course.GroupOfEffects == null || _Course.GroupOfEffects.Length == 0) return "";
+                var span = new FormattedString();
+                span.Spans.Add(new Span { Text = "G: ", FontAttributes = FontAttributes.Bold });
+                span.Spans.Add(new Span { Text = _Course.GroupOfEffects });
+                return span;
             }
         }
         public string CourseIsExam
@@ -207,31 +213,33 @@ namespace Arxius.UserIntreface.ViewModels
         }
 
         #endregion
-       
-
 
         async void ExecuteEnrollOrUnroll(_Class c)
         {
-            try
+            if (!wasClicked)
             {
-                var enrollmentTuple = await cService.EnrollOrUnroll(c);
-                if (enrollmentTuple.Item1)
+                wasClicked = true;
+                try
                 {
-                    GetCourseDetailsAsync(true);
-                    Cache.Clear("GetUserPlanForCurrentSemester");
-                    if (BreadCrumb.Contains(Properties.Resources.PageNameSchedule))
-                        enrollmentTuple.Item3.Add("Odśwież plan zajęć");
-                }
-                MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, Tuple.Create(enrollmentTuple.Item1, enrollmentTuple.Item2, enrollmentTuple.Item3));
-            }
-            catch (ArxiusException e)
-            {
-                MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
-            }
-           
-        }
 
-        
+                    var enrollmentTuple = await cService.EnrollOrUnroll(c);
+                    if (enrollmentTuple.Item1)
+                    {
+                        GetCourseDetailsAsync(true);
+                        Cache.Clear("GetUserPlanForCurrentSemester");
+                        if (BreadCrumb.Contains(Properties.Resources.PageNameSchedule))
+                            enrollmentTuple.Item3.Add("Odśwież plan zajęć");
+                    }
+                    MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, Tuple.Create(enrollmentTuple.Item1, "", enrollmentTuple.Item3));
+                }
+                catch (ArxiusException e)
+                {
+                    MessagingCenter.Send(this, Properties.Resources.MsgNetworkError, e.Message);
+                }
+                wasClicked = false;
+            }
+
+        }
         async void ExecuteSaveCourseNotes()
         {
             var fileService = DependencyService.Get<ISaveAndLoad>();
