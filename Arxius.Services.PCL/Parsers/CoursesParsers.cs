@@ -378,7 +378,7 @@ namespace Arxius.Services.PCL.Parsers
                     case "Liczba godzin":
                         {
                             var dict = new Dictionary<string, int>();
-                            var table = Regex.Matches(detailMatch.Groups[2].ToString().Replace(" ", string.Empty), @"(\d{1,3})\((\w*)\)", RegexOptions.Multiline);
+                            var table = Regex.Matches(detailMatch.Groups[2].ToString().Replace(" ", string.Empty), @"(\d{1,3})\((.*?)\)", RegexOptions.Multiline);
                             if (table.Count != 0)
                             {
                                 foreach (var match in table)

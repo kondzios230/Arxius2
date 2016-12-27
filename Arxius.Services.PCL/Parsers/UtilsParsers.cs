@@ -134,7 +134,7 @@ namespace Arxius.Services.PCL.Parsers
                     var name = classMatch.Groups[2].ToString().Trim(' ').Replace("\t", string.Empty);
                     var type = classMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty).Replace("&ndash;", string.Empty);
                     var classRoom = classMatch.Groups[4].ToString().Trim(' ').Replace("\t", string.Empty);
-                    x.Add(string.Format("{0} {1} {2} {3}", hours, name, type, classRoom));
+                    x.Add(string.Format("{0} {1}, {2} s:{3}", hours, name, type.ToString().ToUpper()[0] + type.ToString().Substring(1), classRoom));
                 }
                 dict.Add(x);
             }

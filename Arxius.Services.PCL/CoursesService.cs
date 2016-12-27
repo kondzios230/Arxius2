@@ -52,7 +52,7 @@ namespace Arxius.Services.PCL
             }
             return await Cache.Get("GetUserPlanForCurrentSemester", async () =>
             {
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/records/schedule/"));
+                var page = await HTMLUtils.GetPage("/records/schedule/");
                 var fileService = DependencyService.Get<ISaveAndLoad>();
                 try
                 {
@@ -68,7 +68,7 @@ namespace Arxius.Services.PCL
         {
             return await Cache.Get("GetAllUserCourses", async () =>
             {
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/courses/"));
+                var page = await HTMLUtils.GetPage("/courses/");
                 return CoursesParsers.GetAllCourses(page, true);
             }, clean);
         }
@@ -76,7 +76,7 @@ namespace Arxius.Services.PCL
         {
             return await Cache.Get("GetAllCourses", async () =>
             {
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/courses/"));
+                var page = await HTMLUtils.GetPage("/courses/");
                 return CoursesParsers.GetAllCourses(page, false);
             }, clean);
         }
@@ -85,7 +85,7 @@ namespace Arxius.Services.PCL
             var ret = await Cache.Get(new { c = course, a = "GetCourseWideDetails" }, async () =>
             {
                 var s = new Stopwatch();
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
+                var page = await HTMLUtils.GetPage(course.Url);
                 s.Start();
                 CoursesParsers.GetCourseWideDetails(page, course);
                 s.Stop();
@@ -102,7 +102,7 @@ namespace Arxius.Services.PCL
         {
             return await Cache.Get(new { c = _class, a = "GetStudentsList" }, async () =>
             {
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, _class.ListUrl));
+                var page = await HTMLUtils.GetPage(_class.ListUrl);
                 return CoursesParsers.GetStudentsList(page);
             }, clean);
         }
@@ -130,7 +130,7 @@ namespace Arxius.Services.PCL
         }
         private async Task<Course> GetCourseECTSPoints(Course course, bool clean = false)
         {
-            var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, course.Url));
+            var page = await HTMLUtils.GetPage(course.Url);
             CoursesParsers.GetCourseECTSandGroup(page, course);
             return course;
         }

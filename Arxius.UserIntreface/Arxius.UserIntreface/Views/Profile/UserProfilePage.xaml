@@ -10,7 +10,7 @@
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
                  Spacing="15"
-                 Padding="5">
+                >
       <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand" BackgroundColor="#35bbff">
         <Grid.RowDefinitions>
           <RowDefinition Height="50" />
@@ -31,11 +31,11 @@
       <Label Text ="Punkty ECTS" FontSize="Large" HorizontalTextAlignment="Center"/>
       <Label Text ="{Binding Ects}" FontSize="Large" HorizontalTextAlignment="Center"/>
       <Button Text="TWOJE PUNKTY ECTS" Command="{Binding ShowProfile}" />
-      <Label Text ="Data zdjęcia limitu" FontSize="Large"/>
-      <Label Text ="{Binding LimitRemovalTime}"/>
-      <Label Text ="Data końca zapisów" FontSize="Large"/>
-      <Label Text ="{Binding EndTime}"/>
-      <Label Text ="Przedmioty, na które głosowałeś:" FontSize="Large"/>
+      <Label Text ="Data zdjęcia limitu" FontSize="Large"  Margin="5"/>
+      <Label Text ="{Binding LimitRemovalTime}"  Margin="5"/>
+      <Label Text ="Data końca zapisów" FontSize="Large"  Margin="5"/>
+      <Label Text ="{Binding EndTime}"  Margin="5"/>
+      <Label Text ="Przedmioty, na które głosowałeś:" FontSize="Large" Margin="5"/>
       <ListView  x:Name="GroupedView"  ItemsSource="{Binding RegistrationTimes}" GroupDisplayBinding="{Binding Time}" IsGroupingEnabled="true">
         <ListView.ItemTemplate >
           <DataTemplate>

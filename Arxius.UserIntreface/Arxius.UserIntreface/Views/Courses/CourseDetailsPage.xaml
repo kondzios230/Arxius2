@@ -34,7 +34,7 @@
       <Label FormattedText="{Binding CourseHourSchema}" HorizontalOptions="CenterAndExpand"/>
       <Label Text="{Binding CourseIsExam}" HorizontalOptions="CenterAndExpand"/>
       <Label Text="{Binding CourseIsForFirstYear}" HorizontalOptions="CenterAndExpand"/>
-      <ListView x:Name="Classes"  ItemsSource="{Binding CourseClasses}" RowHeight="110">
+      <ListView x:Name="Classes"  ItemsSource="{Binding CourseClasses}" RowHeight="135">
         <ListView.ItemTemplate>
           <DataTemplate>
             <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" >
@@ -44,7 +44,7 @@
                   <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
+                    <RowDefinition Height="30" />
                     <RowDefinition Height="40" />
                   </Grid.RowDefinitions>
                   <Grid.ColumnDefinitions>

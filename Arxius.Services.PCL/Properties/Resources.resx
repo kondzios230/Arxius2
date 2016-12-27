@@ -125,7 +125,7 @@
     <value>name="wasEnrolled" value="True"</value>
   </data>
   <data name="baseUri" xml:space="preserve">
-    <value>http://192.168.0.16:8002{0}</value>
+    <value>https://zapisy.ii.uni.wroc.pl{0}</value>
     <comment>192.168.0.16</comment>
   </data>
   <data name="FileName" xml:space="preserve">

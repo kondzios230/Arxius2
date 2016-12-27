@@ -26,6 +26,7 @@ namespace Arxius.Services.PCL
                 return UtilsParsers.GetUserPage(page);
             }, clean);
         }
+
         public async Task<bool> Login(string login, string password)
         {
             try
@@ -38,6 +39,12 @@ namespace Arxius.Services.PCL
             {
                 throw new ArxiusException(e);
             }
+        }
+
+
+        public void Login(string csrf)
+        {
+            HTMLUtils.cookie = csrf;
         }
         public async Task<List<Employee>> GetEmployees(bool clean = false)
         {

@@ -308,5 +308,10 @@ $('.checkall').live('click', function(){
         {
             throw new NotImplementedException();
         }
+
+        public void Login(string csrf)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

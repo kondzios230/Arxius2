@@ -91,6 +91,9 @@
     <Compile Include="Views\Utils\DatesPage.xaml.cs">
       <DependentUpon>DatesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Utils\WebViewPage.xaml.cs">
+      <DependentUpon>WebViewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Utils\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -207,6 +210,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Utils\DatesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Utils\WebViewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -549,5 +549,10 @@ A. Quarteroni, R. Sacco, F. Saleri, Numerical Mathematics, Springer-Verlag, 2000
         {
             throw new NotImplementedException();
         }
+
+        public void Foo()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
