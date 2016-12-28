@@ -132,12 +132,15 @@ namespace Arxius.UserIntreface.ViewModels
                 }
             }
         }
-        public string CourseEcts
+        public FormattedString CourseEcts
         {
             get
             {
                 if (_Course == null) return "";
-                return "ECTS: " + _Course.Ects.ToString();
+                var span = new FormattedString();
+                span.Spans.Add(new Span { Text = "ECTS: ", FontAttributes = FontAttributes.Bold });
+                span.Spans.Add(new Span { Text = _Course.Ects.ToString()});
+                return span;
             }
         }
         public FormattedString CourseHourSchema
@@ -149,9 +152,9 @@ namespace Arxius.UserIntreface.ViewModels
                 var span = new FormattedString();
                 foreach (var item in _Course.HoursSchema)
                 {
-                    span.Spans.Add(new Span { Text = item.Key, FontSize = 17 });
-                    span.Spans.Add(new Span { Text = ". - ", FontSize = 17 });
-                    span.Spans.Add(new Span { Text = item.Value + "h\t", FontSize = 15 });
+                    span.Spans.Add(new Span { Text = item.Key, FontAttributes = FontAttributes.Bold });
+                    span.Spans.Add(new Span { Text = ". - ", FontAttributes = FontAttributes.Bold });
+                    span.Spans.Add(new Span { Text = item.Value + "h\t" });
                 }
                 return span;
             }
@@ -178,21 +181,27 @@ namespace Arxius.UserIntreface.ViewModels
                 return span;
             }
         }
-        public string CourseIsExam
+        public FormattedString CourseIsExam
         {
             get
             {
                 if (_Course == null) return "";
-                return string.Format("Egzamin: {0}", _Course.IsExam ? "Tak" : "Nie");
+                var span = new FormattedString();
+                span.Spans.Add(new Span { Text = "Egzamin: ", FontAttributes = FontAttributes.Bold });
+                span.Spans.Add(new Span { Text = _Course.IsExam ? "Tak" : "Nie" });
+                return span;
             }
 
         }
-        public string CourseIsForFirstYear
+        public FormattedString CourseIsForFirstYear
         {
             get
             {
                 if (_Course == null) return "";
-                return string.Format("Przyjazny dla I roku: {0}", _Course.SugestedFor1stYear ? "Tak" : "Nie");
+                var span = new FormattedString();
+                span.Spans.Add(new Span { Text = "Przyjazny dla I roku: ", FontAttributes = FontAttributes.Bold });
+                span.Spans.Add(new Span { Text = _Course.SugestedFor1stYear ? "Tak" : "Nie" });
+                return span;
             }
         }
         public List<_Class> CourseClasses

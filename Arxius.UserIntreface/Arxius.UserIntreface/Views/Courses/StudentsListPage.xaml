@@ -26,10 +26,10 @@
         </Image>
       </Grid>
       <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
-      <Label Text="{Binding ClassField.Teacher.Name}" HorizontalOptions="CenterAndExpand"/>
+      <Label Text="{Binding ClassField.Teacher.Name}" HorizontalOptions="CenterAndExpand" FontAttributes="Bold"/>
       <Label Text="{Binding ClassType}" HorizontalOptions="CenterAndExpand"/>
-      <Label Text="{Binding Enrolled}" HorizontalOptions="CenterAndExpand"/>
-      <Label Text="{Binding Total}" HorizontalOptions="CenterAndExpand"/>
+      <Label FormattedText="{Binding Enrolled}" HorizontalOptions="CenterAndExpand"/>
+      <Label FormattedText="{Binding Total}" HorizontalOptions="CenterAndExpand"/>
       <ListView x:Name="Students"  ItemsSource="{Binding StudentsList}" RowHeight="80">
         <ListView.ItemTemplate>
           <DataTemplate>

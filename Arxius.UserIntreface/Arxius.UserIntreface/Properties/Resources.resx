@@ -129,6 +129,9 @@
   <data name="MsgFileError" xml:space="preserve">
     <value>MsgFileError</value>
   </data>
+  <data name="MsgHowToLogin" xml:space="preserve">
+    <value>MsgHowToLogin</value>
+  </data>
   <data name="MsgLoginFailed" xml:space="preserve">
     <value>MsgLoginFailed</value>
   </data>

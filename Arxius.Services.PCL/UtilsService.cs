@@ -32,7 +32,7 @@ namespace Arxius.Services.PCL
             try
             {
                 await HTMLUtils.Login(Properties.Resources.baseUri, login, password);
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/users/"));
+                var page = await HTMLUtils.GetPage("/users/");
                 return page.Contains("user_is_authenticated = true");
             }
             catch (ArxiusDataException e)
@@ -46,11 +46,16 @@ namespace Arxius.Services.PCL
         {
             HTMLUtils.cookie = csrf;
         }
+        public async  Task<bool> IsLoggedIn()
+        {
+            var page = await HTMLUtils.GetPage("/users/employees/");
+            return page.Contains("user_is_authenticated = true");
+        }
         public async Task<List<Employee>> GetEmployees(bool clean = false)
         {
             return await Cache.Get("GetEmployees", async () =>
             {
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/users/employees/"));
+                var page = await HTMLUtils.GetPage("/users/employees/");
                 return UtilsParsers.GetEmployeesList(page);
             }, clean);
         }
@@ -67,7 +72,7 @@ namespace Arxius.Services.PCL
         {
             return await Cache.Get("GetImportantDates", async () =>
             {
-                var page = (await HTMLUtils.GetPage(@"http://ii.uni.wroc.pl/dla-studenta/kalendarz")).Replace("\n", string.Empty);
+                var page = (await HTMLUtils.GetPageUnAuthorised(@"http://ii.uni.wroc.pl/dla-studenta/kalendarz")).Replace("\n", string.Empty);
                 return UtilsParsers.GetImportantDates(page);
             }
              , clean);

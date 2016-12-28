@@ -31,6 +31,7 @@
       <Label Text ="{Binding Employee.Room}" FontSize="Medium" Margin ="3"/>
       <Button Text ="WYŚLIJ E-MAIL" Command ="{Binding SendEmail}"/>
       <Button Text ="STRONA DOMOWA" Command ="{Binding OpenPage}"/>
+      <Label Text ="Konsultacje:"  Margin ="3" FontAttributes="Bold" />
       <Label Text ="{Binding Employee.Consults}"  Margin ="3" />
      <ListView  x:Name="GroupedView"  ItemsSource="{Binding Employee.WeekPlan}" GroupDisplayBinding="{Binding Key}" IsGroupingEnabled="true" >
         <ListView.ItemTemplate >

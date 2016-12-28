@@ -13,5 +13,6 @@ namespace Arxius.Services.PCL.Interfaces_and_mocks
         Task<List<Employee>> GetEmployees(bool clean = false);
         Task<Employee> GetEmployeeDetails(Employee employee, bool clean = false);
         Task<List<StringGroup>> GetImportantDates(bool clean = false);
+        Task<bool> IsLoggedIn();
     }
 }

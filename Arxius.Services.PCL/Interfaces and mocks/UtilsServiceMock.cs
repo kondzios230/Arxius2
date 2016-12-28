@@ -313,5 +313,10 @@ $('.checkall').live('click', function(){
         {
             throw new NotImplementedException();
         }
+
+        public Task<bool> IsLoggedIn()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

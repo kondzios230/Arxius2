@@ -10,21 +10,21 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class StudentsListViewModel : AbstractViewModel
     {
-        
+
         public StudentsListViewModel(INavigation navi, _Class _class, Page page)
         {
             _page = page;
             Navigation = navi;
             cService = new CoursesService();
             GetStudentsListAsync(_class);
-            Refresh = new Command(()=> GetStudentsListAsync(_class, true));
+            Refresh = new Command(() => GetStudentsListAsync(_class, true));
         }
         private async void GetStudentsListAsync(_Class _class, bool clear = false)
         {
             try
             {
                 IsAIRunning = true;
-                var tuple = await cService.GetStudentsList(_class,clear);
+                var tuple = await cService.GetStudentsList(_class, clear);
                 Enrolled = tuple.Item1.ToString();
                 Total = tuple.Item2.ToString();
                 StudentsList = tuple.Item3;
@@ -53,39 +53,42 @@ namespace Arxius.UserIntreface.ViewModels
         }
         public string ClassType
         {
-            get {
+            get
+            {
                 if (ClassField == null) return "";
                 return ClassTypeEnums.ToFriendlyString(ClassField.ClassType);
             }
         }
         private string _enrolled;
-        public string Enrolled
+        public FormattedString Enrolled
         {
-            get { return "Zapisanych: " + _enrolled; }
+            get
+            {
+                var span = new FormattedString();
+                span.Spans.Add(new Span { Text = "Zapisanych: ", FontAttributes = FontAttributes.Bold });
+                span.Spans.Add(new Span { Text = _enrolled });
+                return span;
+            }
             set
             {
-                if (_enrolled != value)
-                {
-                    _enrolled = value;
-
-                    OnPropertyChanged("Enrolled");
-
-                }
+                _enrolled = (string)value;
+                OnPropertyChanged("Enrolled");
             }
         }
         private string _total;
-        public string Total
+        public FormattedString Total
         {
-            get { return "Max: " + _total; }
+            get
+            {
+                var span = new FormattedString();
+                span.Spans.Add(new Span { Text = "Max: ", FontAttributes = FontAttributes.Bold });
+                span.Spans.Add(new Span { Text = _total });
+                return span;
+            }
             set
             {
-                if (_total != value)
-                {
-                    _total = value;
-
-                    OnPropertyChanged("Total");
-
-                }
+                _total = (string)value;
+                OnPropertyChanged("Total");
             }
         }
         private List<Student> _studentsList;
@@ -106,6 +109,6 @@ namespace Arxius.UserIntreface.ViewModels
 
 
         #endregion
-      
+
     }
 }

@@ -26,6 +26,11 @@ namespace Arxius.UserIntreface
               {
                   await this.DisplayAlert("Problem z siecią",message, "OK");
               });
+            MessagingCenter.Subscribe<LoginViewModel>(this, Properties.Resources.MsgHowToLogin,
+             async (sender) =>
+             {
+                 await this.DisplayAlert("", "Zaloguj się do Systemu Zapisów, następnie naciśnij wstecz.", "OK");
+             });
         }
         
     }

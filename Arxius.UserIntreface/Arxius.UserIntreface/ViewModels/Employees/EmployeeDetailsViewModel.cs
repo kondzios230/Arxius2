@@ -67,10 +67,10 @@ namespace Arxius.UserIntreface.ViewModels
             if (eMailService != null&& Employee.Email!=null && Employee.Email.Length != 0)
                 eMailService.SendMail(Employee.Email);
         }
-        void ExecuteOpenPage()
+        async void ExecuteOpenPage()
         {
             if (Employee == null || Employee.Url == null) return;
-            Device.OpenUri(new Uri(Employee.Url));
+            await Navigation.PushAsync(new WebViewPage(Employee.Url));
         }
 
     }

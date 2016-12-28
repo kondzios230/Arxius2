@@ -30,11 +30,11 @@
       <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand" FontSize="20" Margin="5"/>
       <Label FormattedText="{Binding CourseKind}" HorizontalOptions="CenterAndExpand"/>
       <Label FormattedText="{Binding CourseGroup}" HorizontalOptions="CenterAndExpand"/>
-      <Label Text="{Binding CourseEcts}" HorizontalOptions="CenterAndExpand"/>
+      <Label FormattedText="{Binding CourseEcts}" HorizontalOptions="CenterAndExpand"/>
       <Label FormattedText="{Binding CourseHourSchema}" HorizontalOptions="CenterAndExpand"/>
-      <Label Text="{Binding CourseIsExam}" HorizontalOptions="CenterAndExpand"/>
-      <Label Text="{Binding CourseIsForFirstYear}" HorizontalOptions="CenterAndExpand"/>
-      <ListView x:Name="Classes"  ItemsSource="{Binding CourseClasses}" RowHeight="135">
+      <Label FormattedText="{Binding CourseIsExam}" HorizontalOptions="CenterAndExpand"/>
+      <Label FormattedText="{Binding CourseIsForFirstYear}" HorizontalOptions="CenterAndExpand"/>
+      <ListView x:Name="Classes"  ItemsSource="{Binding CourseClasses}" RowHeight="140">
         <ListView.ItemTemplate>
           <DataTemplate>
             <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" >
@@ -43,7 +43,7 @@
                  Padding="5,0,0,0">
                   <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="15" />
+                    <RowDefinition Height="20"/>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="40" />
                   </Grid.RowDefinitions>

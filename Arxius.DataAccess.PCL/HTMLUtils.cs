@@ -9,7 +9,7 @@ namespace Arxius.DataAccess.PCL
 {
     public static class HTMLUtils
     {
-        
+
         private static HttpClientHandler handler = new HttpClientHandler { UseCookies = false };
         private static HttpClient client = new HttpClient(handler) { Timeout = new TimeSpan(0, 0, 20), BaseAddress = new Uri("https://zapisy.ii.uni.wroc.pl") };
         public static string csrfToken;
@@ -33,7 +33,7 @@ namespace Arxius.DataAccess.PCL
                 throw new ArxiusDataException("Wystąpił nieznany problem", e);
             }
         }
-       
+
         public static async Task<string> GetPage(string uri)
         {
             try
@@ -53,7 +53,21 @@ namespace Arxius.DataAccess.PCL
                 throw new ArxiusDataException("Wystąpił nieznany problem", e);
             }
         }
-
+        public static async Task<string> GetPageUnAuthorised(string uri)
+        {
+            try
+            {
+                return await client.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                if (e is WebException)
+                    throw new ArxiusDataException("Wystąpił problem z siecią, sprawdź swoje połączenie", e);
+                if (e is TaskCanceledException)
+                    throw new ArxiusDataException("Przekroczono czas oczekiwania", e);
+                throw new ArxiusDataException("Wystąpił nieznany problem", e);
+            }
+        }
         public static async Task<string> PostString(string uri, string postData)
         {
             try

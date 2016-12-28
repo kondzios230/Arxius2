@@ -113,7 +113,8 @@ namespace Arxius.Services.PCL.Parsers
             var employeeDetailsMatch = Regex.Match(page, @"<tr><th>pokój<\/th><td>(.*?)<\/td><\/tr>(.*?)<h3>Konsultacje:<\/h3><p>(.*?)<\/p>(.*?)<div class=""byWeekDays"">(.*?)<\/div>", RegexOptions.Multiline);
             if (employeeDetailsMatch == null) throw new Exception();
             employee.Room = "pok. " + employeeDetailsMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty);
-            employee.Consults = employeeDetailsMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty);
+            var consults = employeeDetailsMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty);
+            employee.Consults = consults.ToUpper()[0] + consults.Substring(1);
             var weekByDays = employeeDetailsMatch.Groups[5].ToString();
             var daysMatch = Regex.Matches(weekByDays, @"<h3>(.*?)<\/h3><ul>(.*?)<\/ul>");
             var dict = new List<StringGroup>();
@@ -134,7 +135,7 @@ namespace Arxius.Services.PCL.Parsers
                     var name = classMatch.Groups[2].ToString().Trim(' ').Replace("\t", string.Empty);
                     var type = classMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty).Replace("&ndash;", string.Empty);
                     var classRoom = classMatch.Groups[4].ToString().Trim(' ').Replace("\t", string.Empty);
-                    x.Add(string.Format("{0} {1}, {2} s:{3}", hours, name, type.ToString().ToUpper()[0] + type.ToString().Substring(1), classRoom));
+                    x.Add(string.Format("{0} {1}, {2} s.{3}", hours, name, type.ToString().ToUpper()[0] + type.ToString().Substring(1), classRoom));
                 }
                 dict.Add(x);
             }

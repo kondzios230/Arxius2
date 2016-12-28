@@ -98,6 +98,15 @@ namespace Arxius.UserIntreface.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MsgHowToLogin.
+        /// </summary>
+        internal static string MsgHowToLogin {
+            get {
+                return ResourceManager.GetString("MsgHowToLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MsgLoginFailed.
         /// </summary>
         internal static string MsgLoginFailed {

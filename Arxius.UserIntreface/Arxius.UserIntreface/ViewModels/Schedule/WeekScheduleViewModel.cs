@@ -79,7 +79,7 @@ namespace Arxius.UserIntreface.ViewModels
         }
         private void GenerateGrid(int rows, int startHour, List<Lesson> lessons)
         {
-            var grid = new Grid() { ColumnSpacing = 1d, RowSpacing = 0.8d };
+            var grid = new Grid() { ColumnSpacing = 1d, RowSpacing = 1.5d };
             var day = (int)DateTime.Now.DayOfWeek;
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50, GridUnitType.Absolute) });//hourColumn
             grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });//dayRow
