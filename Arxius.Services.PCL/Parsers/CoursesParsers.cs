@@ -30,7 +30,7 @@ namespace Arxius.Services.PCL.Parsers
             if (detailsTableMatch != null)
                 parseDetailsTable(course, detailsTableMatch.Groups[1].ToString());
 
-            var tutorialKindListMatch = Regex.Matches(page, @"""tutorial""(.*?)<\/strong");
+            var tutorialKindListMatch = Regex.Matches(page.Replace("\t",string.Empty), @"""tutorial""(.*?)<\/strong");
             foreach (var tutorialKindMatchSingle in tutorialKindListMatch)
             {
                 var tutorialGroupString = (tutorialKindMatchSingle as Match).Groups[1].ToString();
@@ -54,13 +54,14 @@ namespace Arxius.Services.PCL.Parsers
                         type = ClassTypeEnum.Repetitory;
                         break;
                 }
-                var enrollmentCourseMatch = Regex.Matches(tutorialGroupString, @"><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term""><span(.*?)<\/span><\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=(.*?)}'\/><input type=""hidden"" name=""is-signed(.*?)value=""(.*?)""\/><form action=""(.*?)"" method=""post"" class=""setEnrolled""><div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='(.*?)' \/><\/div><div><input type=""hidden"" name=""group"" value=""(.*?)""\/><input type=""hidden"" name=""enroll"" value=""(.*?)""\/><(.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td><td class=""priority"">(.*?)<\/td><\/tr>", RegexOptions.Multiline);
+                var enrollmentCourseMatch = Regex.Matches(tutorialGroupString, @"><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term"">(.*?)<\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=(.*?)}'\/><input type=""hidden"" name=""is-signed(.*?)value=""(.*?)""\/><form action=""(.*?)"" method=""post"" class=""setEnrolled""><div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='(.*?)' \/><\/div><div><input type=""hidden"" name=""group"" value=""(.*?)""\/><input type=""hidden"" name=""enroll"" value=""(.*?)""\/><(.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td><td class=""priority"">(.*?)<\/td><\/tr>", RegexOptions.Multiline);
                 if (enrollmentCourseMatch.Count != 0)
                 {
                     parseInEnrollmentClasses(enrollmentCourseMatch, course, type);
                     continue;
                 }
-                var nonEnrolledCourseMatch = Regex.Matches(tutorialGroupString, @"<tr  ><td><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term""><span(.*?)<\/span><\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is(.*?)value=""false""\/><a href=""(.*?)"">(.*?)<\/a><\/td><\/tr>", RegexOptions.Multiline);
+                var nonEnrolledCourseMatch = Regex.Matches(tutorialGroupString, @"<tr  ><td><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term"">(.*?)<\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is(.*?)value=""false""\/><a href=""(.*?)"">(.*?)<\/a><\/td><\/tr>", RegexOptions.Multiline);
+
                 parseNonEnrolledClasses(nonEnrolledCourseMatch, course, type);
 
                 var enrolledCourseMatch = Regex.Matches(tutorialGroupString, @"<tr  class=""signed""  ><td><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term""><span(.*?)<\/span><\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is-(.*?)value=""true""\/><form><div><button (.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td><\/tr>", RegexOptions.Multiline);
@@ -84,30 +85,36 @@ namespace Arxius.Services.PCL.Parsers
         }
         public static List<Course> GetAllCourses(string page, bool onlyUser)
         {
-            var allCoursesHtmlElements = Regex.Matches(page, @"<li>(.*?)<\/li>", RegexOptions.Multiline);
-            var allCoursesStrings = new List<string>();
-            if (onlyUser)
-                allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString().Replace("\n", string.Empty)).ToList().FindAll(c => c.Contains("name=\"wasEnrolled\" value=\"True\"")).ToList();
-            else
-                allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString()).ToList();
+            var semesterMatches = Regex.Matches(page.Replace("\n",string.Empty), @"<div class=""semester""><h3>(.*?)<\/h3>(.*?)<\/div>");
             var listOfCourses = new List<Course>();
-            foreach (var courseString in allCoursesStrings)
+            foreach (Match semester in semesterMatches)
             {
-                var parsedCourseGroupsMatch = Regex.Matches(courseString, @"<li><a href=\""(.*?)"" id=\""(.*?)"">(.*?)<\/a><(.*?)value=\""(.*?)"" \/><(.*?)value=\""(.*?)"" \/><(.*?)value=\""(.*?)"" \/><(.*?) value=\""(.*?)"" \/><(.*?) value=\""(.*?)"" \/><\/li>", RegexOptions.Multiline);
-                if (parsedCourseGroupsMatch.Count != 0)
+                var allCoursesHtmlElements = Regex.Matches(semester.Groups[2].ToString(), @"<li>(.*?)<\/li>", RegexOptions.Multiline);
+                var allCoursesStrings = new List<string>();
+                if (onlyUser)
+                    allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString().Replace("\n", string.Empty)).ToList().FindAll(c => c.Contains("name=\"wasEnrolled\" value=\"True\"")).ToList();
+                else
+                    allCoursesStrings = allCoursesHtmlElements.Cast<Match>().ToList().Select(c => c.ToString()).ToList();
+                
+                foreach (var courseString in allCoursesStrings)
                 {
-                    var parsedCourseGroups = parsedCourseGroupsMatch[0];
-                    listOfCourses.Add(new Course()
+                    var parsedCourseGroupsMatch = Regex.Matches(courseString, @"<li><a href=\""(.*?)"" id=\""(.*?)"">(.*?)<\/a><(.*?)value=\""(.*?)"" \/><(.*?)value=\""(.*?)"" \/><(.*?)value=\""(.*?)"" \/><(.*?) value=\""(.*?)"" \/><(.*?) value=\""(.*?)"" \/><\/li>", RegexOptions.Multiline);
+                    if (parsedCourseGroupsMatch.Count != 0)
                     {
-                        Url = parsedCourseGroups.Groups[1].ToString(),
-                        CourseID = parsedCourseGroups.Groups[2].ToString(),
-                        Name = parsedCourseGroups.Groups[3].ToString(),
-                        Type = Convert.ToInt32(parsedCourseGroups.Groups[5].ToString()),
-                        WasEnrolled = parsedCourseGroups.Groups[7].ToString() == "True",
-                        IsEnglish = parsedCourseGroups.Groups[9].ToString() == "True",
-                        IsExam = parsedCourseGroups.Groups[11].ToString() == "True",
-                        SugestedFor1stYear = parsedCourseGroups.Groups[12].ToString() == "True"
-                    });
+                        var parsedCourseGroups = parsedCourseGroupsMatch[0];
+                        listOfCourses.Add(new Course()
+                        {
+                            Url = parsedCourseGroups.Groups[1].ToString(),
+                            CourseID = parsedCourseGroups.Groups[2].ToString(),
+                            Name = parsedCourseGroups.Groups[3].ToString(),
+                            Type = Convert.ToInt32(parsedCourseGroups.Groups[5].ToString()),
+                            WasEnrolled = parsedCourseGroups.Groups[7].ToString() == "True",
+                            IsEnglish = parsedCourseGroups.Groups[9].ToString() == "True",
+                            IsExam = parsedCourseGroups.Groups[11].ToString() == "True",
+                            SugestedFor1stYear = parsedCourseGroups.Groups[12].ToString() == "True",
+                            Semester = Regex.Replace(semester.Groups[1].ToString(), "<.*?>", string.Empty)                            
+                        });
+                    }
                 }
             }
             return listOfCourses.Distinct(new CourseNameComparer()).ToList();
@@ -206,6 +213,7 @@ namespace Arxius.Services.PCL.Parsers
                 _class.IsSignedIn = false;
                 _class.IsEnrollment = false;
                 _class.ListUrl = courseMatch.Groups[10].ToString().Trim(' ').Trim('\\');
+                _class.ButtonEnrollText = "ZAPISY";
                 _class.buttonListText = courseMatch.Groups[11].ToString().Trim(' ').ToUpper();
                 course.Classes.Add(_class);
             }

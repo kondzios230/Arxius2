@@ -7,7 +7,8 @@ namespace Arxius.UserIntreface.ViewModels
 {
     class LoginViewModel : AbstractViewModel
     {
-        string adress = @"https://zapisy.ii.uni.wroc.pl/";
+        //string adress = @"https://zapisy.ii.uni.wroc.pl/";
+        string adress = @"http://192.168.0.16:8002";
         public LoginViewModel(INavigation navi, Page page)
         {
             _page = page;

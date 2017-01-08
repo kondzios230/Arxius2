@@ -11,7 +11,8 @@ namespace Arxius.DataAccess.PCL
     {
 
         private static HttpClientHandler handler = new HttpClientHandler { UseCookies = false };
-        private static HttpClient client = new HttpClient(handler) { Timeout = new TimeSpan(0, 0, 20), BaseAddress = new Uri("https://zapisy.ii.uni.wroc.pl") };
+        private static HttpClient client = new HttpClient(handler) { Timeout = new TimeSpan(0, 0, 20), BaseAddress = new Uri(@"http://192.168.0.16:8002") };
+        //private static HttpClient client = new HttpClient(handler) { Timeout = new TimeSpan(0, 0, 20), BaseAddress = new Uri("https://zapisy.ii.uni.wroc.pl") };
         public static string csrfToken;
         public static string cookie;
         public async static Task<bool> Login(string baseUri, string username, string password)

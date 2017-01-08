@@ -132,6 +132,7 @@ namespace Arxius.UserIntreface.ViewModels
                 }
             }
         }
+      
         public FormattedString CourseEcts
         {
             get
@@ -143,12 +144,26 @@ namespace Arxius.UserIntreface.ViewModels
                 return span;
             }
         }
+        private bool _isHoursVisible;
+        public bool IsHoursVisible
+        {
+            get { return _isHoursVisible; }
+            set
+            {
+                if (_isHoursVisible != value)
+                {
+                    _isHoursVisible = value;
+                    OnPropertyChanged("IsHoursVisible");
+                }
+            }
+        }
         public FormattedString CourseHourSchema
         {
             get
             {
+                IsHoursVisible = !(_Course == null || _Course.HoursSchema.Count == 0);
                 if (_Course == null) return "";
-
+                
                 var span = new FormattedString();
                 foreach (var item in _Course.HoursSchema)
                 {
@@ -159,10 +174,24 @@ namespace Arxius.UserIntreface.ViewModels
                 return span;
             }
         }
+        private bool _isKindVis;
+        public bool IsKindVisible
+        {
+            get { return _isKindVis; }
+            set
+            {
+                if (_isKindVis != value)
+                {
+                    _isKindVis = value;
+                    OnPropertyChanged("IsKindVisible");
+                }
+            }
+        }
         public FormattedString CourseKind
         {
             get
             {
+                IsKindVisible = !(_Course == null || _Course.Kind == null || _Course.Kind.Length == 0);
                 if (_Course == null || _Course.Kind == null || _Course.Kind.Length==0) return "";
                 var span = new FormattedString();
                 span.Spans.Add(new Span { Text = "R: ", FontAttributes = FontAttributes.Bold });
@@ -170,10 +199,24 @@ namespace Arxius.UserIntreface.ViewModels
                 return span;
             }
         }
+        private bool _isGroupVis;
+        public bool IsGroupVisible
+        {
+            get { return _isGroupVis; }
+            set
+            {
+                if (_isGroupVis != value)
+                {
+                    _isGroupVis = value;                   
+                    OnPropertyChanged("IsGroupVisible");
+                }
+            }
+        }
         public FormattedString CourseGroup
         {
             get
             {
+                IsGroupVisible = !(_Course == null || _Course.GroupOfEffects == null || _Course.GroupOfEffects.Length == 0);
                 if (_Course == null || _Course.GroupOfEffects == null || _Course.GroupOfEffects.Length == 0) return "";
                 var span = new FormattedString();
                 span.Spans.Add(new Span { Text = "G: ", FontAttributes = FontAttributes.Bold });

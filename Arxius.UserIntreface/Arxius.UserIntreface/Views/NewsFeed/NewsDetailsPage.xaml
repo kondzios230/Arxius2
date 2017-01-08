@@ -21,10 +21,12 @@
         <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
 
       </Grid>
+      <StackLayout Padding="20">
       <Label Text ="{Binding Title}" FontSize="Large" HorizontalTextAlignment="Center" Margin ="4"/>
       <Label Text ="{Binding Date}" FontSize="Micro" HorizontalTextAlignment="Center" Margin ="4"/>    
       <Label Text ="{Binding Content}" FontSize="Medium" Margin ="4"/>
       <Label Text ="{Binding Author}" HorizontalTextAlignment="End" Margin ="4" />
+      </StackLayout>
     </StackLayout>
   </ContentPage.Content>
 

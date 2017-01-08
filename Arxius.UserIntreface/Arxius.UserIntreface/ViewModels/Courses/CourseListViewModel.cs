@@ -3,6 +3,7 @@ using Arxius.Services.PCL.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -25,7 +26,16 @@ namespace Arxius.UserIntreface.ViewModels
             try
             {
                 IsAIRunning = true;
-                AllCourses = await cService.GetAllCourses(clear);
+                var courses = await cService.GetAllCourses(clear);
+                var groupedCourses = courses.GroupBy(c => c.Semester);
+                var allCourses = new List<CourseGroupedCollection>();
+                foreach(var group in groupedCourses)
+                {
+                    var x = new CourseGroupedCollection(group.Key);
+                    x.AddRange(group.ToList());
+                    allCourses.Add(x);
+                }
+                AllCourses = allCourses;
             }
             catch (ArxiusException e)
             {
@@ -33,8 +43,8 @@ namespace Arxius.UserIntreface.ViewModels
             }
             IsAIRunning = false;
         }
-        private List<Course> _allCourses;
-        public List<Course> AllCourses
+        private List<CourseGroupedCollection> _allCourses;
+        public List<CourseGroupedCollection> AllCourses
         {
             set
             {

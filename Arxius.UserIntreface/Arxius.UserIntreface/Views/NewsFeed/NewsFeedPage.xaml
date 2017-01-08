@@ -9,7 +9,7 @@
     <StackLayout
                  HorizontalOptions="CenterAndExpand"
                  Orientation="Vertical"
-                 Spacing="15">
+                 >
       <Grid x:Name="headerGrid" Padding="2" HorizontalOptions ="EndAndExpand" BackgroundColor="#35bbff">
         <Grid.RowDefinitions>
           <RowDefinition Height="50" />
@@ -37,7 +37,7 @@
 
       <Grid x:Name="buttonsGrid" RowSpacing="1" ColumnSpacing="1">
         <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
+          <RowDefinition Height="17" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />

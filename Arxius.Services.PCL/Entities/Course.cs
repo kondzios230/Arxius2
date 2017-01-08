@@ -9,6 +9,7 @@ namespace Arxius.Services.PCL.Entities
         public string CourseID { get; set; }
         public string Kind { get; set; }
         public string GroupOfEffects { get; set; }
+        public string Semester { get; set; }
 
         public List<_Class> Classes { get; set; }
 

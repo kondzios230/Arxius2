@@ -21,10 +21,10 @@ namespace Arxius.UserIntreface
                 var item = (((ListView)sender).SelectedItem as string);
                 if (item != null)
                 {
-                    var strings = item.Split('-');
+                    var splitIndex = item.IndexOf(':');
                     try
                     {
-                        DisplayAlert(strings[0], strings[1], "OK");
+                        DisplayAlert(item.Substring(0,splitIndex), item.Substring(splitIndex+2), "OK");
                     }
                     catch { }
 

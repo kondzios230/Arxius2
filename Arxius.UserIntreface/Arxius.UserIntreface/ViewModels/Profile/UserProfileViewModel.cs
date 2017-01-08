@@ -91,7 +91,7 @@ namespace Arxius.UserIntreface.ViewModels
                 return UserPage.EndTime;
             }
         }
-        public List<RegistrationTimesCollection> RegistrationTimes
+        public List<CourseGroupedCollection> RegistrationTimes
         {
             set
             {
@@ -100,7 +100,7 @@ namespace Arxius.UserIntreface.ViewModels
             }
             get
             {
-                if (UserPage == null) return new List<RegistrationTimesCollection>();
+                if (UserPage == null) return new List<CourseGroupedCollection>();
                 return UserPage.RegistrationTimes;
             }
         }

@@ -36,7 +36,7 @@
       <Label Text ="Data końca zapisów" FontSize="Large"  Margin="5"/>
       <Label Text ="{Binding EndTime}"  Margin="5"/>
       <Label Text ="Przedmioty, na które głosowałeś:" FontSize="Large" Margin="5"/>
-      <ListView  x:Name="GroupedView"  ItemsSource="{Binding RegistrationTimes}" GroupDisplayBinding="{Binding Time}" IsGroupingEnabled="true">
+      <ListView  x:Name="GroupedView"  ItemsSource="{Binding RegistrationTimes}" GroupDisplayBinding="{Binding Key}" IsGroupingEnabled="true">
         <ListView.ItemTemplate >
           <DataTemplate>
             <TextCell Text="{Binding Name}" TextColor="#000000"/>
@@ -44,12 +44,10 @@
         </ListView.ItemTemplate>
         <ListView.GroupHeaderTemplate>
           <DataTemplate>
-            <TextCell Text="{Binding Time}"
+            <TextCell Text="{Binding Key}"
             TextColor="#000000" />
           </DataTemplate>
         </ListView.GroupHeaderTemplate>
-
-
       </ListView>
 
     </StackLayout>

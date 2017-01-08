@@ -24,13 +24,21 @@
         </Image>
       </Grid>
       <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
-    <ListView x:Name="Courses"  ItemsSource="{Binding AllCourses}" SelectedItem="{Binding SelectedCourse, Mode=TwoWay}"  >
-      <ListView.ItemTemplate>
-        <DataTemplate>
-          <TextCell Text="{Binding Name}" TextColor="Black"  />
-        </DataTemplate>
-      </ListView.ItemTemplate>
-    </ListView>
+      
+      <ListView  x:Name="Courses"  ItemsSource="{Binding AllCourses}" GroupDisplayBinding="{Binding Key}" SelectedItem="{Binding SelectedCourse, Mode=TwoWay}"  IsGroupingEnabled="true">
+        <ListView.ItemTemplate >
+          <DataTemplate>
+            <TextCell Text="{Binding Name}" TextColor="#000000"/>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.GroupHeaderTemplate>
+          <DataTemplate>
+            <TextCell Text="{Binding Key}"
+            TextColor="#000000" />
+          </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+      </ListView>
+    
     </StackLayout>
   </ContentPage.Content>
 

@@ -19,6 +19,7 @@ namespace Arxius.UserIntreface
             GroupedView.ItemSelected += (sender, e) => {
                 ((ListView)sender).SelectedItem = null;
             };
+           
             MessagingCenter.Subscribe<UserProfileViewModel, string>(this, Properties.Resources.MsgNetworkError,
        async (sender, message) =>
        {

@@ -19,12 +19,13 @@ namespace Arxius.Services.PCL.Entities
         public string enrollmentId { get; set; }
         public bool IsEnrollment { get; set; }
 
-        private string _buttonEnrollText { get; set; }
-       
+
+        private string _buttonEnrollText;   
         public string ButtonEnrollText
         {
             set
             {
+             
                 _buttonEnrollText = value;
 
                 if (PropertyChanged != null)
@@ -64,6 +65,8 @@ namespace Arxius.Services.PCL.Entities
             get
             {
                 var s = "";
+                if (Lessons.Count == 0)
+                    s = "Brak dodanych terminów";
                 foreach (var l in Lessons)
                     s += l.Print + '\n';
                 return s;

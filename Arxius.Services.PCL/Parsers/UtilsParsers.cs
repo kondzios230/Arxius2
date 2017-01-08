@@ -12,7 +12,7 @@ namespace Arxius.Services.PCL.Parsers
     {
         public static List<News> GetFeedElementsContent(string page)
         {
-            page = page.Replace("\n", string.Empty);
+            page = page.Replace("\n", "&^()");
             var matches = Regex.Matches(page, @"<h3>(.*?)<\/h3>(.*?)\/div><\/div>", RegexOptions.Multiline).Cast<Match>().ToList();
 
             var list = new List<News>();
@@ -27,9 +27,18 @@ namespace Arxius.Services.PCL.Parsers
         public static News GetNewsDetails(News news)
         {
             var newsDetailsMatch = Regex.Match(news.RestToParse, @"<span class=""od-news-date"">(.*?)<\/span><\/div><div class=""od-news-body""><p>(.*?)<\/p><\/div><div class=""od-news-footer"">(.*?)<");
-            news.Date = newsDetailsMatch.Groups[1].ToString().Trim(' ');
-            news.Content = Regex.Replace(newsDetailsMatch.Groups[2].ToString().Trim(' '), @"<.*?>|&nbsp;", "").Replace("&oacute;", "ó");
-            news.Author = newsDetailsMatch.Groups[3].ToString().Trim(' ');
+            if (newsDetailsMatch.Groups.Count > 1)
+            {
+                news.Date = newsDetailsMatch.Groups[1].ToString().Trim(' ').Replace("&^()",string.Empty);
+                news.Content = Regex.Replace(newsDetailsMatch.Groups[2].ToString().Replace("&oacute;", "ó").Replace("&gt;", ">").Replace("&lt;", "<").Replace("&^()", "\n").Trim(' '), @"<.*?>|&nbsp;", "");
+                news.Author = newsDetailsMatch.Groups[3].ToString().Replace("&^()", string.Empty).Trim(' ');
+            }
+            else
+            {
+                news.Content = Regex.Replace(news.RestToParse, @"<.*?>|&nbsp;", "").Trim(' ', '<').Replace("&^()", "\n").Replace("&oacute;", "ó").Replace("&gt;", ">").Replace("&lt;", "<");
+                news.Author = "Wystąpił problem z parsowaniem, oto nieobrobiona wiadomość";
+
+            }
 
             return news;
         }
@@ -39,7 +48,7 @@ namespace Arxius.Services.PCL.Parsers
             var ectsMatch = Regex.Matches(page, @"<tr><th>Punkty ECTS<\/th><td>(\d*)<\/td>", RegexOptions.Multiline);
             var ects = ectsMatch.Count != 0 ? Convert.ToInt32(ectsMatch[0].Groups[1].ToString()) : 0;
 
-            var dict = new List<RegistrationTimesCollection>();
+            var dict = new List<CourseGroupedCollection>();
             var votedCoursesMatch = Regex.Matches(page, @"<tr><th>Czas:<\/th><td>(.*?)<\/td><\/tr><tr><td><\/td><td><ul class=""voted-courses"">(.*?)<\/td>", RegexOptions.Multiline);
             foreach (var match in votedCoursesMatch)
             {
@@ -52,7 +61,7 @@ namespace Arxius.Services.PCL.Parsers
                     var _course = course as Match;
                     courseList.Add(new Course() { Url = _course.Groups[1].ToString(), Name = _course.Groups[2].ToString() });
                 }
-                var x = new RegistrationTimesCollection(time);
+                var x = new CourseGroupedCollection(time);
                 x.AddRange(courseList);
                 dict.Add(x);
             }
@@ -95,11 +104,25 @@ namespace Arxius.Services.PCL.Parsers
                 for (int i = 0; i < 2; i++)
                 {
                     var result= new StringGroup(headerMatches[i].Groups[1].ToString()+ headerMatches[i].Groups[2].ToString());
+                    result.Add(string.Format("{0} {1}", headerMatches[i].Groups[3].ToString(), headerMatches[i].Groups[4].ToString().Replace("r.", string.Empty).Replace(" r.", string.Empty)));
+                    var first = true;
                     foreach (var head in tableHeaders)
                     {
                         var match = Regex.Match(semsters[i], string.Format(@"<strong>{0}<\/strong>(.*?)<", head), RegexOptions.Multiline);
+                        if(first)
+                        {
+                            var differentDaysString = semsters[i].Substring((headerMatches[i].Groups[4].Index+ headerMatches[i].Groups[4].Length)- headerMatches[i].Index, match.Index);
+                            var daysMatch = Regex.Matches(differentDaysString.Replace("\n",string.Empty), @"r>(.+?)(<\/p|<b)");
+                            var dayString = "";
+                            foreach(Match day in daysMatch)
+                            {
+                                dayString += day.Groups[1].ToString().Replace("\r", string.Empty) + "\n";
+                            }
+                            result.Add(string.Format("Zmiany dni: {0}", dayString.Replace("r.", string.Empty).Replace(" r.", string.Empty)));
+                            first = false;
+                        }
                         if (match != null)
-                            result.Add(string.Format("{0} - {1}", head, match.Groups[1].ToString().Replace("r.",string.Empty).Replace(" r.", string.Empty)));
+                            result.Add(string.Format("{0} {1}", head, match.Groups[1].ToString().Replace("r.",string.Empty).Replace(" r.", string.Empty)));
                     }
                     dic.Add(result);
                 }
@@ -114,7 +137,10 @@ namespace Arxius.Services.PCL.Parsers
             if (employeeDetailsMatch == null) throw new Exception();
             employee.Room = "pok. " + employeeDetailsMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty);
             var consults = employeeDetailsMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty);
-            employee.Consults = consults.ToUpper()[0] + consults.Substring(1);
+            if (consults.Length > 0)
+                employee.Consults = consults.ToUpper()[0] + consults.Substring(1);
+            else
+                employee.Consults = "Brak danych";
             var weekByDays = employeeDetailsMatch.Groups[5].ToString();
             var daysMatch = Regex.Matches(weekByDays, @"<h3>(.*?)<\/h3><ul>(.*?)<\/ul>");
             var dict = new List<StringGroup>();
@@ -134,8 +160,10 @@ namespace Arxius.Services.PCL.Parsers
                     var hours = classMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty);
                     var name = classMatch.Groups[2].ToString().Trim(' ').Replace("\t", string.Empty);
                     var type = classMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty).Replace("&ndash;", string.Empty);
+                    if (type.Length == 0)
+                        type = "Brak danych";
                     var classRoom = classMatch.Groups[4].ToString().Trim(' ').Replace("\t", string.Empty);
-                    x.Add(string.Format("{0} {1}, {2} s.{3}", hours, name, type.ToString().ToUpper()[0] + type.ToString().Substring(1), classRoom));
+                    x.Add(string.Format("{0} {1}, {2} s.{3}", hours, name, type, classRoom));
                 }
                 dict.Add(x);
             }

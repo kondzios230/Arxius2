@@ -6,7 +6,7 @@
 
 
   <ContentPage.Content>
- 
+
     <StackLayout VerticalOptions="FillAndExpand"
                  HorizontalOptions="FillAndExpand"
                  Orientation="Vertical"
@@ -20,14 +20,18 @@
         </Grid.ColumnDefinitions>
 
         <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
-       
+
       </Grid>
-      <Button Text="TWÓJ PLAN" Command="{Binding ShowPlan}" />
-      <Button Text="PROFIL" Command="{Binding ShowUserProfile}" />
-      <Button Text="AKTUALNOŚCI" Command="{Binding ShowNews}" />
-      <Button Text="PRACOWNICY" Command="{Binding ShowEmployeeList}" />
-      <Button Text="PRZEDMIOTY" Command="{Binding ShowCoursesList}" />
-      <Button Text="TERMINARZ" Command="{Binding ShowDates}" />
+      <ScrollView  Orientation = "Vertical" VerticalOptions="FillAndExpand">
+        <StackLayout  VerticalOptions="FillAndExpand">
+          <Button Text="TWÓJ PLAN" Command="{Binding ShowPlan}" />
+          <Button Text="PROFIL" Command="{Binding ShowUserProfile}" />
+          <Button Text="AKTUALNOŚCI" Command="{Binding ShowNews}" />
+          <Button Text="PRACOWNICY" Command="{Binding ShowEmployeeList}" />
+          <Button Text="PRZEDMIOTY" Command="{Binding ShowCoursesList}" />
+          <Button Text="TERMINARZ" Command="{Binding ShowDates}" />
+        </StackLayout>
+      </ScrollView>
     </StackLayout>
   </ContentPage.Content>
 

@@ -107,7 +107,6 @@ namespace Arxius.UserIntreface.ViewModels
             var scroll = new ScrollView() { Content = grid, Orientation = ScrollOrientation.Both };
             var stack = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.FillAndExpand };
 
-
             stack.Children.Add(GenerateHeaderGrid());
             stack.Children.Add(scroll);
             page.Content = stack;
