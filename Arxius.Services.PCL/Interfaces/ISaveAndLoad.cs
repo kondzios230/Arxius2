@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arxius.Services.PCL.Interfaces_and_mocks
+namespace Arxius.Services.PCL.Interfaces
 {
     public interface ISaveAndLoad
     {

@@ -117,6 +117,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arxius.CrossLayer.PCL\Arxius.CrossLayer.PCL.csproj">
+      <Project>{f2bda80f-447f-4f98-8972-3576994fb4b0}</Project>
+      <Name>Arxius.CrossLayer.PCL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arxius.Services.PCL\Arxius.Services.PCL.csproj">
       <Project>{94feec16-62d2-4f71-9a1c-3dc74bc12130}</Project>
       <Name>Arxius.Services.PCL</Name>

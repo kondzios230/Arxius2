@@ -1,6 +1,6 @@
 ﻿using Arxius.DataAccess.PCL;
 using Arxius.Services.PCL.Entities;
-using Arxius.Services.PCL.Interfaces_and_mocks;
+using Arxius.Services.PCL.Interfaces;
 using Arxius.Services.PCL.Parsers;
 using System;
 using System.Collections.Generic;
@@ -106,12 +106,12 @@ namespace Arxius.Services.PCL
                 return CoursesParsers.GetStudentsList(page);
             }, clean);
         }
-        public async Task<Tuple<bool, string, List<string>>> EnrollOrUnroll(_Class _class, bool clean = false)
+        public async Task<bool> EnrollOrUnroll(_Class _class, bool clean = false)
         {
             
-            var response = await HTMLUtils.PostString(string.Format(Properties.Resources.baseUri, "/records/set-enrolled"), string.Format("csrfmiddlewaretoken={0}&group={1}&enroll={2}", HTMLUtils.csrfToken, _class.enrollmentId, (!_class.IsSignedIn).ToString().ToLower()));
+            var response = await HTMLUtils.PostString("/records/set-enrolled", string.Format("csrfmiddlewaretoken={0}&group={1}&enroll={2}", HTMLUtils.csrfToken, _class.enrollmentId, (!_class.IsSignedIn).ToString().ToLower()));
             var sigingResult = CoursesParsers.IsSignedIn(response, _class);
-            return Tuple.Create(sigingResult.Item1 != _class.IsSignedIn, sigingResult.Item2, sigingResult.Item3); //if differs, then some error must have occured
+            return sigingResult.Item1 != _class.IsSignedIn; //if differs, then some error must have occured
         }
 
         private async Task<List<Course>> GetAllUserCoursesWithDetails(CancellationToken cT, Func<double, double> a)

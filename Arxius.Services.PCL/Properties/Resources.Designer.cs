@@ -62,24 +62,6 @@ namespace Arxius.Services.PCL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://192.168.0.16:8002{0}.
-        /// </summary>
-        internal static string baseUri {
-            get {
-                return ResourceManager.GetString("baseUri", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://192.168.0.16:8002{0}.
-        /// </summary>
-        internal static string baseUri2 {
-            get {
-                return ResourceManager.GetString("baseUri2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Notes{0}.txt.
         /// </summary>
         internal static string FileName {

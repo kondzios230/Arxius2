@@ -1,12 +1,8 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
-using Arxius.Services.PCL.Interfaces_and_mocks;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 using static Arxius.Services.PCL.Entities.Lesson;
 
@@ -104,7 +100,7 @@ namespace Arxius.UserIntreface.ViewModels
             }
 
             MapLessons(lessons, rows, startHour, grid);
-            var scroll = new ScrollView() { Content = grid, Orientation = ScrollOrientation.Both };
+            var scroll = new ScrollView() { Content = grid, Orientation = ScrollOrientation.Both, Padding = new Thickness(0, 0, 0, Device.GetNamedSize(NamedSize.Medium, typeof(Label))) };
             var stack = new StackLayout() { HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.FillAndExpand };
 
             stack.Children.Add(GenerateHeaderGrid());

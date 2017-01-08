@@ -1,6 +1,6 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
-using Arxius.Services.PCL.Interfaces_and_mocks;
+using Arxius.Services.PCL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -274,15 +274,16 @@ namespace Arxius.UserIntreface.ViewModels
                 try
                 {
 
-                    var enrollmentTuple = await cService.EnrollOrUnroll(c);
-                    if (enrollmentTuple.Item1)
+                    var flag = await cService.EnrollOrUnroll(c);
+                    var message = "";
+                    if (flag)
                     {
                         GetCourseDetailsAsync(true);
                         Cache.Clear("GetUserPlanForCurrentSemester");
                         if (BreadCrumb.Contains(Properties.Resources.PageNameSchedule))
-                            enrollmentTuple.Item3.Add("Odśwież plan zajęć");
+                            message = "Odśwież plan zajęć";
                     }
-                    MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, Tuple.Create(enrollmentTuple.Item1, "", enrollmentTuple.Item3));
+                    MessagingCenter.Send(this, Properties.Resources.MsgEnrollment, Tuple.Create(flag, message));
                 }
                 catch (ArxiusException e)
                 {

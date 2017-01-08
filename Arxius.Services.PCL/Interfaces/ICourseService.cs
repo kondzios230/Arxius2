@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Arxius.Services.PCL.Interfaces_and_mocks
+namespace Arxius.Services.PCL.Interfaces
 {
     public interface ICourseService
     {
@@ -14,6 +14,6 @@ namespace Arxius.Services.PCL.Interfaces_and_mocks
         Task<List<Course>> GetAllCourses(bool clean = false);
         Task<Course> GetCourseWideDetails(Course course, bool clean = false);
         Task<Tuple<int, int, List<Student>>> GetStudentsList(_Class _class, bool clean = false);
-        Task<Tuple<bool, string, List<string>>> EnrollOrUnroll(_Class _class, bool clean = false);
+        Task<bool> EnrollOrUnroll(_Class _class, bool clean = false);
     }
 }

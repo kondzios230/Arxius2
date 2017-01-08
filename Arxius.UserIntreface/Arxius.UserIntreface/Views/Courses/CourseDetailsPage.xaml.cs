@@ -21,13 +21,13 @@ namespace Arxius.UserIntreface
             {
                 ((ListView)sender).SelectedItem = null;
             };
-            MessagingCenter.Subscribe<CourseDetailsViewModel, Tuple<bool, string, List<string>>>(this, Properties.Resources.MsgEnrollment,
-                async (sender, enrollmentTuple) =>
+            MessagingCenter.Subscribe<CourseDetailsViewModel, Tuple<bool,string>>(this, Properties.Resources.MsgEnrollment,
+                async (sender, flag) =>
                 {
-                    string message = "";
-                    foreach (var m in enrollmentTuple.Item3)
-                        message += m + "\n";
-                    await this.DisplayAlert(char.ToUpper(enrollmentTuple.Item2[0]) + enrollmentTuple.Item2.Substring(1), message, "OK");
+                    string message = "Operacja zakończona powodzeniem";
+                    if (!flag.Item1)
+                        message = "Operacja nieudana";
+                    await this.DisplayAlert(message, flag.Item2, "OK");
 
                 });
             MessagingCenter.Subscribe<CourseDetailsViewModel, bool>(this, Properties.Resources.MsgSave,

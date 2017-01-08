@@ -37,22 +37,19 @@
   <ItemGroup>
     <Compile Include="CoursesService.cs" />
     <Compile Include="Entities\ArxiusException.cs" />
-    <Compile Include="Entities\StringGroup.cs" />
     <Compile Include="Entities\StudyHour.cs" />
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Entities\Lesson.cs" />
     <Compile Include="Entities\Employee.cs" />
-    <Compile Include="Entities\RegistrationTimesCollection.cs" />
     <Compile Include="Entities\Class.cs" />
     <Compile Include="Entities\Enums.cs" />
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\UserPage.cs" />
-    <Compile Include="Interfaces and mocks\CoursesServiceMock.cs" />
-    <Compile Include="Interfaces and mocks\IOpenMailer.cs" />
-    <Compile Include="Interfaces and mocks\ISaveAndLoad.cs" />
-    <Compile Include="Interfaces and mocks\IUtilsService.cs" />
-    <Compile Include="Interfaces and mocks\ICourseService.cs" />
+    <Compile Include="Interfaces\IOpenMailer.cs" />
+    <Compile Include="Interfaces\ISaveAndLoad.cs" />
+    <Compile Include="Interfaces\IUtilsService.cs" />
+    <Compile Include="Interfaces\ICourseService.cs" />
     <Compile Include="Parsers\CoursesParsers.cs" />
     <Compile Include="Parsers\UtilsParsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,7 +63,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces and mocks\UtilsServiceMock.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="UtilsService.cs" />
   </ItemGroup>
@@ -92,6 +88,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arxius.CrossLayer.PCL\Arxius.CrossLayer.PCL.csproj">
+      <Project>{f2bda80f-447f-4f98-8972-3576994fb4b0}</Project>
+      <Name>Arxius.CrossLayer.PCL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arxius.DataAccess.PCL\Arxius.DataAccess.PCL.csproj">
       <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
       <Name>Arxius.DataAccess.PCL</Name>

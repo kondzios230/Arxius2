@@ -1,10 +1,10 @@
 ﻿using Arxius.DataAccess.PCL;
 using Arxius.Services.PCL.Entities;
-using Arxius.Services.PCL.Interfaces_and_mocks;
+using Arxius.Services.PCL.Interfaces;
 using Arxius.Services.PCL.Parsers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Arxius.CrossLayer.PCL;
 namespace Arxius.Services.PCL
 {
     public class UtilsService : IUtilsService
@@ -13,7 +13,7 @@ namespace Arxius.Services.PCL
         {
             return await Cache.Get(new { a = "GetFeedPage", p = pageNumber }, async () =>
             {
-                var s1 = string.Format(Properties.Resources.baseUri, "/news/?page={0}");
+                var s1 = string.Format(CrossLayerData.BaseAddress, "/news/?page={0}");
                 var page = await HTMLUtils.GetPage(string.Format(s1, pageNumber));
                 return UtilsParsers.GetFeedElementsContent(page);
             }, clean);
@@ -22,29 +22,17 @@ namespace Arxius.Services.PCL
         {
             return await Cache.Get("GetUserPage", async () =>
             {
-                var page = await HTMLUtils.GetPage(string.Format(Properties.Resources.baseUri, "/users/"));
+                var page = await HTMLUtils.GetPage(string.Format(CrossLayerData.BaseAddress, "/users/"));
                 return UtilsParsers.GetUserPage(page);
             }, clean);
         }
 
-        public async Task<bool> Login(string login, string password)
-        {
-            try
-            {
-                await HTMLUtils.Login(Properties.Resources.baseUri, login, password);
-                var page = await HTMLUtils.GetPage("/users/");
-                return page.Contains("user_is_authenticated = true");
-            }
-            catch (ArxiusDataException e)
-            {
-                throw new ArxiusException(e);
-            }
-        }
-
-
+      
         public void Login(string csrf)
         {
             HTMLUtils.cookie = csrf;
+            var cookieValue = System.Text.RegularExpressions.Regex.Match(csrf, @"csrftoken=(.*?);");
+            HTMLUtils.csrfToken = cookieValue.Groups[1].ToString();
         }
         public async  Task<bool> IsLoggedIn()
         {
@@ -68,7 +56,7 @@ namespace Arxius.Services.PCL
             }
                 , clean);
         }
-        public async Task<List<StringGroup>> GetImportantDates(bool clean = false)
+        public async Task<List<GenericGroupedCollection<string, string>>> GetImportantDates(bool clean = false)
         {
             return await Cache.Get("GetImportantDates", async () =>
             {

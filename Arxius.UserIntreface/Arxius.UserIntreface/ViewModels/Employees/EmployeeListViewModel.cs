@@ -1,7 +1,9 @@
-﻿using Arxius.Services.PCL;
+﻿using Arxius.CrossLayer.PCL;
+using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -24,7 +26,24 @@ namespace Arxius.UserIntreface.ViewModels
             try
             {
                 IsAIRunning = true;
-                EmployeeList = await uService.GetEmployees(clear);
+                var employees = await uService.GetEmployees(clear);
+                employees = employees.OrderBy(e => e.FirstLetterOfName).ToList();
+                var groupedEmployees = employees.GroupBy(e=>e.FirstLetterOfName);
+                var listOfEmployees = new List<GenericGroupedCollection<string, Employee>>();
+                foreach (var group in groupedEmployees)
+                {
+                    var x = new GenericGroupedCollection<string, Employee>(group.Key);
+                    x.AddRange(group.ToList());
+                    listOfEmployees.Add(x);
+                }
+                listOfEmployees = listOfEmployees.OrderBy(l => l.Key).ToList();
+                var badGroup = listOfEmployees.FirstOrDefault(l => l.Key == "-");
+                if(badGroup!=null)
+                {
+                    listOfEmployees.Remove(badGroup);
+                    listOfEmployees.Add(badGroup);
+                }
+                EmployeeList = listOfEmployees; 
             }
             catch (ArxiusException e)
             {
@@ -34,9 +53,9 @@ namespace Arxius.UserIntreface.ViewModels
         }
         #region Bindable properties
 
-        private List<Employee> _employeeList;
+        private List<GenericGroupedCollection<string, Employee>> _employeeList;
 
-        public List<Employee> EmployeeList
+        public List<GenericGroupedCollection<string, Employee>> EmployeeList
         {
             get { return _employeeList; }
             set

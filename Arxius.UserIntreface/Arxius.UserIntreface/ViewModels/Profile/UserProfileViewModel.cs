@@ -1,7 +1,7 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
 using System.Collections.Generic;
-using System.ComponentModel;
+using Arxius.CrossLayer.PCL;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -35,7 +35,6 @@ namespace Arxius.UserIntreface.ViewModels
         #region Bindable properties
 
         private UserPage _userPage;
-
         public UserPage UserPage
         {
             get { return _userPage; }
@@ -52,6 +51,7 @@ namespace Arxius.UserIntreface.ViewModels
                 }
             }
         }
+
         public int Ects
         {
             set
@@ -65,6 +65,7 @@ namespace Arxius.UserIntreface.ViewModels
                 return UserPage.Ects;
             }
         }
+
         public string LimitRemovalTime 
         {
             set
@@ -78,6 +79,7 @@ namespace Arxius.UserIntreface.ViewModels
                 return UserPage.LimitRemovalTime;
             }
         }
+
         public string EndTime
         {
             set
@@ -91,7 +93,8 @@ namespace Arxius.UserIntreface.ViewModels
                 return UserPage.EndTime;
             }
         }
-        public List<CourseGroupedCollection> RegistrationTimes
+
+        public List<GenericGroupedCollection<string,Course>> RegistrationTimes
         {
             set
             {
@@ -100,7 +103,7 @@ namespace Arxius.UserIntreface.ViewModels
             }
             get
             {
-                if (UserPage == null) return new List<CourseGroupedCollection>();
+                if (UserPage == null) return new List<GenericGroupedCollection<string, Course>>();
                 return UserPage.RegistrationTimes;
             }
         }

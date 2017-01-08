@@ -1,9 +1,6 @@
-using System;
 using Xamarin.Forms;
 using WorkingWithFiles.Droid;
-using System.IO;
-using System.Threading.Tasks;
-using Arxius.Services.PCL.Interfaces_and_mocks;
+using Arxius.Services.PCL.Interfaces;
 using Android.Content;
 
 [assembly: Dependency(typeof(OpenMailer_Android))]

@@ -1,8 +1,6 @@
 ﻿using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
-using Arxius.Services.PCL.Interfaces_and_mocks;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;

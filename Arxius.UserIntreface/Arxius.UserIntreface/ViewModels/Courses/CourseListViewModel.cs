@@ -1,4 +1,5 @@
-﻿using Arxius.Services.PCL;
+﻿using Arxius.CrossLayer.PCL;
+using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,10 @@ namespace Arxius.UserIntreface.ViewModels
                 IsAIRunning = true;
                 var courses = await cService.GetAllCourses(clear);
                 var groupedCourses = courses.GroupBy(c => c.Semester);
-                var allCourses = new List<CourseGroupedCollection>();
+                var allCourses = new List<GenericGroupedCollection<string, Course>>();
                 foreach(var group in groupedCourses)
                 {
-                    var x = new CourseGroupedCollection(group.Key);
+                    var x = new GenericGroupedCollection<string, Course>(group.Key);
                     x.AddRange(group.ToList());
                     allCourses.Add(x);
                 }
@@ -43,8 +44,8 @@ namespace Arxius.UserIntreface.ViewModels
             }
             IsAIRunning = false;
         }
-        private List<CourseGroupedCollection> _allCourses;
-        public List<CourseGroupedCollection> AllCourses
+        private List<GenericGroupedCollection<string, Course>> _allCourses;
+        public List<GenericGroupedCollection<string, Course>> AllCourses
         {
             set
             {

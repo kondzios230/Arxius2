@@ -2,13 +2,11 @@
 using System;
 using System.Windows.Input;
 using Xamarin.Forms;
-
+using Arxius.CrossLayer.PCL;
 namespace Arxius.UserIntreface.ViewModels
 {
     class LoginViewModel : AbstractViewModel
     {
-        //string adress = @"https://zapisy.ii.uni.wroc.pl/";
-        string adress = @"http://192.168.0.16:8002";
         public LoginViewModel(INavigation navi, Page page)
         {
             _page = page;
@@ -37,7 +35,19 @@ namespace Arxius.UserIntreface.ViewModels
         {
             MessagingCenter.Send(this, Properties.Resources.MsgHowToLogin);
             _page.Appearing += _page_Appearing;
-            await Navigation.PushAsync(new WebViewPage(adress));
+            await Navigation.PushAsync(new WebViewPage(CrossLayerData.BaseAddressShort));
+        }
+
+        private bool isOffline;
+
+        public bool IsOffline
+        {
+            get { return isOffline; }
+            set { isOffline = value;
+
+                OnPropertyChanged("IsOffline");
+                CrossLayerData.IsOffline = isOffline;
+            }
         }
 
         private async void _page_Appearing(object sender, EventArgs e)
@@ -46,7 +56,7 @@ namespace Arxius.UserIntreface.ViewModels
             CanClick = false;
             _page.Appearing -= _page_Appearing;
             var cookieManager = Android.Webkit.CookieManager.Instance;
-            uService.Login(cookieManager.GetCookie(adress));
+            uService.Login(cookieManager.GetCookie(CrossLayerData.BaseAddressShort));
             if (await uService.IsLoggedIn())
                 Application.Current.MainPage = new NavigationPage(new MainPage());
             else

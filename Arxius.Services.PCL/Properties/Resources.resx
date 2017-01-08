@@ -117,16 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="baseUri2" xml:space="preserve">
-    <value>http://192.168.0.16:8002{0}</value>
-    <comment>192.168.0.16</comment>
-  </data>
   <data name="WasEnrolled" xml:space="preserve">
     <value>name="wasEnrolled" value="True"</value>
-  </data>
-  <data name="baseUri" xml:space="preserve">
-    <value>http://192.168.0.16:8002{0}</value>
-    <comment>192.168.0.16</comment>
   </data>
   <data name="FileName" xml:space="preserve">
     <value>Notes{0}.txt</value>

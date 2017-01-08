@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Arxius.CrossLayer.PCL;
 
 
 namespace Arxius.Services.PCL.Parsers
@@ -48,7 +48,7 @@ namespace Arxius.Services.PCL.Parsers
             var ectsMatch = Regex.Matches(page, @"<tr><th>Punkty ECTS<\/th><td>(\d*)<\/td>", RegexOptions.Multiline);
             var ects = ectsMatch.Count != 0 ? Convert.ToInt32(ectsMatch[0].Groups[1].ToString()) : 0;
 
-            var dict = new List<CourseGroupedCollection>();
+            var dict = new List<GenericGroupedCollection<string, Course>>();
             var votedCoursesMatch = Regex.Matches(page, @"<tr><th>Czas:<\/th><td>(.*?)<\/td><\/tr><tr><td><\/td><td><ul class=""voted-courses"">(.*?)<\/td>", RegexOptions.Multiline);
             foreach (var match in votedCoursesMatch)
             {
@@ -61,7 +61,7 @@ namespace Arxius.Services.PCL.Parsers
                     var _course = course as Match;
                     courseList.Add(new Course() { Url = _course.Groups[1].ToString(), Name = _course.Groups[2].ToString() });
                 }
-                var x = new CourseGroupedCollection(time);
+                var x = new GenericGroupedCollection<string, Course>(time);
                 x.AddRange(courseList);
                 dict.Add(x);
             }
@@ -86,16 +86,18 @@ namespace Arxius.Services.PCL.Parsers
             foreach (var employeeMatch in employeesMatch)
             {
                 var employee = employeeMatch as Match;
-                employees.Add(new Employee() { Name = employee.Groups[2].ToString(), Url = string.Format(Properties.Resources.baseUri, employee.Groups[1].ToString()), Email = employee.Groups[4].ToString() });
+                if (employee.Groups[2].ToString().Length == 0) continue;
+                var Name = employee.Groups[2].ToString();
+                employees.Add(new Employee() { Name = employee.Groups[2].ToString(), FirstLetterOfName = Name.Split(' ')[Name.Split(' ').Count() - 1][0].ToString(), Url = string.Format(CrossLayerData.BaseAddress, employee.Groups[1].ToString()), Email = employee.Groups[4].ToString() });
             }
             return employees;
         }
 
-        public static List<StringGroup> GetImportantDates(string page)
+        public static List<GenericGroupedCollection<string, string>> GetImportantDates(string page)
         {
             var headerMatches = Regex.Matches(page, @"<h4>(S|s)(.*?)<\/h4><p><strong>(.*?)<\/strong>(.*?)<(.*?)\/p>", RegexOptions.Multiline);
             string[] tableHeaders = { "Dni rektorskie: ", "Przerwa świąteczna:", "Sesja egzaminacyjna:", "Sesja poprawkowa:" };
-            var dic = new List<StringGroup>();
+            var dic = new List<GenericGroupedCollection<string, string>>();
             if (headerMatches.Count == 2)
             {
                 
@@ -103,7 +105,7 @@ namespace Arxius.Services.PCL.Parsers
                
                 for (int i = 0; i < 2; i++)
                 {
-                    var result= new StringGroup(headerMatches[i].Groups[1].ToString()+ headerMatches[i].Groups[2].ToString());
+                    var result= new GenericGroupedCollection<string, string>(headerMatches[i].Groups[1].ToString()+ headerMatches[i].Groups[2].ToString());
                     result.Add(string.Format("{0} {1}", headerMatches[i].Groups[3].ToString(), headerMatches[i].Groups[4].ToString().Replace("r.", string.Empty).Replace(" r.", string.Empty)));
                     var first = true;
                     foreach (var head in tableHeaders)
@@ -143,7 +145,7 @@ namespace Arxius.Services.PCL.Parsers
                 employee.Consults = "Brak danych";
             var weekByDays = employeeDetailsMatch.Groups[5].ToString();
             var daysMatch = Regex.Matches(weekByDays, @"<h3>(.*?)<\/h3><ul>(.*?)<\/ul>");
-            var dict = new List<StringGroup>();
+            var dict = new List<GenericGroupedCollection<string, string>>();
             foreach (Match match in daysMatch)
             {
                 var day = match.Groups[1].ToString();
@@ -153,7 +155,7 @@ namespace Arxius.Services.PCL.Parsers
                     day = "Środa";
                 if (day == "Piatek")
                     day = "Piątek";
-                var x = new StringGroup(day);
+                var x = new GenericGroupedCollection<string, string>(day);
                 var classesMatch = Regex.Matches(match.Groups[2].ToString(), @"<li><span class=""time"">(.*?)</span><span class=""name"">(.*?)</span><span class=""type"">(.*?)</span><span class=""classroom"">(.*?)</span></li>", RegexOptions.Multiline);
                 foreach (Match classMatch in classesMatch)
                 {

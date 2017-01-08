@@ -27,13 +27,21 @@
         </Image>
       </Grid>
       <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
-      <ListView  x:Name="EmployeeList"  ItemsSource="{Binding EmployeeList}"  SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}" >
+      
+      <ListView  x:Name="EmployeeList"  ItemsSource="{Binding EmployeeList}" GroupDisplayBinding="{Binding Key}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}"  IsGroupingEnabled="true">
         <ListView.ItemTemplate >
           <DataTemplate>
             <TextCell Text="{Binding Name}" TextColor="#000000"/>
           </DataTemplate>
         </ListView.ItemTemplate>
-           </ListView>
+        <ListView.GroupHeaderTemplate>
+          <DataTemplate>
+            <TextCell Text="{Binding Key}"
+            TextColor="#000000" />
+          </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+      </ListView>
+      
 
 
     </StackLayout>

@@ -1,10 +1,7 @@
-﻿using Arxius.Services.PCL;
+﻿using Arxius.CrossLayer.PCL;
+using Arxius.Services.PCL;
 using Arxius.Services.PCL.Entities;
-using Arxius.Services.PCL.Interfaces_and_mocks;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Arxius.UserIntreface.ViewModels
@@ -33,8 +30,8 @@ namespace Arxius.UserIntreface.ViewModels
             IsAIRunning = false;
         }
         #region Bindable properties
-        private List<StringGroup> _dates;
-        public List<StringGroup> Dates
+        private List<GenericGroupedCollection<string, string>> _dates;
+        public List<GenericGroupedCollection<string, string>> Dates
         {
             get { return _dates; }
             set
