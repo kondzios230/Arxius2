@@ -26,8 +26,9 @@
           </Image.GestureRecognizers>
         </Image>
       </Grid>
-      <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
-      <ListView  x:Name="NewsList"  ItemsSource="{Binding NewsFeed}"  SelectedItem="{Binding SelectedNews, Mode=TwoWay}" >
+        <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
+      <StackLayout>
+      <ListView  x:Name="NewsList"  ItemsSource="{Binding NewsFeed}"  SelectedItem="{Binding SelectedNews, Mode=TwoWay}" Grid.Row="0" Grid.Column="0" >
         <ListView.ItemTemplate >
           <DataTemplate>
             <TextCell Text="{Binding Title}" TextColor="#000000"/>
@@ -35,20 +36,20 @@
         </ListView.ItemTemplate>
       </ListView>
 
-      <Grid x:Name="buttonsGrid" RowSpacing="1" ColumnSpacing="1">
+      <Grid x:Name="buttonsGrid" RowSpacing="1" ColumnSpacing="1" Grid.Row="1" Grid.Column="0">
         <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
+          <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button Text="&lt;" Command="{Binding PreviousPage}"  Grid.Row="0" Grid.Column="0"/>
+        <Button Text="&#8592;" FontSize="15" Command="{Binding PreviousPage}"  Grid.Row="0" Grid.Column="0"/>
         <Label Text="{Binding PageNumber}"  Grid.Row="0" Grid.Column="1" YAlign="Center" XAlign="Center"/>
-        <Button Text="&gt;" Command="{Binding NextPage}" Grid.Row="0" Grid.Column="2" />
+        <Button Text="&#8594;" FontSize="15" Command="{Binding NextPage}" Grid.Row="0" Grid.Column="2" />
       </Grid>
-
+      </StackLayout>
     </StackLayout>
   </ContentPage.Content>
 
