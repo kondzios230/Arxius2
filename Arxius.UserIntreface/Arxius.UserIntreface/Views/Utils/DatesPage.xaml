@@ -20,7 +20,7 @@
           <ColumnDefinition Width="25" />
         </Grid.ColumnDefinitions>
         <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
-        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
+        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center"  HorizontalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
         <Image x:Name ="RefreshButton" Source="Refresh.png"  HeightRequest = "25"  Grid.Row="0" Grid.Column="1">
           <Image.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding Refresh }"/>

@@ -18,11 +18,11 @@
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
+        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
 
       </Grid>
       <ScrollView VerticalOptions="FillAndExpand">
-      <StackLayout Padding="20" VerticalOptions="FillAndExpand">
+      <StackLayout Padding="10" VerticalOptions="FillAndExpand">
       <Label Text ="{Binding Title}" FontSize="Large" HorizontalTextAlignment="Center" Margin ="1"/>
       <Label Text ="{Binding Date}" FontSize="Micro" HorizontalTextAlignment="Center" Margin ="1"/>    
       <Label Text ="{Binding Content}" FontSize="Medium" Margin ="1"/>

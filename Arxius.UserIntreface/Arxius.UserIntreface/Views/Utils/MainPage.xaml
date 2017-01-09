@@ -19,7 +19,7 @@
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
+        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center"  HorizontalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
 
       </Grid>
       <ScrollView  Orientation = "Vertical" VerticalOptions="FillAndExpand">

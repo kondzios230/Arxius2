@@ -4,12 +4,13 @@ namespace Arxius.CrossLayer.PCL
     public static class CrossLayerData
     {
         public static bool IsOffline { get; set; }
+        public static string OfflineIP { get; set; }
         public static string BaseAddress
         {
             get
             {
                 if (IsOffline)
-                    return "http://192.168.0.16:8002{0}";
+                    return OfflineIP+"{0}";// "http://192.168.0.16:8002{0}";
                 return "https://zapisy.ii.uni.wroc.pl/{0}";
             }
         }
@@ -18,7 +19,7 @@ namespace Arxius.CrossLayer.PCL
             get
             {
                 if (IsOffline)
-                    return "http://192.168.0.16:8002";
+                    return OfflineIP;// "http://192.168.0.16:8002";
                 return "https://zapisy.ii.uni.wroc.pl/";
             }
         }

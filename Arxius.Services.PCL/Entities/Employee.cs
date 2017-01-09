@@ -3,6 +3,7 @@
 using Arxius.CrossLayer.PCL;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Xamarin.Forms;
 
 namespace Arxius.Services.PCL.Entities
 {
@@ -12,7 +13,7 @@ namespace Arxius.Services.PCL.Entities
         public string FirstLetterOfName { get; set; }
         public string Url { get; set; }
         public string Email { get; set; }
-        public string Room { get; set; }
+        public FormattedString Room { get; set; }
         public string Consults { get; set; }
         private List<GenericGroupedCollection<string, string>> _weekPlan;
 

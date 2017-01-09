@@ -120,11 +120,11 @@ namespace Arxius.Services.PCL.Parsers
                             {
                                 dayString += day.Groups[1].ToString().Replace("\r", string.Empty) + "\n";
                             }
-                            result.Add(string.Format("Zmiany dni: {0}", dayString.Replace("r.", string.Empty).Replace(" r.", string.Empty)));
+                            result.Add(string.Format("Zmiany dni: {0}", dayString.Replace("r.", string.Empty).Replace(" r.", string.Empty).Replace(" , ", ", ")));
                             first = false;
                         }
                         if (match != null)
-                            result.Add(string.Format("{0} {1}", head, match.Groups[1].ToString().Replace("r.",string.Empty).Replace(" r.", string.Empty)));
+                            result.Add(string.Format("{0} {1}", head, match.Groups[1].ToString().Replace("r.",string.Empty).Replace(" r.", string.Empty).Replace(" , ", ", ")));
                     }
                     dic.Add(result);
                 }
@@ -137,7 +137,9 @@ namespace Arxius.Services.PCL.Parsers
             page = page.Replace("\n", string.Empty);
             var employeeDetailsMatch = Regex.Match(page, @"<tr><th>pokój<\/th><td>(.*?)<\/td><\/tr>(.*?)<h3>Konsultacje:<\/h3><p>(.*?)<\/p>(.*?)<div class=""byWeekDays"">(.*?)<\/div>", RegexOptions.Multiline);
             if (employeeDetailsMatch == null) throw new Exception();
-            employee.Room = "pok. " + employeeDetailsMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty);
+            employee.Room = new Xamarin.Forms.FormattedString();
+            employee.Room.Spans.Add(new Xamarin.Forms.Span() { Text = "Pokój: ", FontAttributes = Xamarin.Forms.FontAttributes.Bold });
+            employee.Room.Spans.Add(new Xamarin.Forms.Span() { Text = employeeDetailsMatch.Groups[1].ToString().Trim(' ').Replace("\t", string.Empty)});
             var consults = employeeDetailsMatch.Groups[3].ToString().Trim(' ').Replace("\t", string.Empty);
             if (consults.Length > 0)
                 employee.Consults = consults.ToUpper()[0] + consults.Substring(1);

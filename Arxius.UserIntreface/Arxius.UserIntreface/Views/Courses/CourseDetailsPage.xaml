@@ -19,7 +19,7 @@
           <ColumnDefinition Width="25" />
         </Grid.ColumnDefinitions>
 
-        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
+        <Label Text ="{Binding BreadCrumb}" FontAttributes="Italic" FontSize="Small" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" TextColor="White"   Grid.Row="0" Grid.Column="0"/>
         <Image x:Name ="RefreshButton" Source="Refresh.png"  HeightRequest = "25"  Grid.Row="0" Grid.Column="1">
           <Image.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding Refresh }"/>
@@ -27,7 +27,7 @@
         </Image>
       </Grid>
       <ActivityIndicator Color="#35bbff" IsRunning="{Binding IsAIRunning}" IsVisible="{Binding IsAIRunning}"/>
-      <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand" FontSize="20" Margin="5"/>
+      <Label Text="{Binding CourseName}" HorizontalOptions="CenterAndExpand" FontSize="20" Margin="5" HorizontalTextAlignment="Center"/>
       <Label FormattedText="{Binding CourseKind}" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsKindVisible}"/>
       <Label FormattedText="{Binding CourseGroup}" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsGroupVisible}"/>
       <Label FormattedText="{Binding CourseEcts}" HorizontalOptions="CenterAndExpand"/>

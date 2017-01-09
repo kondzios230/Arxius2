@@ -9,6 +9,7 @@ namespace Arxius.UserIntreface.ViewModels
     {
         public LoginViewModel(INavigation navi, Page page)
         {
+            OfflineIP = "http://192.168.0.16:8002";
             _page = page;
             uService = new UtilsService();
             Navigation = navi;
@@ -39,7 +40,6 @@ namespace Arxius.UserIntreface.ViewModels
         }
 
         private bool isOffline;
-
         public bool IsOffline
         {
             get { return isOffline; }
@@ -50,6 +50,18 @@ namespace Arxius.UserIntreface.ViewModels
             }
         }
 
+        private string offlineIP;
+        public string OfflineIP
+        {
+            get { return offlineIP; }
+            set
+            {
+                offlineIP = value;
+
+                OnPropertyChanged("OfflineIP");
+                CrossLayerData.OfflineIP = value;
+            }
+        }
         private async void _page_Appearing(object sender, EventArgs e)
         {
             IsAIRunning = true;

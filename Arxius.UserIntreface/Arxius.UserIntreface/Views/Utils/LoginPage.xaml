@@ -17,6 +17,7 @@
       <Button Text="LOGIN" Command="{Binding ExecuteLogin}" />
       <Label HorizontalOptions="CenterAndExpand" Text="Tryb lokalnego systemu zapisów"/>
       <Switch HorizontalOptions="CenterAndExpand"  IsToggled="{Binding IsOffline}"/>
+      <Entry Text="{Binding OfflineIP}"></Entry>
       <Label Text="Nieoficjalna aplikacja Systemu Zapisów Instytutu Informatyki UWr" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
       <Label Text="2016-2017" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
     </StackLayout>

@@ -54,18 +54,57 @@ namespace Arxius.Services.PCL.Parsers
                         type = ClassTypeEnum.Repetitory;
                         break;
                 }
-                var enrollmentCourseMatch = Regex.Matches(tutorialGroupString, @"><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term"">(.*?)<\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=(.*?)}'\/><input type=""hidden"" name=""is-signed(.*?)value=""(.*?)""\/><form action=""(.*?)"" method=""post"" class=""setEnrolled""><div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='(.*?)' \/><\/div><div><input type=""hidden"" name=""group"" value=""(.*?)""\/><input type=""hidden"" name=""enroll"" value=""(.*?)""\/><(.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td><td class=""priority"">(.*?)<\/td><\/tr>", RegexOptions.Multiline);
-                if (enrollmentCourseMatch.Count != 0)
+                var globalCourseMatches = Regex.Matches(tutorialGroupString, @"<tr (.*?)><td><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term"">(.*?)<\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td>(.*?)<\/tr>",RegexOptions.Multiline).Cast<Match>().ToList();
+                var listOfEnrollmentMatches =new List<List<Group>>();
+                var listOfEnrolledMatches =new List<List<Group>>();
+                var listOfNotEnrolledMatches =new List<List<Group>>();
+                foreach(var courseMatch in globalCourseMatches)
                 {
-                    parseInEnrollmentClasses(enrollmentCourseMatch, course, type);
+                    var enrollmentMatch = Regex.Match(courseMatch.Groups[8].ToString(), @"<td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=(.*?)}'\/><input type=""hidden"" name=""is-signed(.*?)value=""(.*?)""\/><form action=""(.*?)"" method=""post"" class=""setEnrolled""><div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='(.*?)' \/><\/div><div><input type=""hidden"" name=""group"" value=""(.*?)""\/><input type=""hidden"" name=""enroll"" value=""(.*?)""\/><(.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td><td class=""priority"">(.*?)<\/td>");
+                    if(enrollmentMatch != null && enrollmentMatch.Groups.Count>1)
+                    {
+                        var head = courseMatch.Groups.Cast<Group>().ToList();
+                        head.RemoveAt(head.Count - 1);
+                        var tail = enrollmentMatch.Groups.Cast<Group>().ToList();
+                        tail.RemoveAt(0);
+                        head.AddRange(tail);
+                        listOfEnrollmentMatches.Add(head);
+                        continue;
+                    }
+                    var notEnrolledMatch = Regex.Match(courseMatch.Groups[8].ToString(), @"<td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is(.*?)value=""false""\/><a href=""(.*?)"">(.*?)<\/a><\/td>");
+                    if (notEnrolledMatch != null && notEnrolledMatch.Groups.Count > 1)
+                    {
+                        var head = courseMatch.Groups.Cast<Group>().ToList();
+                        head.RemoveAt(head.Count - 1);
+                        var tail = notEnrolledMatch.Groups.Cast<Group>().ToList();
+                        tail.RemoveAt(0);
+                        head.AddRange(tail);
+                        listOfNotEnrolledMatches.Add(head);
+                    }
+                    var enrolledMatch = Regex.Match(courseMatch.Groups[8].ToString(),   @"<td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is-(.*?)value=""true""\/><form><div><button (.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td>");
+                    if (enrolledMatch != null && enrolledMatch.Groups.Count > 1)
+                    {
+                        var head = courseMatch.Groups.Cast<Group>().ToList();
+                        head.RemoveAt(head.Count - 1);
+                        var tail = enrolledMatch.Groups.Cast<Group>().ToList();
+                        tail.RemoveAt(0);
+                        head.AddRange(tail);
+                        listOfEnrolledMatches.Add(head);
+                    }
+                }
+                if (listOfEnrollmentMatches.Count != 0)
+                {
+                    parseInEnrollmentClasses(listOfEnrollmentMatches, course, type);
                     continue;
                 }
-                var nonEnrolledCourseMatch = Regex.Matches(tutorialGroupString, @"<tr  ><td><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term"">(.*?)<\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is(.*?)value=""false""\/><a href=""(.*?)"">(.*?)<\/a><\/td><\/tr>", RegexOptions.Multiline);
-
-                parseNonEnrolledClasses(nonEnrolledCourseMatch, course, type);
-
-                var enrolledCourseMatch = Regex.Matches(tutorialGroupString, @"<tr  class=""signed""  ><td><a href=""(.*?)"" class=""person"">(.*?)<\/a><\/td><td class=""term""><span(.*?)<\/span><\/td><td class=""number termLimit"">(.*?)<\/td><td class=""number termEnrolledCount"">(.*?)<\/td><td class=""number termQueuedCount"">(.*?)<\/td><td class=""controls""><input type=""hidden"" name=""group-id"" value=""(.*?)""\/><input type=""hidden"" name=""(.*?)}'\/><input type=""hidden"" name=""is-(.*?)value=""true""\/><form><div><button (.*?)setEnrolledButton"">(.*?)<\/button><\/div><\/form><a href=""(.*?)"">(.*?)<\/a><\/td><\/tr>", RegexOptions.Multiline);
-                parseEnrolledClasses(enrolledCourseMatch, course, type);
+                if (listOfNotEnrolledMatches.Count != 0)
+                {
+                    parseNonEnrolledClasses(listOfNotEnrolledMatches, course, type);
+                }
+                if (listOfEnrolledMatches.Count != 0)
+                {
+                    parseEnrolledClasses(listOfEnrolledMatches, course, type);
+                }
             }
         }
         public static List<Course> GetUserPlanForCurrentSemester(string page)
@@ -161,14 +200,14 @@ namespace Arxius.Services.PCL.Parsers
             return Tuple.Create(r.Groups[2].ToString() == "true", r.Groups[5].ToString().Trim(' '), listOfMessages);
         }
         #region Private Methods
-        private static void parseInEnrollmentClasses(MatchCollection enrollmentCourseMatch, Course course, ClassTypeEnum type)
+        private static void parseInEnrollmentClasses(List<List<Group>> enrollmentCourseMatch, Course course, ClassTypeEnum type)
         {
-            foreach (Match courseMatch in enrollmentCourseMatch)
+            foreach (var courseMatch in enrollmentCourseMatch)
             {
                 var _class = new _Class();
                 _class.ClassType = type;
-                _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
-                var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
+                _class.Teacher = new Employee() { Name = courseMatch[3].ToString().Trim(' '), Url = courseMatch[2].ToString() };
+                var lessonMatches = Regex.Matches(courseMatch[4].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                 foreach (Match lessonMatch in lessonMatches)
                 {
                     var l = parseToLesson(lessonMatch);
@@ -177,29 +216,29 @@ namespace Arxius.Services.PCL.Parsers
                     _class.Lessons.Add(l);
                 }
 
-                _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
-                _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
-                _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
-                _class.IsSignedIn = courseMatch.Groups[10].ToString().Trim(' ') == "true";
-                _class.enrollmentUri = courseMatch.Groups[11].ToString().Trim(' ');
-                _class.csrfToken = courseMatch.Groups[12].ToString().Trim(' ');
-                _class.enrollmentId = courseMatch.Groups[13].ToString().Trim(' ');
-                _class.ButtonEnrollText = courseMatch.Groups[16].ToString().Trim(' ').ToUpper();
-                _class.ListUrl = courseMatch.Groups[17].ToString().Trim(' ');
+                _class.TotalPeople = courseMatch[5].ToString().Trim(' ');
+                _class.SignedInPeople = courseMatch[6].ToString().Trim(' ');
+                _class.QueuedPeople = courseMatch[7].ToString().Trim(' ');
+                _class.IsSignedIn = courseMatch[11].ToString().Trim(' ') == "true";
+                _class.enrollmentUri = courseMatch[12].ToString().Trim(' ');
+                _class.csrfToken = courseMatch[13].ToString().Trim(' ');
+                _class.enrollmentId = courseMatch[14].ToString().Trim(' ');
+                _class.ButtonEnrollText = courseMatch[17].ToString().Trim(' ').ToUpper();
+                _class.ListUrl = courseMatch[18].ToString().Trim(' ');
                 _class.IsEnrollment = true;
-                _class.buttonListText = courseMatch.Groups[18].ToString().Trim(' ').ToUpper();
-                _class.Priority = courseMatch.Groups[19].ToString().Trim(' ');
+                _class.buttonListText = courseMatch[19].ToString().Trim(' ').ToUpper();
+                _class.Priority = courseMatch[20].ToString().Trim(' ');
                 course.Classes.Add(_class);
             }
         }
-        private static void parseNonEnrolledClasses(MatchCollection nonEnrolledCourseMatch, Course course, ClassTypeEnum type)
+        private static void parseNonEnrolledClasses(List<List<Group>> nonEnrolledCourseMatch, Course course, ClassTypeEnum type)
         {
-            foreach (Match courseMatch in nonEnrolledCourseMatch)
+            foreach (var courseMatch in nonEnrolledCourseMatch)
             {
                 var _class = new _Class();
                 _class.ClassType = type;
-                _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
-                var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
+                _class.Teacher = new Employee() { Name = courseMatch[3].ToString().Trim(' '), Url = courseMatch[2].ToString() };
+                var lessonMatches = Regex.Matches(courseMatch[4].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                 foreach (Match lessonMatch in lessonMatches)
                 {
                     var l = parseToLesson(lessonMatch);
@@ -207,25 +246,25 @@ namespace Arxius.Services.PCL.Parsers
                     l.Type = _class.ClassType;
                     _class.Lessons.Add(l);
                 }
-                _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
-                _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
-                _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
+                _class.TotalPeople = courseMatch[5].ToString().Trim(' ');
+                _class.SignedInPeople = courseMatch[6].ToString().Trim(' ');
+                _class.QueuedPeople = courseMatch[7].ToString().Trim(' ');
                 _class.IsSignedIn = false;
                 _class.IsEnrollment = false;
-                _class.ListUrl = courseMatch.Groups[10].ToString().Trim(' ').Trim('\\');
+                _class.ListUrl = courseMatch[11].ToString().Trim(' ').Trim('\\');
                 _class.ButtonEnrollText = "ZAPISY";
-                _class.buttonListText = courseMatch.Groups[11].ToString().Trim(' ').ToUpper();
+                _class.buttonListText = courseMatch[12].ToString().Trim(' ').ToUpper();
                 course.Classes.Add(_class);
             }
         }
-        private static void parseEnrolledClasses(MatchCollection enrolledCourseMatch, Course course, ClassTypeEnum type)
+        private static void parseEnrolledClasses(List<List<Group>> enrolledCourseMatch, Course course, ClassTypeEnum type)
         {
-            foreach (Match courseMatch in enrolledCourseMatch)
+            foreach (var courseMatch in enrolledCourseMatch)
             {
                 var _class = new _Class();
                 _class.ClassType = type;
-                _class.Teacher = new Employee() { Name = courseMatch.Groups[2].ToString().Trim(' '), Url = courseMatch.Groups[1].ToString() };
-                var lessonMatches = Regex.Matches(courseMatch.Groups[3].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
+                _class.Teacher = new Employee() { Name = courseMatch[3].ToString().Trim(' '), Url = courseMatch[2].ToString() };
+                var lessonMatches = Regex.Matches(courseMatch[4].ToString(), @">(.*?)\((.*?)\)", RegexOptions.Multiline);
                 foreach (Match lessonMatch in lessonMatches)
                 {
                     var l = parseToLesson(lessonMatch);
@@ -233,14 +272,14 @@ namespace Arxius.Services.PCL.Parsers
                     l.Type = _class.ClassType;
                     _class.Lessons.Add(l);
                 }
-                _class.TotalPeople = courseMatch.Groups[4].ToString().Trim(' ');
-                _class.SignedInPeople = courseMatch.Groups[5].ToString().Trim(' ');
-                _class.QueuedPeople = courseMatch.Groups[6].ToString().Trim(' ');
+                _class.TotalPeople = courseMatch[5].ToString().Trim(' ');
+                _class.SignedInPeople = courseMatch[6].ToString().Trim(' ');
+                _class.QueuedPeople = courseMatch[7].ToString().Trim(' ');
                 _class.IsSignedIn = true;
-                _class.ListUrl = courseMatch.Groups[12].ToString().Trim(' ');
-                _class.IsEnrollment = !courseMatch.Groups[10].ToString().Contains("disabled");
-                _class.ButtonEnrollText = courseMatch.Groups[11].ToString().Trim(' ').ToUpper();
-                _class.buttonListText = courseMatch.Groups[13].ToString().Trim(' ').ToUpper();
+                _class.ListUrl = courseMatch[13].ToString().Trim(' ');
+                _class.IsEnrollment = !courseMatch[11].ToString().Contains("disabled");
+                _class.ButtonEnrollText = courseMatch[12].ToString().Trim(' ').ToUpper();
+                _class.buttonListText = courseMatch[14].ToString().Trim(' ').ToUpper();
                 course.Classes.Add(_class);
             }
         }
