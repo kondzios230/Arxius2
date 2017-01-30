@@ -10,7 +10,7 @@ namespace Arxius.CrossLayer.PCL
             get
             {
                 if (IsOffline)
-                    return OfflineIP+"{0}";// "http://192.168.0.16:8002{0}";
+                    return OfflineIP+"{0}";
                 return "https://zapisy.ii.uni.wroc.pl/{0}";
             }
         }
@@ -19,7 +19,7 @@ namespace Arxius.CrossLayer.PCL
             get
             {
                 if (IsOffline)
-                    return OfflineIP;// "http://192.168.0.16:8002";
+                    return OfflineIP;
                 return "https://zapisy.ii.uni.wroc.pl/";
             }
         }
